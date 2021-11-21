@@ -5,7 +5,7 @@ image=zayuh/coturn_app
 
 # build image
 docker rmi $image:build || true
-docker build -t $image:build . --build-arg CACHEBUST=$(date + %s)
+docker build -t $image:build .
 
 # docker compose run
 docker-compose stop
