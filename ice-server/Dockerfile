@@ -1,7 +1,7 @@
 FROM ubuntu:16.04
 
 WORKDIR /root
-ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
+#ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
 
 COPY ./main/coturn.sh .
 COPY ./main/sshd.sh .
