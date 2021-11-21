@@ -14,6 +14,9 @@ COPY ./keys/authorized_keys /root/.ssh/authorized_keys
 ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
 RUN sleep 1
 RUN service ssh start
+RUN sleep 1
+RUN service ssh restart
+RUN sleep 1
 RUN service ssh status
 
 CMD ["sleep", "1000000"]
