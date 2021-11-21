@@ -13,5 +13,6 @@ COPY ./keys/authorized_keys /root/.ssh/authorized_keys
 
 RUN sleep 1
 RUN service ssh start
+RUN service ssh status
 
 CMD ["sleep", "1000000"]
