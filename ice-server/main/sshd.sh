@@ -1,7 +1,7 @@
 #!/bin/bash
 
 apt-get upadate
-apt-get install openssh-server -y
+apt-get install -y openssh-server
 
 mkdir ~/.ssh
 chmod 700 ~/.ssh
