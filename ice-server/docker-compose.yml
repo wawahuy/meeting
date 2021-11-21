@@ -7,5 +7,5 @@ services:
       - "24999:24999"
       - "25000:25100"
       - "25000:25100/udp"
-    # restart: always
+    restart: always
     build: .
