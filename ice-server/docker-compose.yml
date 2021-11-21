@@ -2,7 +2,6 @@ version: "3.7"
 services:
   coturn_app:
     image: zayuh/coturn_app:lasted
-    user: "1004:983"
     ports:
       - "24999:24999"
       - "25000:25100"
