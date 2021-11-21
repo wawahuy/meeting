@@ -22,8 +22,9 @@ mv /etc/turnserver.conf /etc/turnserver.conf.original
 PORT_TURN=25001
 PORT_MIN=25002
 PORT_MAX=25002
-PORT_CLI=24999
+#PORT_CLI=24999
 REALM="call.zayuh.me"
-PASSWORD_CLI="adadad"
-turnserver -a -o -v -n  --no-dtls --no-tls -p $PORT_TURN -r $REALM --min-port=$PORT_MIN --max-port=$PORT_MAX  --cli-port=$PORT_CLI --cli-password=$PASSWORD_CLI --cli-ip=0.0.0.0
+#PASSWORD_CLI="adadad"
+#--cli-port=$PORT_CLI --cli-password=$PASSWORD_CLI --cli-ip=0.0.0.0
+turnserver -a -o -v -n  --no-dtls --no-tls -p $PORT_TURN -r $REALM --min-port=$PORT_MIN --max-port=$PORT_MAX
 

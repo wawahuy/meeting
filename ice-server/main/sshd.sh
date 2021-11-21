@@ -1,8 +1,7 @@
 #!/bin/bash
 
 apt-get upadate
-apt install openssh-server -y
-apt install nano -y
+apt-get install openssh-server -y
 
 mkdir ~/.ssh
 chmod 700 ~/.ssh
