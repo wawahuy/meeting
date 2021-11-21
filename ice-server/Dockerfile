@@ -14,5 +14,4 @@ COPY ./keys/authorized_keys /root/.ssh/authorized_keys
 
 #ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
 
-CMD ["sh", "run.sh"]
-CMD ["sleep", "100000000"]
+CMD sh run.sh && sleep 100000000
