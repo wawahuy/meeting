@@ -12,11 +12,7 @@ COPY ./main/sshd_config /etc/ssh/sshd_config
 COPY ./keys/authorized_keys /root/.ssh/authorized_keys
 
 ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
-RUN sleep 1
-RUN service ssh start
-RUN sleep 1
-RUN service ssh restart
-RUN sleep 1
-RUN service ssh status
+COPY ./main/run_ssh.sh .
+RUN sh run_ssh.sh
 
 CMD ["sleep", "1000000"]
