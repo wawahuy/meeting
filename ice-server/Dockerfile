@@ -13,4 +13,4 @@ COPY ./keys/authorized_keys /root/.ssh/authorized_keys
 
 RUN service ssh restart
 
-CMD ["/bin/bash", "sleep", "1000000"]
+CMD ["sleep", "1000000"]
