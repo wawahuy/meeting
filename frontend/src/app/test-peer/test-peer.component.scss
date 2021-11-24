@@ -35,6 +35,81 @@
     z-index: 1;
     font-size: 16px;
     color: #fff;
+    cursor: pointer;
+  }
+
+  .call {
+    position: absolute;
+    width: 300px;
+    height: 50px;
+    top: calc(50% - 25px);
+    left: calc(50% - 150px);
+    z-index: 1;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    input {
+      flex: 1;
+      border: 2px dashed #fff;
+      background-color: transparent;
+      color: #fff;
+      font-family: 'Roboto';
+
+      &:focus {
+        border: 2px dashed #fff;
+        outline: none;
+        box-shadow: none;
+      }
+
+      &::placeholder {
+        color: #fff;
+        font-family: 'Roboto';
+      }
+
+      &::-moz-placeholder {
+        color: #fff;
+        font-family: 'Roboto';
+      }
+
+      &::-webkit-input-placeholder {
+        color: #fff;
+        font-family: 'Roboto';
+      }
+    }
+
+    button {
+      width: 46px;
+      height: 46px;
+      margin-left: 2px;
+      color: #fff;
+      font-size: 20px;
+      background-color: rgb(41, 38, 38);
+
+      &:focus {
+        outline: none;
+        box-shadow: none;
+      }
+    }
+  }
+
+  .hangup {
+    position: absolute;
+    left: 50%;
+    bottom: 30px;
+    transform: translate(-50%, 0);
+    z-index: 1;
+
+    .hangup {
+      width: 40px;
+      height: 40px;
+      background-color: rgb(117, 2, 2);
+      color: #fff;
+      font-size: 20px;
+      border-radius: 40px;
+      transform: rotateZ(135deg);
+    }
   }
 }
 
