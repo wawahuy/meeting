@@ -1,13 +1,14 @@
 <div class="h-full">
     <div class="flex flex-col items-center m-auto space-y-4 ">
         <form action="" class="flex flex-col w-80 items-center m-auto space-y-4">
-            <input class="rounded-lg w-full" type="text" placeholder="Username">
-            <input class="rounded-lg w-full" type="password" placeholder="Password">
+            <input class="rounded-lg w-full form-control" type="text" placeholder="Username">
+            <input class="rounded-lg w-full form-control" type="password" placeholder="Password">
             <div class="flex space-x-2">
-                <button type="submit" class="bg-blue-500 rounded-lg text-white px-4 py-2 hover:bg-blue-900">Sign
-                    In</button>
-                <button type="submit" class="border-blue-500 rounded-lg px-4 py-2 
-                    hover:bg-gray-300 hover:text-white hover:shadow-3xl">
+                <button type="button" class="bg-blue-500 rounded-lg text-white px-4 py-2 hover:bg-blue-900"
+                    (click)="submitSignIn()">
+                    Sign In</button>
+                <button type="button" class="border-blue-500 rounded-lg px-4 py-2 
+                    hover:bg-gray-300 hover:text-white hover:shadow-3xl" (click)="submitSignIn()">
                     Sign Up</button>
             </div>
         </form>
