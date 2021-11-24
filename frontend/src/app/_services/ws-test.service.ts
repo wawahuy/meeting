@@ -1,23 +1,28 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { webSocket, WebSocketSubject } from 'rxjs/internal-compatibility';
+import { v4 as uuidv4 } from 'uuid';
 import { environment } from 'src/environments/environment';
-import { Message } from '../types/message';
+import { Message } from '../_models/message';
 
 const WS_ENDPOINT = environment.testWsEndpoint;
 
 @Injectable({
   providedIn: 'root'
 })
-export class DataService {
+export class WsTestService {
 
   private socket$: WebSocketSubject<Message>;
   private messagesSubject = new Subject<Message>();
   public message$ = this.messagesSubject.asObservable();
+  public uuid = uuidv4();
 
   constructor() {}
 
   public connect() {
+    if (!this.socket$) {
+      return;
+    }
     this.socket$ = this.getNewWebsocket();
     this.socket$.subscribe(
       msg => {

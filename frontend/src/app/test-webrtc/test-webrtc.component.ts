@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { DataService } from './services/data.service';
-import { Message } from './types/message';
+import { WsTestService } from '../_services/ws-test.service';
+import { Message } from '../_models/message';
 
 @Component({
   selector: 'app-test-webrtc',
@@ -18,7 +18,7 @@ export class TestWebrtcComponent implements OnInit, AfterViewInit {
   peerConnection: RTCPeerConnection;
 
   constructor(
-    private dataService: DataService
+    private wsTestService: WsTestService
   ) { }
 
   ngAfterViewInit(): void {
@@ -46,7 +46,7 @@ export class TestWebrtcComponent implements OnInit, AfterViewInit {
       return;
     }
     this.isOpen = true;
-    this.dataService.send({ type: 'setName', data: this.name });
+    this.wsTestService.send({ type: 'setName', data: this.name });
   }
 
   handleStartLocal() {
@@ -68,7 +68,7 @@ export class TestWebrtcComponent implements OnInit, AfterViewInit {
       alert('name call require');
       return;
     }
-    this.dataService.send({ type: "setCall", data: this.nameCall });
+    this.wsTestService.send({ type: "setCall", data: this.nameCall });
 
     this.createPeerConnection();
     this.localMedia.getTracks().forEach(track => {
@@ -81,14 +81,14 @@ export class TestWebrtcComponent implements OnInit, AfterViewInit {
         offerToReceiveVideo: true
       })
       await this.peerConnection.setLocalDescription(offer);
-      this.dataService.send({ type: "offer", data: offer });
+      this.wsTestService.send({ type: "offer", data: offer });
     } catch (e) {
       this.handleGetUserMediaError(e);
     }
   }
 
   handleHangUp() {
-    this.dataService.send({ type: "hangup", data: '' });
+    this.wsTestService.send({ type: "hangup", data: '' });
     this.closeVideoCall();
   }
 
@@ -145,7 +145,7 @@ export class TestWebrtcComponent implements OnInit, AfterViewInit {
   private handleICECandidateEvent = (event: RTCPeerConnectionIceEvent) => {
     console.log(event);
     if (event.candidate) {
-      this.dataService.send({
+      this.wsTestService.send({
         type: 'ice-candidate',
         data: event.candidate
       })
@@ -179,8 +179,8 @@ export class TestWebrtcComponent implements OnInit, AfterViewInit {
   }
 
   private addIncomingMessageHandler() {
-    this.dataService.connect();
-    this.dataService.message$.subscribe(
+    this.wsTestService.connect();
+    this.wsTestService.message$.subscribe(
       msg => {
         switch (msg.type) {
           case 'offer':
@@ -231,7 +231,7 @@ export class TestWebrtcComponent implements OnInit, AfterViewInit {
         return this.peerConnection.setLocalDescription(answer);
       })
       .then(() => {
-        this.dataService.send({ type: 'answer', data: this.peerConnection.localDescription });
+        this.wsTestService.send({ type: 'answer', data: this.peerConnection.localDescription });
       })
       .catch(this.handleGetUserMediaError)
   }
