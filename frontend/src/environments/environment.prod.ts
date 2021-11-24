@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  testWsEndpoint: 'ws://103.142.26.166:24000'
+  testWsEndpoint: 'wss://api-meet.zayuh.me/ws-test'
 };
