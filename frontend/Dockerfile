@@ -1,4 +1,4 @@
-FROM node:16.13.0-alpine AS build
+FROM node:15.12.0-alpine3.13 AS build
 
 WORKDIR /src/meeting_fe_app
 
