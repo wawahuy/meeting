@@ -20,7 +20,7 @@ export class WsTestService {
   constructor() {}
 
   public connect() {
-    if (!this.socket$) {
+    if (this.socket$) {
       return;
     }
     this.socket$ = this.getNewWebsocket();
