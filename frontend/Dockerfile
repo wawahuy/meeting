@@ -1,4 +1,4 @@
-FROM docker pull node:14.18.1-alpine3.14 AS build
+FROM node:14.18.1-alpine3.14 AS build
 
 WORKDIR /src/meeting_fe_app
 
