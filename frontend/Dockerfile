@@ -1,4 +1,4 @@
-FROM node:12.18-alpine AS build
+FROM node:15.12.0-alpine3.13 AS build
 
 WORKDIR /src/meeting_fe_app
 
@@ -9,7 +9,7 @@ COPY . .
 RUN npm run build
 
 FROM nginx:1.17.1-alpine
-COPY nginx-staging.conf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=build /src/meeting_fe_app/dist/angular /usr/share/nginx/html
 
 CMD ["nginx", "-g", "daemon off;"]
