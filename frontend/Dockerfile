@@ -4,6 +4,7 @@ WORKDIR /src/meeting_fe_app
 
 # cache node_modules
 COPY package*.json ./
+RUN npm i autoprefixer@^10.0.2
 RUN npm install
 COPY . .
 RUN npm run build
