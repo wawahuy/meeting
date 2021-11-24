@@ -1,4 +1,4 @@
-FROM node AS build
+FROM node:14.18 AS build
 
 WORKDIR /src/meeting_fe_app
 
