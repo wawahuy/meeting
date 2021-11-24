@@ -11,6 +11,9 @@ export class TestWebrtcComponent implements OnInit, AfterViewInit {
   @ViewChild("local_video") localVideoElement: ElementRef;
   @ViewChild("remote_video") remoteVideoElement: ElementRef;
 
+  isOpen: boolean = false;
+  name: string;
+  nameCall: string;
   localMedia: MediaStream;
   peerConnection: RTCPeerConnection;
 
@@ -37,6 +40,15 @@ export class TestWebrtcComponent implements OnInit, AfterViewInit {
     this.handleStopLocal();
   }
 
+  handleOpen() {
+    if (!this.name) {
+      alert('name require');
+      return;
+    }
+    this.isOpen = true;
+    this.dataService.send({ type: 'setName', data: this.name });
+  }
+
   handleStartLocal() {
     this.localMedia.getTracks().forEach(track => {
       track.enabled = true;
@@ -52,6 +64,12 @@ export class TestWebrtcComponent implements OnInit, AfterViewInit {
   }
 
   async handleCall() {
+    if (!this.nameCall) {
+      alert('name call require');
+      return;
+    }
+    this.dataService.send({ type: "setCall", data: this.nameCall });
+
     this.createPeerConnection();
     this.localMedia.getTracks().forEach(track => {
       this.peerConnection.addTrack(track, this.localMedia);

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { webSocket, WebSocketSubject } from 'rxjs/internal-compatibility';
+import { environment } from 'src/environments/environment';
 import { Message } from '../types/message';
 
-const WS_ENDPOINT = 'ws://localhost:8081'
-
+const WS_ENDPOINT = environment.testWsEndpoint;
 
 @Injectable({
   providedIn: 'root'

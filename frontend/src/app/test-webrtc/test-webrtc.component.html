@@ -1,7 +1,20 @@
 <h1 class="p-5 text-center">
   Video Call
 </h1>
-<div class="container">
+<div class="container" *ngIf="!isOpen">
+  <div class="row">
+    <div class="col-2">
+      <span class="mr-3">nick name:</span>
+    </div>
+    <div class="col-4">
+      <input name="text" [(ngModel)]="name" class="form-control" />
+    </div>
+    <div class="col-2">
+      <button class="btn btn-primary ml-3" (click)="handleOpen()">Open</button>
+    </div>
+  </div>
+</div>
+<div class="container" *ngIf="isOpen">
   <div class="row">
     <div class="col-6">
       <h5>Local</h5>
@@ -15,7 +28,10 @@
   <div class="py-5">
     <button class="btn btn-primary mr-3" (click)="handleStartLocal()">Start Local</button>
     <button class="btn btn-primary mr-3" (click)="handleStopLocal()">Stop Local</button>
-    <button class="btn btn-primary mr-3" (click)="handleCall()">Call</button>
+  </div>
+  <div class="d-flex align-items-center">
+    <input type="text" class="form-control" [(ngModel)]="nameCall" style="max-width: 100px">
+    <button class="btn btn-primary mx-3" (click)="handleCall()">Call</button>
     <button class="btn btn-primary mr-3" (click)="handleHangUp()">Hang Up</button>
   </div>
 </div>
