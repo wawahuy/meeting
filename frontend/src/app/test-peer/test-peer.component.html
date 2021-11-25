@@ -1,0 +1,22 @@
+<div class="container-chat">
+  <div class="remote-video">
+    <video #remote_video [autoplay]="true"></video>
+  </div>
+  <div class="local-video">
+    <video #local_video [autoplay]="true" [muted]="true"></video>
+  </div>
+  <div class="uuid" (click)="onCopy()" [tooltip]="'Click Copy'">
+    UUID: {{uuid}}
+  </div>
+  <div class="call" *ngIf="!isCalling">
+    <input type="text" placeholder="Enter UUID" [(ngModel)]="uuidCall" />
+    <button type="button" [tooltip]="'Call'" (click)="handleCall()">
+      <i class="fa fa-phone" aria-hidden="true"></i>
+    </button>
+  </div>
+  <div class="hangup">
+    <button class="hangup" type="button" [tooltip]="'Hangup'" (click)="handleHangUp()" *ngIf="isCalling">
+      <i class="fa fa-phone" aria-hidden="true"></i>
+    </button>
+  </div>
+</div>
