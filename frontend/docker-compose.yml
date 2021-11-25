@@ -1,0 +1,8 @@
+version: "3.7"
+services:
+  meeting_fe_app:
+    image: zayuh/meeting_fe_app:lasted
+    ports:
+      - "24001:80"
+    restart: always
+    build: .
