@@ -1,6 +1,11 @@
-FROM node:14.15 AS build
+FROM ubuntu:16.04 AS build
 
 WORKDIR /src/meeting_fe_app
+
+RUN apt-get update
+RUN apt-get -y install curl dirmngr apt-transport-https lsb-release ca-certificates sudo
+RUN curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+RUN sudo apt-get -y install nodejs
 
 # cache node_modules
 COPY package*.json ./
