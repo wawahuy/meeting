@@ -4,9 +4,9 @@ WORKDIR /src/meeting_fe_app
 
 # cache node_modules
 COPY package*.json ./
+RUN npm install -g npm@8.1.4
 RUN npm install
 COPY . .
-RUN npm run ngcc
 RUN npm run build
 
 FROM nginx:1.17.1-alpine
