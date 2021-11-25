@@ -1,10 +1,9 @@
-FROM node:15.12.0-alpine3.13 AS build
+FROM node:14.15 AS build
 
 WORKDIR /src/meeting_fe_app
 
 # cache node_modules
 COPY package*.json ./
-RUN npm install -g npm@8.1.4
 RUN npm install
 COPY . .
 RUN npm run build
