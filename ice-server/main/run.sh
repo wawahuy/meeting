@@ -2,7 +2,7 @@
 
 PORT_TURN=25001
 PORT_MIN=25002
-PORT_MAX=25100
+PORT_MAX=25010
 REALM="call.zayuh.me"
 turnserver -a -o -v -n  --no-dtls --no-tls -p $PORT_TURN -r $REALM --min-port=$PORT_MIN --max-port=$PORT_MAX
 
