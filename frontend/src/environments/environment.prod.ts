@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  testWsEndpoint: 'wss://api-meet.zayuh.me/ws-test'
 };
