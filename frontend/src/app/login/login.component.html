@@ -1,14 +1,31 @@
 <div class="tw-h-full tw-py-20">
     <div class="tw-flex tw-flex-col tw-items-center tw-m-auto tw-space-y-4 ">
-        <form action="" class="tw-flex tw-flex-col tw-w-80 tw-items-center tw-m-auto tw-space-y-4">
-            <input class="tw-rounded-lg tw-w-full form-control" type="text" placeholder="Username">
-            <input class="tw-rounded-lg tw-w-full form-control" type="password" placeholder="Password">
+        <form [formGroup]="form" class="tw-flex tw-flex-col tw-w-80 tw-items-center tw-m-auto tw-space-y-4">
+            <input
+              class="tw-rounded-lg tw-w-full form-control"
+              type="text"
+              placeholder="Username"
+              [formControlName]="ELoginFormField.Username"
+              [(ngModel)]="username"
+            >
+            <div class="text-danger" *ngIf="isControlError(ELoginFormField.Username, 'required')">
+              Username required
+            </div>
+            <input
+              class="tw-rounded-lg tw-w-full form-control"
+              type="password"
+              placeholder="Password"
+              [formControlName]="ELoginFormField.Password"
+            >
+            <div class="text-danger" *ngIf="isControlError(ELoginFormField.Password, 'required')">
+              Password required
+            </div>
             <div class="tw-flex tw-space-x-2">
                 <button type="button"
                     class="tw-bg-blue-500 tw-rounded-lg tw-text-white tw-px-4 tw-py-2 hover:tw-bg-blue-900"
                     (click)="submitSignIn()">
                     Sign In</button>
-                <button type="button" class="tw-border-blue-500 tw-rounded-lg tw-px-4 tw-py-2 
+                <button type="button" class="tw-border-blue-500 tw-rounded-lg tw-px-4 tw-py-2
                     hover:tw-bg-gray-300 hover:tw-text-white hover:tw-shadow-3xl" (click)="submitSignIn()">
                     Sign Up</button>
             </div>
