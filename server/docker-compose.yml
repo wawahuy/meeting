@@ -7,7 +7,7 @@ services:
     restart: always
     build: .
     links:
-      - mongodb
+      - metting-mongodb
     volumes:
       - "~/data-docker/uploads:/data/uploads"
 
