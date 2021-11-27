@@ -1,0 +1,24 @@
+version: "3.7"
+services:
+  meeting_server_app:
+    image: zayuh/meeting_server_app:lasted
+    ports:
+      - "24001:3000"
+    restart: always
+    build: .
+    links:
+      - mongodb
+    volumes:
+      - "~/data-docker/uploads:/data/uploads"
+
+  metting-mongodb:
+    image: mongo:4.4.4
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: meet
+      MONGO_INITDB_ROOT_PASSWORD: Duan2.22ti!
+    command: ["--bind_ip", "0.0.0.0"]
+    ports:
+      - "24002:27017"
+    volumes:
+      - "~/data-docker/mongodb:/data/db"
+    restart: always
