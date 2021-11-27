@@ -1,10 +1,10 @@
 # meeting + live stream public
 
 # URL
-  - Web: https://meet.zayuh.me
-  - Api: https://api-meet.zayuh.me/documentation
-  - Websocket: wss://api-meet.zayuh.me/ws
-  - Websocket Test: wss://api-meet.zayuh.me/ws-test
+  - Web: https://meet.zayuh.me (24001)
+  - Api: https://api-meet.zayuh.me/documentation (24002)
+  - Websocket: wss://api-meet.zayuh.me/ws (24002)
+  - Websocket Test: wss://api-meet.zayuh.me/ws-test (24000)
 
 # Stun + Turn:
   - stun:call.zayuh.me:25001
