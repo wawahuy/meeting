@@ -1,1 +1,90 @@
-<p>sign-up works!</p>
+<div class="tw-h-[100vh] tw-m-auto tw-relative">
+  <div
+    class="
+      tw-absolute
+      tw-border-gray-300
+      tw-border
+      tw-flex
+      tw-flex-col
+      tw-items-center
+      tw-top-[35%]
+      tw-left-[35%]
+      tw-m-auto
+      tw-space-y-4
+      tw-rounded-xl
+      tw-w-1/3
+      tw-pt-10
+      tw-pb-6
+      tw-shadow
+      tw-shadow-gray-600
+    "
+  >
+    <form
+      formGroup="form"
+      class="tw-flex tw-flex-col tw-w-80 tw-items-center tw-m-auto tw-space-y-4"
+    >
+      <div class="tw-absolute tw-top-[-0.25rem]">
+        <span
+          class="text-danger tw-mr-1"
+          *ngIf="isControlError(ESignUpFormField.Username, 'required')"
+        >
+          Username required
+        </span>
+        <span
+          class="text-danger"
+          *ngIf="isControlError(ESignUpFormField.Password, 'required')"
+        >
+          Password required
+        </span>
+      </div>
+      <input
+        class="tw-rounded-lg tw-w-full tw-relative tw-border-gray-200"
+        type="text"
+        placeholder="Username"
+        required="true"
+        [formControlName]="ESignUpFormField.Username"
+      />
+      <input
+        class="tw-rounded-lg tw-w-full tw-relative tw-border-gray-200"
+        type="password"
+        placeholder="Password"
+        [formControlName]="ESignUpFormField.Password"
+      />
+      <div class="tw-flex tw-space-x-2">
+        <span
+          routerLink="/login"
+          class="
+            tw-my-auto
+            tw-py-2
+            tw-px-4
+            tw-cursor-pointer
+            tw-border-blue-200
+            tw-border
+            tw-rounded-lg
+            tw-transition
+            tw-duration-500
+            tw-text-blue-200
+            hover:tw-bg-blue-200 hover:tw-text-white hover:tw-shadow-3xl
+          "
+          >Go to login</span
+        >
+        <button
+          type="button"
+          class="
+            tw-border-green-200
+            tw-border
+            tw-rounded-lg
+            tw-px-4
+            tw-py-2
+            tw-transition
+            tw-duration-500
+            tw-text-green-200
+            hover:tw-bg-green-200 hover:tw-text-white hover:tw-shadow-3xl
+          "
+        >
+          Sign Up
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

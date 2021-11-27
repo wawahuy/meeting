@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ELoginFormField } from './model';
 
 @Component({
@@ -30,10 +31,6 @@ export class LoginComponent implements OnInit {
   submitSignIn() {
     console.log("Your username: ", this.username);
     const values = this.form.value;
-  }
-
-  submitSignUp() {
-    alert("Sign Up")
   }
 
   isControlError(field: ELoginFormField, type: string) {
