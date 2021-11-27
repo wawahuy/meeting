@@ -3,7 +3,7 @@ services:
   meeting_server_app:
     image: zayuh/meeting_server_app:lasted
     ports:
-      - "24001:3000"
+      - "24002:3000"
     restart: always
     build: .
     links:
@@ -18,7 +18,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: Duan2.22ti!
     command: ["--bind_ip", "0.0.0.0"]
     ports:
-      - "24002:27017"
+      - "24003:27017"
     volumes:
       - "~/data-docker/mongodb:/data/db"
     restart: always
