@@ -5,12 +5,14 @@ import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
 import { SchemaModule } from './schema/schema.module';
+import { SocketModule } from './socket/socket.module';
 
 @Module({
   imports: [
     AuthModule,
     UserModule,
-    SchemaModule
+    SchemaModule,
+    SocketModule
   ],
   controllers: [AppController],
   providers: [AppService],
