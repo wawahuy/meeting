@@ -3,7 +3,7 @@
 # URL
   - Web: https://meet.zayuh.me (24001)
   - Api: https://api-meet.zayuh.me/documentation (24002)
-  - Websocket: wss://api-meet.zayuh.me/ws (24002)
+  - SocketIO: https://api-meet.zayuh.me/socket.io (24002)
   - Websocket Test: wss://api-meet.zayuh.me/ws-test (24000)
 
 # Stun + Turn:

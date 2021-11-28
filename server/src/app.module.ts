@@ -6,13 +6,15 @@ import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
 import { SchemaModule } from './schema/schema.module';
 import { SocketModule } from './socket/socket.module';
+import { MessageModule } from './modules/message/message.module';
 
 @Module({
   imports: [
     AuthModule,
     UserModule,
     SchemaModule,
-    SocketModule
+    SocketModule,
+    MessageModule
   ],
   controllers: [AppController],
   providers: [AppService],
