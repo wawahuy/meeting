@@ -1,5 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, ObjectId, Schema as MSchema } from 'mongoose';
+import { MessageContainer } from './message-container.schema';
+import { User } from './user.schema';
 
 export enum MessageType {
   Text = 1,
@@ -18,23 +20,26 @@ export class Message {
   @Prop({ 
     type: MSchema.Types.ObjectId,
     required: true,
-    index: true
+    index: true,
+    ref: MessageContainer.name
   })
-  messageContainerId: ObjectId;
+  messageContainer: any;
 
   @Prop({ 
     type: MSchema.Types.ObjectId,
     required: true,
-    index: true
+    index: true,
+    ref: User.name
   })
-  userFromId: ObjectId;
+  userFrom: any;
 
   @Prop({ 
     type: MSchema.Types.ObjectId,
     required: true,
-    index: true 
+    index: true,
+    ref: User.name
   })
-  userToId: ObjectId;
+  userTo: any;
 
   @Prop({ 
     type: MSchema.Types.Boolean,
@@ -47,9 +52,9 @@ export class Message {
   deleteTo: boolean;
 
   @Prop({ 
-    type: MSchema.Types.Boolean,
+    type: MSchema.Types.Number,
     required: true,
-    enum: Object.values(MessageType)
+    enum: Object.values(MessageType).filter(v => Number(v))
   })
   type: MessageType;
 
