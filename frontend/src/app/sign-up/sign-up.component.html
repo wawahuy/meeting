@@ -40,6 +40,12 @@
         >
           Password required
         </span>
+        <span
+          class="text-danger"
+          *ngIf="isControlError(ESignUpFormField.ConfirmPassword, 'required')"
+        >
+          Confirm Password required
+        </span>
       </div>
       <input
         class="
@@ -61,6 +67,16 @@
         type="password"
         placeholder="Password"
         [formControlName]="ESignUpFormField.Password"
+      />
+      <input
+        class="
+          tw-rounded-lg tw-w-auto
+          sm:tw-w-full
+          tw-relative tw-border-gray-200
+        "
+        type="password"
+        placeholder="Confirm password"
+        [formControlName]="ESignUpFormField.ConfirmPassword"
       />
       <div class="tw-flex tw-space-x-2">
         <span

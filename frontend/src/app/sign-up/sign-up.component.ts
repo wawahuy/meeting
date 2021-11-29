@@ -21,6 +21,7 @@ export class SignUpComponent implements OnInit {
     this.form = this.formBuilder.group({
       [ESignUpFormField.Username]: [null, Validators.required],
       [ESignUpFormField.Password]: [null, Validators.required],
+      [ESignUpFormField.ConfirmPassword]: [null, Validators.required]
     });
   }
 
