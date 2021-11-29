@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Schema as MSchema } from 'mongoose';
+import { Document, ObjectId, Schema as MSchema } from 'mongoose';
 
 export enum MessageType {
   Text = 1,
@@ -20,14 +20,21 @@ export class Message {
     required: true,
     index: true
   })
-  userIdFrom: string;
+  messageContainerId: ObjectId;
+
+  @Prop({ 
+    type: MSchema.Types.ObjectId,
+    required: true,
+    index: true
+  })
+  userFromId: ObjectId;
 
   @Prop({ 
     type: MSchema.Types.ObjectId,
     required: true,
     index: true 
   })
-  userIdTo: string;
+  userToId: ObjectId;
 
   @Prop({ 
     type: MSchema.Types.Boolean,
