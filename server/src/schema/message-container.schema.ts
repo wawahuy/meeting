@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, ObjectId, Schema as MSchema } from 'mongoose';
+import { User } from './user.schema';
 
 export type MessageContainerDocument = MessageContainer & Document;
 
@@ -11,16 +12,18 @@ export class MessageContainer {
   @Prop({ 
     type: MSchema.Types.ObjectId,
     required: true,
-    index: true
+    index: true,
+    ref: User.name
   })
-  userAId: ObjectId;
+  userA: any;
 
   @Prop({ 
     type: MSchema.Types.ObjectId,
     required: true,
-    index: true 
+    index: true,
+    ref: User.name
   })
-  userBId: ObjectId;
+  userB: any;
 
   @Prop({ 
     type: MSchema.Types.Boolean,

@@ -19,7 +19,6 @@ export class UserService {
         }
       }
     }
-    console.log(search);
 
     return await this.userModel.find(match)
       .skip((page - 1) * size)
