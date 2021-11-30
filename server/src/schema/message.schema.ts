@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, ObjectId, Schema as MSchema } from 'mongoose';
-import { MessageContainer } from './message-container.schema';
+// import { MessageContainer } from './message-container.schema';
 import { User } from './user.schema';
 
 export enum MessageType {
@@ -21,7 +21,7 @@ export class Message {
     type: MSchema.Types.ObjectId,
     required: true,
     index: true,
-    ref: MessageContainer.name
+    // ref: MessageContainer.name
   })
   messageContainer: any;
 

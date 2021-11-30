@@ -11,6 +11,8 @@ export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   }
 
   handleConnection(client: Socket, ...args: any[]) {
+    const authorization = client.handshake.headers.authorization;
+
   }
 
   handleDisconnect(client: Socket) {

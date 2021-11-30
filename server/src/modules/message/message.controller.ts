@@ -19,122 +19,122 @@ export class MessageController {
   ) {
   }
 
-  @Get()
-  @ApiQuery({ name: 'page', required: false })
-  @ApiQuery({ name: 'size', required: false })
-  async getAll(
-    @Res() res: Response,
-    @GetUser() user: UserDocument,
-    @Query('page') page: number = 1,
-    @Query('size') size: number = 10,
-  ) {
-    const hostId = user._id;
-    const result = await this.messageService.getMessageContainer(hostId, page, size);
-    if (result) {
-      res.status(HttpStatus.OK).json(result);
-    } else {
-      throw new InternalServerErrorException();
-    }
-  }
+  // @Get()
+  // @ApiQuery({ name: 'page', required: false })
+  // @ApiQuery({ name: 'size', required: false })
+  // async getAll(
+  //   @Res() res: Response,
+  //   @GetUser() user: UserDocument,
+  //   @Query('page') page: number = 1,
+  //   @Query('size') size: number = 10,
+  // ) {
+  //   const hostId = user._id;
+  //   const result = await this.messageService.getMessageContainer(hostId, page, size);
+  //   if (result) {
+  //     res.status(HttpStatus.OK).json(result);
+  //   } else {
+  //     throw new InternalServerErrorException();
+  //   }
+  // }
 
-  @Post()
-  async createMessage(
-    @Res() res: Response,
-    @GetUser() user: UserDocument,
-    @Body() dto: CreateMessageDto
-  ) {
-    const { userId } = dto;
-    const hostId = user._id;
-    const messageContainer = await this.messageService.getOrCreateMessageContainerByUser(hostId, userId);
+  // @Post()
+  // async createMessage(
+  //   @Res() res: Response,
+  //   @GetUser() user: UserDocument,
+  //   @Body() dto: CreateMessageDto
+  // ) {
+  //   const { userId } = dto;
+  //   const hostId = user._id;
+  //   const messageContainer = await this.messageService.getOrCreateMessageContainerByUser(hostId, userId);
 
-    if (messageContainer?.modifiedCount) {
-      res.status(HttpStatus.OK).json({ status: true });
-    } else {
-      throw new InternalServerErrorException();
-    }
-  }
+  //   if (messageContainer?.modifiedCount) {
+  //     res.status(HttpStatus.OK).json({ status: true });
+  //   } else {
+  //     throw new InternalServerErrorException();
+  //   }
+  // }
 
-  @Delete('/:id')
-  @ApiParam({ name: 'id' })
-  async deleteMessage(
-    @Res() res: Response,
-    @GetUser() user: UserDocument,
-    @Param() id: string
-  ) {
-    const result = await this.messageService.deleteMessageContainer(id, user._id);
-    if (result) {
-      res.status(HttpStatus.OK).json({ status: true });
-    } else {
-      throw new InternalServerErrorException();
-    }
-  }
+  // @Delete('/:id')
+  // @ApiParam({ name: 'id' })
+  // async deleteMessage(
+  //   @Res() res: Response,
+  //   @GetUser() user: UserDocument,
+  //   @Param() id: string
+  // ) {
+  //   const result = await this.messageService.deleteMessageContainer(id, user._id);
+  //   if (result) {
+  //     res.status(HttpStatus.OK).json({ status: true });
+  //   } else {
+  //     throw new InternalServerErrorException();
+  //   }
+  // }
 
-  @Get(':idMessage/content')
-  @ApiParam({ name: 'idMessage' })
-  @ApiQuery({ name: 'page', required: false })
-  @ApiQuery({ name: 'size', required: false })
-  async getMessageContent(
-    @Res() res: Response,
-    @GetUser() user: UserDocument,
-    @Param('idMessage') idMessage: string,
-    @Query('page') page: number = 1,
-    @Query('size') size: number = 10,
-  ) {
-    const hostId = user._id;
-    const result = await this.messageService.getMessageContent(idMessage, hostId, page, size);
-    if (result) {
-      res.status(HttpStatus.OK).json(result);
-    } else {
-      throw new InternalServerErrorException();
-    }
-  }
+  // @Get(':idMessage/content')
+  // @ApiParam({ name: 'idMessage' })
+  // @ApiQuery({ name: 'page', required: false })
+  // @ApiQuery({ name: 'size', required: false })
+  // async getMessageContent(
+  //   @Res() res: Response,
+  //   @GetUser() user: UserDocument,
+  //   @Param('idMessage') idMessage: string,
+  //   @Query('page') page: number = 1,
+  //   @Query('size') size: number = 10,
+  // ) {
+  //   const hostId = user._id;
+  //   const result = await this.messageService.getMessageContent(idMessage, hostId, page, size);
+  //   if (result) {
+  //     res.status(HttpStatus.OK).json(result);
+  //   } else {
+  //     throw new InternalServerErrorException();
+  //   }
+  // }
 
-  @Post(':idMessage/content')
-  @ApiParam({ name: 'idMessage' })
-  async sendMessageContent(
-    @GetUser() user: UserDocument,
-    @Param('idMessage') idMessage: string,
-    @Body() dto: CreateMessageContentDto
-  ) {
-    const container = await this.messageService.getMessageContainerById(idMessage);
+  // @Post(':idMessage/content')
+  // @ApiParam({ name: 'idMessage' })
+  // async sendMessageContent(
+  //   @GetUser() user: UserDocument,
+  //   @Param('idMessage') idMessage: string,
+  //   @Body() dto: CreateMessageContentDto
+  // ) {
+  //   const container = await this.messageService.getMessageContainerById(idMessage);
 
-    if (
-      !container ||
-      !Object.values(MessageType).filter(v => Number(v)).includes(dto.type)
-    ) {
-      return new InternalServerErrorException();
-    }
+  //   if (
+  //     !container ||
+  //     !Object.values(MessageType).filter(v => Number(v)).includes(dto.type)
+  //   ) {
+  //     return new InternalServerErrorException();
+  //   }
 
-    if (
-      container.userA?.toString() !== user._id?.toString() &&
-      container.userB?.toString() !== user._id?.toString()
-    ) {
-      return new ForbiddenException();
-    }
+  //   if (
+  //     container.userA?.toString() !== user._id?.toString() &&
+  //     container.userB?.toString() !== user._id?.toString()
+  //   ) {
+  //     return new ForbiddenException();
+  //   }
 
-    const fromId = user._id;
-    const toId = container.userA?.toString() === fromId?.toString() ? container.userB : container.userA;
-    const result = await this.messageService.insertMessageContent(idMessage, fromId, toId, dto);
+  //   const fromId = user._id;
+  //   const toId = container.userA?.toString() === fromId?.toString() ? container.userB : container.userA;
+  //   const result = await this.messageService.insertMessageContent(idMessage, fromId, toId, dto);
 
-    if (!result?.length) {
-      return new InternalServerErrorException();
-    }
+  //   if (!result?.length) {
+  //     return new InternalServerErrorException();
+  //   }
 
-    // socket emit
-  }
+  //   // socket emit
+  // }
 
-  @Delete('content/:id')
-  @ApiParam({ name: 'id' })
-  async deleteMessageContent(
-    @Res() res: Response,
-    @GetUser() user: UserDocument,
-    @Param() id: string
-  ) {
-    const result = await this.messageService.deleteMessageContent(id, user._id);
-    if (result) {
-      res.status(HttpStatus.OK).json({ status: true });
-    } else {
-      throw new InternalServerErrorException();
-    }
-  }
+  // @Delete('content/:id')
+  // @ApiParam({ name: 'id' })
+  // async deleteMessageContent(
+  //   @Res() res: Response,
+  //   @GetUser() user: UserDocument,
+  //   @Param() id: string
+  // ) {
+  //   const result = await this.messageService.deleteMessageContent(id, user._id);
+  //   if (result) {
+  //     res.status(HttpStatus.OK).json({ status: true });
+  //   } else {
+  //     throw new InternalServerErrorException();
+  //   }
+  // }
 }
