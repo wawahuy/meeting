@@ -3,15 +3,17 @@ import { CommonModule } from '@angular/common';
 
 import { MessageRoutingModule } from './message-routing.module';
 import { MessageComponent } from './message.component';
+import { ComponentsModule } from './components/components.module';
 
 
 @NgModule({
   declarations: [
-    MessageComponent
+    MessageComponent,
   ],
   imports: [
     CommonModule,
-    MessageRoutingModule
+    MessageRoutingModule,
+    ComponentsModule
   ]
 })
 export class MessageModule { }
