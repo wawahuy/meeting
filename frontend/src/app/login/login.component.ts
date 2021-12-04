@@ -37,10 +37,9 @@ export class LoginComponent implements OnInit {
     const values = this.form.value;
     await this.authService.login(values.username, values.password)
       .then(res => {
-        this.router.navigate(['/message']);
+        this.router.navigate(['/']);
       })
       .catch(err => {
-        console.log(err);
         this.notifierService.notify('error', err?.error?.message || 'Unknown Error')
       })
   }
