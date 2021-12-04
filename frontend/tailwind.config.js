@@ -1,4 +1,5 @@
 const { guessProductionMode } = require("@ngneat/tailwind");
+const { colors: defaultColors } = require("tailwindcss/defaultTheme");
 
 process.env.TAILWIND_MODE = guessProductionMode() ? "build" : "watch";
 
@@ -29,6 +30,10 @@ module.exports = {
       "2xl": ["1.5rem", { lineHeight: "2rem" }],
       "3xl": ["1.875rem", { lineHeight: "2.25rem" }],
       3.25: ["0.8125rem", { lineHeight: "1.5" }],
+    },
+    colors: {
+      ...defaultColors,
+      shark: "#242526",
     },
   },
   variants: {
