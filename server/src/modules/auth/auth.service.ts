@@ -2,7 +2,7 @@ import { ConflictException, Injectable, InternalServerErrorException, Unauthoriz
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import * as md5 from 'md5';
+import * as bcrypt from 'bcrypt';
 import { User, UserDocument } from 'src/schema/user.schema';
 import { SignInDto, SignUpDto } from './dto/auth.dto';
 
@@ -22,15 +22,21 @@ export class AuthService {
       return new UnauthorizedException("User not exits");
     }
 
-    if (md5(user.password) === dto.password) {
+    if (!bcrypt.compareSync(dto.password, user.password)) {
       return new UnauthorizedException("Password incorrect");
     }
 
-    return this.signUser(user.username, 'user');
+    const token = this.signUser(user.username, 'user');
+    user.password = undefined;
+
+    return {
+      ...user.toJSON(),
+      token
+    }
   }
 
   async signUp(dto: SignUpDto) {
-    const user = await this.userModel.findOne({ username: dto.username })
+    let user = await this.userModel.findOne({ username: dto.username })
 
     if (user) {
       return new ConflictException("User exits");
@@ -38,14 +44,20 @@ export class AuthService {
 
     const createUser = new this.userModel({
       username: dto.username,
-      password: md5(dto.password)
+      password: bcrypt.hashSync(dto.password, 12)
     });
     
-    if (!await createUser.save()) {
+    if (!(user = await createUser.save())) {
       return new InternalServerErrorException("Create user error");
     }
 
-    return this.signUser(dto.username, 'user');
+    const token = this.signUser(dto.username, 'user');
+    user.password = undefined;
+
+    return {
+      ...user.toJSON(),
+      token
+    }
   }
 
   signUser(user: string, type: string) {

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { NotifierService } from 'angular-notifier';
+import { AuthService } from '../_services/auth.service';
 import { ELoginFormField } from './model';
 
 @Component({
@@ -8,28 +11,38 @@ import { ELoginFormField } from './model';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  username: string;
-  password: string;
-
   form: FormGroup;
 
   readonly ELoginFormField = ELoginFormField;
 
   constructor(
-    private formBuilder: FormBuilder
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private notifierService: NotifierService
   ) {
+    if (this.authService.currentUserValue) {
+      this.router.navigate(['/']);
+    }
+  }
+
+  ngOnInit(): void {
     this.form = this.formBuilder.group({
       [ELoginFormField.Username]: [null, Validators.required],
       [ELoginFormField.Password]: [null, Validators.required],
     });
   }
 
-  ngOnInit(): void {
-  }
-
-  submitSignIn() {
-    console.log("Your username: ", this.username);
+  async submitSignIn() {
     const values = this.form.value;
+    await this.authService.login(values.username, values.password)
+      .then(res => {
+        this.router.navigate(['/message']);
+      })
+      .catch(err => {
+        console.log(err);
+        this.notifierService.notify('error', err?.error?.message || 'Unknown Error')
+      })
   }
 
   isControlError(field: ELoginFormField, type: string) {

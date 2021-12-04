@@ -4,8 +4,15 @@
 
 export const environment = {
   production: false,
-  testWsEndpoint: 'ws://localhost:24000'
+  testWsEndpoint: 'ws://localhost:24000',
+  apiEndpoint: 'http://localhost:3000/'
 };
+
+// export const environment = {
+//   production: false,
+//   testWsEndpoint: 'ws://localhost:24000',
+//   apiEndpoint: 'https://api-meet.zayuh.me/'
+// };
 
 /*
  * For easier debugging in development mode, you can import the following file
