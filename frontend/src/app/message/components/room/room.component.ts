@@ -41,6 +41,116 @@ export class RoomComponent implements OnInit {
       status: false,
       avatarUrl: ""
     },
+    {
+      username: "Thien",
+      listMessage: [
+        {
+          id: 1,
+          content: 'abc'
+        }
+      ],
+      status: false,
+      avatarUrl: ""
+    },
+    {
+      username: "Thien",
+      listMessage: [
+        {
+          id: 1,
+          content: 'abc'
+        }
+      ],
+      status: false,
+      avatarUrl: ""
+    },
+    {
+      username: "Thien",
+      listMessage: [
+        {
+          id: 1,
+          content: 'abc'
+        }
+      ],
+      status: false,
+      avatarUrl: ""
+    },
+    {
+      username: "Thien",
+      listMessage: [
+        {
+          id: 1,
+          content: 'abc'
+        }
+      ],
+      status: false,
+      avatarUrl: ""
+    },
+    {
+      username: "Thien",
+      listMessage: [
+        {
+          id: 1,
+          content: 'abc'
+        }
+      ],
+      status: false,
+      avatarUrl: ""
+    },
+    {
+      username: "Thien",
+      listMessage: [
+        {
+          id: 1,
+          content: 'abc'
+        }
+      ],
+      status: false,
+      avatarUrl: ""
+    },
+    {
+      username: "Thien",
+      listMessage: [
+        {
+          id: 1,
+          content: 'abc'
+        }
+      ],
+      status: false,
+      avatarUrl: ""
+    },
+    {
+      username: "Thien",
+      listMessage: [
+        {
+          id: 1,
+          content: 'abc'
+        }
+      ],
+      status: false,
+      avatarUrl: ""
+    },
+    {
+      username: "Thien",
+      listMessage: [
+        {
+          id: 1,
+          content: 'abc'
+        }
+      ],
+      status: false,
+      avatarUrl: ""
+    },
+    {
+      username: "Thien",
+      listMessage: [
+        {
+          id: 1,
+          content: 'abc'
+        }
+      ],
+      status: false,
+      avatarUrl: ""
+    },
   ]
 
   constructor() { }

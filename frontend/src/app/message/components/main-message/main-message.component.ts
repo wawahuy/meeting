@@ -7,6 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainMessageComponent implements OnInit {
 
+  userConnect = {
+    id: 2,
+    username: "Heyday",
+    listMessage: [],
+    status: false,
+    lastActivity: "16:00 12/05/2021"
+  }
+
   constructor() { }
 
   ngOnInit(): void {
