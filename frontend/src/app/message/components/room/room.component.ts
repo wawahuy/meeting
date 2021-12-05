@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/_services/auth.service';
 
 @Component({
   selector: 'app-room',
@@ -153,9 +155,17 @@ export class RoomComponent implements OnInit {
     },
   ]
 
-  constructor() { }
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
+  }
+
+  handleLogout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 
 }

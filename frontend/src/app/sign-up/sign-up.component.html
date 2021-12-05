@@ -46,6 +46,12 @@
         >
           Confirm Password required
         </span>
+        <span
+          class="text-danger"
+          *ngIf="hasErrorConfirmPassword"
+        >
+          Confirm Password not matched
+        </span>
       </div>
       <input
         class="
@@ -157,6 +163,8 @@
             tw-text-green-200
             hover:tw-bg-green-200 hover:tw-text-white hover:tw-shadow-3xl
           "
+          [disabled]="form.invalid"
+          (click)="submitSignUp()"
         >
           Sign Up
         </button>

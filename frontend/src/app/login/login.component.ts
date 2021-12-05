@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { AuthService } from '../_services/auth.service';
@@ -19,8 +20,10 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private notifierService: NotifierService
+    private notifierService: NotifierService,
+    private titleService: Title
   ) {
+    this.titleService.setTitle("Meet - Login");
     if (this.authService.currentUserValue) {
       this.router.navigate(['/']);
     }
