@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ESignUpFormField } from './model';
+import { Router } from '@angular/router';
+import { AuthService } from '../_services/auth.service';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-sign-up',
@@ -16,7 +19,10 @@ export class SignUpComponent implements OnInit {
   readonly ESignUpFormField = ESignUpFormField;
 
   constructor(
-    private formBuilder: FormBuilder
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private notifierService: NotifierService
   ) {
     this.form = this.formBuilder.group({
       [ESignUpFormField.Username]: [null, Validators.required],
@@ -28,11 +34,6 @@ export class SignUpComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  submitSignUp() {
-    const username = this.form.value.username
-    alert("Sign Up "+ username)
-  }
-
   isControlError(field: ESignUpFormField, type: string) {
     const control = this.form.controls[field];
     if (control.invalid && (control.touched || control.dirty)) {
@@ -41,5 +42,17 @@ export class SignUpComponent implements OnInit {
       }
     }
     return false;
+  }
+  async submitSignUp() {
+    const values = this.form.value;
+    if (values.password === values.confirmPassword){
+      await this.authService.register(values.username, values.password)
+        .then(res => {
+          this.router.navigate(['/login']);
+        })
+        .catch(err => {
+          this.notifierService.notify('error', err?.error?.message || 'Unknown Error')
+        })
+    }
   }
 }
