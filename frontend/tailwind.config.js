@@ -34,6 +34,8 @@ module.exports = {
     colors: {
       ...defaultColors,
       shark: "#242526",
+      grayInput: "#1f2937",
+      textMain: "#d1d5db",
     },
   },
   variants: {

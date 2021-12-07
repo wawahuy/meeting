@@ -1,4 +1,4 @@
-<div class="tw-h-[100vh] tw-m-auto">
+<div class="tw-h-[100vh] tw-m-auto tw-bg-shark">
   <h3 class="tw-py-10 tw-text-center tw-text-gray-500 tw-font-light">
     SIGN UP
   </h3>
@@ -46,18 +46,15 @@
         >
           Confirm Password required
         </span>
-        <span
-          class="text-danger"
-          *ngIf="hasErrorConfirmPassword"
-        >
+        <span class="text-danger" *ngIf="hasErrorConfirmPassword">
           Confirm Password not matched
         </span>
       </div>
       <input
         class="
-          tw-rounded-lg tw-w-auto
+          tw-rounded-lg tw-w-auto tw-bg-grayInput
           sm:tw-w-full
-          tw-relative tw-border-gray-200
+          tw-relative tw-border-gray-200 tw-text-gray-300
         "
         type="text"
         placeholder="Username"
@@ -66,9 +63,9 @@
       />
       <input
         class="
-          tw-rounded-lg tw-w-auto
+          tw-rounded-lg tw-w-auto tw-bg-grayInput
           sm:tw-w-full
-          tw-relative tw-border-gray-200
+          tw-relative tw-border-gray-200 tw-text-gray-300
         "
         type="password"
         placeholder="Password"
@@ -76,9 +73,9 @@
       />
       <input
         class="
-          tw-rounded-lg tw-w-auto
+          tw-rounded-lg tw-w-auto tw-bg-grayInput
           sm:tw-w-full
-          tw-relative tw-border-gray-200
+          tw-relative tw-border-gray-200 tw-text-gray-300
         "
         type="password"
         placeholder="Confirm password"
