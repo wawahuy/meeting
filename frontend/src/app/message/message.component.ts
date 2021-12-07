@@ -8,6 +8,8 @@ import { Title } from '@angular/platform-browser';
 })
 export class MessageComponent implements OnInit {
 
+  isLoading = true
+
   constructor(
     private titleService: Title
   ) {
@@ -15,6 +17,13 @@ export class MessageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.setLoading();
+  }
+
+  setLoading() {
+    setTimeout(()=>{
+      this.isLoading = false;
+    }, 2000)
   }
 
 }

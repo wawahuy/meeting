@@ -12,8 +12,6 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./sign-up.component.scss']
 })
 export class SignUpComponent implements OnInit {
-  // username: string;
-  // password: string;
 
   form: FormGroup;
 
