@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/_services/auth.service';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 @Component({
   selector: 'app-room',
   templateUrl: './room.component.html',
   styleUrls: ['./room.component.scss']
 })
+
 export class RoomComponent implements OnInit {
 
   listUserConnect = [
@@ -15,11 +17,11 @@ export class RoomComponent implements OnInit {
       listMessage: [
         {
           id: 1,
-          content: 'asd'
+          content: 'Em sẽ cố gắng hết sức anh ơi'
         }
       ],
       status: true,
-      avatarUrl: ""
+      avatarUrl: "../../../../../assets/images/huy.jpg"
     },
     {
       username: "Heyday",
@@ -30,7 +32,7 @@ export class RoomComponent implements OnInit {
         }
       ],
       status: false,
-      avatarUrl: ""
+      avatarUrl: "../../../../../assets/images/thinh.jpg"
     },
     {
       username: "Thien",
@@ -41,7 +43,7 @@ export class RoomComponent implements OnInit {
         }
       ],
       status: false,
-      avatarUrl: ""
+      avatarUrl: "../../../../../assets/images/thien.jpg"
     },
     {
       username: "Thien",
@@ -52,7 +54,7 @@ export class RoomComponent implements OnInit {
         }
       ],
       status: false,
-      avatarUrl: ""
+      avatarUrl: "../../../../../assets/images/thien.jpg"
     },
     {
       username: "Thien",
@@ -63,7 +65,7 @@ export class RoomComponent implements OnInit {
         }
       ],
       status: false,
-      avatarUrl: ""
+      avatarUrl: "../../../../../assets/images/thien.jpg"
     },
     {
       username: "Thien",
@@ -74,7 +76,7 @@ export class RoomComponent implements OnInit {
         }
       ],
       status: false,
-      avatarUrl: ""
+      avatarUrl: "../../../../../assets/images/thien.jpg"
     },
     {
       username: "Thien",
@@ -85,7 +87,7 @@ export class RoomComponent implements OnInit {
         }
       ],
       status: false,
-      avatarUrl: ""
+      avatarUrl: "../../../../../assets/images/thien.jpg"
     },
     {
       username: "Thien",
@@ -96,7 +98,7 @@ export class RoomComponent implements OnInit {
         }
       ],
       status: false,
-      avatarUrl: ""
+      avatarUrl: "../../../../../assets/images/thien.jpg"
     },
     {
       username: "Thien",
@@ -107,7 +109,7 @@ export class RoomComponent implements OnInit {
         }
       ],
       status: false,
-      avatarUrl: ""
+      avatarUrl: "../../../../../assets/images/thien.jpg"
     },
     {
       username: "Thien",
@@ -118,7 +120,7 @@ export class RoomComponent implements OnInit {
         }
       ],
       status: false,
-      avatarUrl: ""
+      avatarUrl: "../../../../../assets/images/thien.jpg"
     },
     {
       username: "Thien",
@@ -129,7 +131,7 @@ export class RoomComponent implements OnInit {
         }
       ],
       status: false,
-      avatarUrl: ""
+      avatarUrl: "../../../../../assets/images/thien.jpg"
     },
     {
       username: "Thien",
@@ -140,7 +142,7 @@ export class RoomComponent implements OnInit {
         }
       ],
       status: false,
-      avatarUrl: ""
+      avatarUrl: "../../../../../assets/images/thien.jpg"
     },
     {
       username: "Thien",
@@ -151,7 +153,7 @@ export class RoomComponent implements OnInit {
         }
       ],
       status: false,
-      avatarUrl: ""
+      avatarUrl: "../../../../../assets/images/thien.jpg"
     },
   ]
 

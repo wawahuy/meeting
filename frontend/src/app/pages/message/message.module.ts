@@ -5,6 +5,7 @@ import { MessageRoutingModule } from './message-routing.module';
 import { MessageComponent } from './message.component';
 import { MessageComponentsModule } from './components/components.module';
 import { ComponentsModule } from 'src/app/_components/components.module';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { ComponentsModule } from 'src/app/_components/components.module';
     CommonModule,
     MessageRoutingModule,
     MessageComponentsModule,
-    ComponentsModule
+    ComponentsModule,
+    TooltipModule.forRoot()
   ]
 })
 export class MessageModule { }

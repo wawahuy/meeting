@@ -1,4 +1,4 @@
-<div class="tw-h-[100vh] tw-m-auto">
+<div class="tw-h-[100vh] tw-m-auto tw-bg-shark">
   <h3 class="tw-py-10 tw-text-center tw-text-gray-500 tw-font-light">
     SIGN UP
   </h3>
@@ -46,18 +46,15 @@
         >
           Confirm Password required
         </span>
-        <span
-          class="text-danger"
-          *ngIf="hasErrorConfirmPassword"
-        >
+        <span class="text-danger" *ngIf="hasErrorConfirmPassword">
           Confirm Password not matched
         </span>
       </div>
       <input
         class="
-          tw-rounded-lg tw-w-auto
+          tw-rounded-lg tw-w-auto tw-bg-grayInput
           sm:tw-w-full
-          tw-relative tw-border-gray-200
+          tw-relative tw-border-gray-200 tw-text-gray-300
         "
         type="text"
         placeholder="Username"
@@ -66,9 +63,9 @@
       />
       <input
         class="
-          tw-rounded-lg tw-w-auto
+          tw-rounded-lg tw-w-auto tw-bg-grayInput
           sm:tw-w-full
-          tw-relative tw-border-gray-200
+          tw-relative tw-border-gray-200 tw-text-gray-300
         "
         type="password"
         placeholder="Password"
@@ -76,9 +73,9 @@
       />
       <input
         class="
-          tw-rounded-lg tw-w-auto
+          tw-rounded-lg tw-w-auto tw-bg-grayInput
           sm:tw-w-full
-          tw-relative tw-border-gray-200
+          tw-relative tw-border-gray-200 tw-text-gray-300
         "
         type="password"
         placeholder="Confirm password"
@@ -104,48 +101,20 @@
         >
           <span class="tw-mr-2">
             <svg
-              width="11px"
-              height="20px"
-              viewBox="0 0 11 20"
-              version="1.1"
               xmlns="http://www.w3.org/2000/svg"
               xmlns:xlink="http://www.w3.org/1999/xlink"
+              aria-hidden="true"
+              role="img"
+              class="iconify iconify--mdi"
+              width="20"
+              height="20"
+              preserveAspectRatio="xMidYMid meet"
+              viewBox="0 0 24 24"
             >
-              <g
-                id="Icons"
-                stroke="none"
-                stroke-width="1"
-                fill="none"
-                fill-rule="evenodd"
-              >
-                <g
-                  id="Rounded"
-                  transform="translate(-548.000000, -3434.000000)"
-                >
-                  <g
-                    id="Navigation"
-                    transform="translate(100.000000, 3378.000000)"
-                  >
-                    <g
-                      id="-Round-/-Navigation-/-arrow_back_ios"
-                      transform="translate(442.000000, 54.000000)"
-                    >
-                      <g>
-                        <polygon
-                          id="Path"
-                          opacity="0.87"
-                          points="0 0 24 0 24 24 0 24"
-                        ></polygon>
-                        <path
-                          d="M16.62,2.99 C16.13,2.5 15.34,2.5 14.85,2.99 L6.54,11.3 C6.15,11.69 6.15,12.32 6.54,12.71 L14.85,21.02 C15.34,21.51 16.13,21.51 16.62,21.02 C17.11,20.53 17.11,19.74 16.62,19.25 L9.38,12 L16.63,4.75 C17.11,4.27 17.11,3.47 16.62,2.99 Z"
-                          id="🔹-Icon-Color"
-                          fill="#fafafa"
-                        ></path>
-                      </g>
-                    </g>
-                  </g>
-                </g>
-              </g>
+              <path
+                d="M20 13.5a6.5 6.5 0 0 1-6.5 6.5H6v-2h7.5c2.5 0 4.5-2 4.5-4.5S16 9 13.5 9H7.83l3.08 3.09L9.5 13.5L4 8l5.5-5.5l1.42 1.41L7.83 7h5.67a6.5 6.5 0 0 1 6.5 6.5z"
+                fill="currentColor"
+              ></path>
             </svg>
           </span>
           Go to login</span

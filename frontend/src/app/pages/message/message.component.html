@@ -1,0 +1,60 @@
+<div class="tw-flex tw-h-[100vh] tw-bg-shark">
+  <div
+    *ngIf="isLoading; else elseElement"
+    class="tw-m-auto tw-text-white tw-text-center"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      aria-hidden="true"
+      role="img"
+      class="iconify iconify--eos-icons"
+      width="100"
+      height="100"
+      preserveAspectRatio="xMidYMid meet"
+      viewBox="0 0 24 24"
+    >
+      <circle cx="18" cy="12" r="0" fill="currentColor">
+        <animate
+          attributeName="r"
+          values="0;2;0;0"
+          dur="1.5s"
+          repeatCount="indefinite"
+          begin=".67"
+          keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+          calcMode="spline"
+        ></animate>
+      </circle>
+      <circle cx="12" cy="12" r="0" fill="currentColor">
+        <animate
+          attributeName="r"
+          values="0;2;0;0"
+          dur="1.5s"
+          repeatCount="indefinite"
+          begin=".33"
+          keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+          calcMode="spline"
+        ></animate>
+      </circle>
+      <circle cx="6" cy="12" r="0" fill="currentColor">
+        <animate
+          attributeName="r"
+          values="0;2;0;0"
+          dur="1.5s"
+          repeatCount="indefinite"
+          begin="0"
+          keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+          calcMode="spline"
+        ></animate>
+      </circle>
+    </svg>
+  </div>
+  <ng-template #elseElement>
+    <div class="tw-w-1/3 tw-bg-shark tw-border-r tw-border-gray-700">
+      <app-room></app-room>
+    </div>
+    <div class="tw-flex tw-flex-col tw-flex-1 tw-bg-shark tw-text-white">
+      <app-main-message></app-main-message>
+    </div>
+  </ng-template>
+</div>

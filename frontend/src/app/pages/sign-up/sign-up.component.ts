@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ESignUpFormField } from './model';
 import { Router } from '@angular/router';
-import { AuthService } from '../_services/auth.service';
+import { AuthService } from '../../_services/auth.service';
 import { NotifierService } from 'angular-notifier';
 import { Title } from '@angular/platform-browser';
 
@@ -12,8 +12,6 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./sign-up.component.scss']
 })
 export class SignUpComponent implements OnInit {
-  // username: string;
-  // password: string;
 
   form: FormGroup;
 
