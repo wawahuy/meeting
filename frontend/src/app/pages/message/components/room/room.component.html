@@ -10,8 +10,8 @@
           tw-rounded-full tw-bg-gray-600 tw-w-10 tw-h-10
           hover:tw-bg-gray-500
         "
-        tooltip="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
-        placement="top"
+        tooltip="New chat"
+        placement="bottom"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -71,6 +71,7 @@
           tw-text-3.25
           hover:tw-bg-red-400
         "
+        tooltip="Logout"
         (click)="handleLogout()"
       >
         <svg
@@ -155,7 +156,7 @@
     <div
       *ngIf="!item.status"
       class="tw-m-auto tw-rounded-full tw-bg-gray-700 tw-w-2 tw-h-2"
-      tooltip="'Online 4 minutes ago'"
+      tooltip="Online 4 minutes ago"
     ></div>
   </div>
 </div>

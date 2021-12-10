@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RoomComponent } from './room/room.component';
 import { MainMessageComponent } from './main-message/main-message.component';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 
 
@@ -15,7 +16,8 @@ import { MainMessageComponent } from './main-message/main-message.component';
     MainMessageComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    TooltipModule.forRoot()
   ]
 })
 export class ComponentsModule { }
