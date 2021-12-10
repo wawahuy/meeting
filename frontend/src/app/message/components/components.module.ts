@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RoomComponent } from './room/room.component';
 import { MainMessageComponent } from './main-message/main-message.component';
-
+import { ComponentsModule } from 'src/app/_components/components.module';
 
 
 @NgModule({
@@ -15,7 +15,8 @@ import { MainMessageComponent } from './main-message/main-message.component';
     MainMessageComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    ComponentsModule
   ]
 })
-export class ComponentsModule { }
+export class MessageComponentsModule { }
