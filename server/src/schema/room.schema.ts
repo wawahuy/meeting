@@ -10,7 +10,8 @@ export type RoomDocument = Room & Document;
 export class RoomUser {
   @Prop({ 
     type: MSchema.Types.ObjectId,
-    unique: true
+    index: true,
+    ref: User.name
   })
   user: any;
 

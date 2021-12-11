@@ -14,9 +14,16 @@ export class UserService {
     let match: FilterQuery<UserDocument> = {};
     if (search) {
       match = {
-        username: { 
-          $regex: '.*' + search + '.*' 
-        }
+        $or: [
+          {
+            username: search 
+          },
+          {
+            name: { 
+              $regex: '.*' + search + '.*' 
+            }
+          }
+        ]
       }
     }
 

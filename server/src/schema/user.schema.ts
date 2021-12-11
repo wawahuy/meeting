@@ -16,8 +16,29 @@ export class User {
   })
   username: string;
 
-  @Prop({ type: MSchema.Types.String })
+  @Prop({ 
+    type: MSchema.Types.String,
+    required: true,
+  })
   password: string;
+
+  @Prop({ type: MSchema.Types.String })
+  name: string;
+
+  @Prop({ type: MSchema.Types.String })
+  avatar: string;
+
+  @Prop({ 
+    type: MSchema.Types.String,
+    index: true
+  })
+  socketId: string;
+
+  @Prop({ 
+    type: MSchema.Types.Date,
+    index: true
+  })
+  socketDate: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
