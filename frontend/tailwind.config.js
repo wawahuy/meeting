@@ -1,6 +1,6 @@
 const { guessProductionMode } = require("@ngneat/tailwind");
 const { colors: defaultColors } = require("tailwindcss/defaultTheme");
-const { color } = require("./src/assets/colors");
+const color = require("./src/assets/colors");
 
 process.env.TAILWIND_MODE = guessProductionMode() ? "build" : "watch";
 
