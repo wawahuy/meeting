@@ -37,6 +37,7 @@ export class SignUpComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
+      [ESignUpFormField.Name]: [null, Validators.required],
       [ESignUpFormField.Username]: [null, Validators.required],
       [ESignUpFormField.Password]: [null, Validators.required],
       [ESignUpFormField.ConfirmPassword]: [null, [Validators.required, this.passwordConfirming]]
@@ -61,12 +62,40 @@ export class SignUpComponent implements OnInit {
 
   async submitSignUp() {
     const values = this.form.value;
-    await this.authService.register(values.username, values.password)
+    await this.authService.register(values.name, values.username, values.password)
       .then(res => {
         this.router.navigate(['/login']);
       })
       .catch(err => {
         this.notifierService.notify('error', err?.error?.message || 'Unknown Error')
       })
+  }
+
+  isFormError() {
+    return (
+      this.isControlError(ESignUpFormField.Name, 'required') ||
+      this.isControlError(ESignUpFormField.Username, 'required') ||
+      this.isControlError(ESignUpFormField.Password, 'required') ||
+      this.isControlError(ESignUpFormField.ConfirmPassword, 'required') ||
+      this.hasErrorConfirmPassword
+    );
+  }
+
+  getMessageError() {
+    if (this.isControlError(ESignUpFormField.Username, 'required')) {
+      return "Name required";
+    }
+    if (this.isControlError(ESignUpFormField.Username, 'required')) {
+      return "Username required";
+    }
+    if (this.isControlError(ESignUpFormField.Password, 'required')) {
+      return "Password required";
+    }
+    if (this.isControlError(ESignUpFormField.ConfirmPassword, 'required')) {
+      return "ConfirmPassword required";
+    }
+    if (this.hasErrorConfirmPassword) {
+      return "Confirm Password not matched";
+    }
   }
 }

@@ -16,7 +16,7 @@ export class AuthService {
   }
 
   async signIn(dto: SignInDto) {
-    const user = await this.userModel.findOne({ username: dto.username })
+    const user = await this.userModel.findOne({ username: dto.username.toLowerCase() })
 
     if (!user) {
       return new UnauthorizedException("User not exits");
@@ -43,7 +43,8 @@ export class AuthService {
     }
 
     const createUser = new this.userModel({
-      username: dto.username,
+      name: dto.name,
+      username: dto.username.toLowerCase(),
       password: bcrypt.hashSync(dto.password, 12)
     });
     

@@ -40,9 +40,9 @@ export class AuthService {
       .toPromise();
   }
 
-  register(username: string, password: string) {
+  register(name: string, username: string, password: string) {
     const url = environment.apiEndpoint + 'auth/signUp';
-    return this.http.post(url, { username, password }, httpOptions)
+    return this.http.post(url, { name, username, password }, httpOptions)
       .toPromise();
   }
 

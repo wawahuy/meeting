@@ -30,26 +30,22 @@
       <div class="tw-absolute tw-top-4">
         <span
           class="text-danger tw-mr-1"
-          *ngIf="isControlError(ESignUpFormField.Username, 'required')"
+          *ngIf="isFormError()"
         >
-          Username required
-        </span>
-        <span
-          class="text-danger"
-          *ngIf="isControlError(ESignUpFormField.Password, 'required')"
-        >
-          Password required
-        </span>
-        <span
-          class="text-danger"
-          *ngIf="isControlError(ESignUpFormField.ConfirmPassword, 'required')"
-        >
-          Confirm Password required
-        </span>
-        <span class="text-danger" *ngIf="hasErrorConfirmPassword">
-          Confirm Password not matched
+          {{getMessageError()}}
         </span>
       </div>
+      <input
+        class="
+          tw-rounded-lg tw-w-auto tw-bg-grayInput
+          sm:tw-w-full
+          tw-relative tw-border-gray-200 tw-text-gray-300
+        "
+        type="text"
+        placeholder="Full name"
+        required="true"
+        [formControlName]="ESignUpFormField.Name"
+      />
       <input
         class="
           tw-rounded-lg tw-w-auto tw-bg-grayInput
