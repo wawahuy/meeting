@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  testWsEndpoint: 'wss://api-meet.zayuh.me/ws-test',
-  apiEndpoint: 'https://api-meet.zayuh.me/'
+  testWsEndpoint: 'wss://api.metmes.pw/ws-test',
+  apiEndpoint: 'https://api.metmes.pw/'
 };

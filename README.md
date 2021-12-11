@@ -2,15 +2,15 @@
 
 # Websocket + API Document
   - https://docs.google.com/spreadsheets/d/12Au0ux95-y_gViJR73qfSkf2MFNAmx-wu3w2fezQ2BA/edit?usp=sharing
-  - https://api-meet.zayuh.me/documentation
+  - https://api.metmes.pw/documentation
 
 # URL
-  - Web: https://meet.zayuh.me (24001)
-  - Api: https://api-meet.zayuh.me (24002)
-  - SocketIO: https://api-meet.zayuh.me/socket.io (24002)
-  - Websocket Test: wss://api-meet.zayuh.me/ws-test (24000)
+  - Web: https://metmes.pw (24001)
+  - Api: https://api.metmes.pw (24002)
+  - SocketIO: https://api.metmes.pw/socket.io (24002)
+  - Websocket Test: wss://api.metmes.pw/ws-test (24000)
 
 # Stun + Turn:
-  - stun:call.zayuh.me:25001
-  - turn:call.zayuh.me:25001
+  - stun:call.metmes.pw:25001
+  - turn:call.metmes.pw:25001
     + a_admin/a_admin_pwd, b_admin/b_admin_pwd

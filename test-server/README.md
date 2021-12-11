@@ -1,2 +1,2 @@
 # Server Test
-- Websocket: wss://api-meet.zayuh.me/ws-test
+- Websocket: wss://api.metmes.pw/ws-test

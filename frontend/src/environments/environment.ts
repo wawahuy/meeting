@@ -11,7 +11,7 @@
 export const environment = {
   production: false,
   testWsEndpoint: 'ws://localhost:24000',
-  apiEndpoint: 'https://api-meet.zayuh.me/'
+  apiEndpoint: 'https://api.metmes.pw/'
 };
 
 /*

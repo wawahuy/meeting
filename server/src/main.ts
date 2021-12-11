@@ -5,7 +5,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const whitelist = ['https://meet.zayuh.me', 'https://api-meet.zayuh.me', 'http://localhost:4200', 'http://localhost:3000'];
+  const whitelist = ['https://metmes.pw', 'https://api.metmes.pw', 'http://localhost:4200', 'http://localhost:3000'];
   app.enableCors({
     origin: function (origin, callback) {
       if (!origin || whitelist.indexOf(origin) !== -1) {

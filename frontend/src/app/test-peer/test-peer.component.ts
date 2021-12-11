@@ -61,12 +61,12 @@ export class TestPeerComponent implements OnInit, AfterViewInit {
     this.peerConnection = new RTCPeerConnection({
       iceServers:[
         // {
-        //   urls: 'stun:call.zayuh.me:25001'
+        //   urls: 'stun:call.metmes.pw:25001'
         // },
         {
           urls: [
-            'turn:call.zayuh.me:25001?transport=udp',
-            'turn:call.zayuh.me:25001?transport=tcp',
+            'turn:call.metmes.pw:25001?transport=udp',
+            'turn:call.metmes.pw:25001?transport=tcp',
           ],
           username: 'a_admin',
           credential: 'a_admin_pwd'

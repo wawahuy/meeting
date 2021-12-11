@@ -17,4 +17,4 @@ mv /etc/turnserver.conf /etc/turnserver.conf.original
 # apt-get install -y certbot
 # apt-get install -y python-certbot-nginx
 
-# certbot --nginx -d stun.call.zayuh.me -d turn.call.zayuh.me
+# certbot --nginx -d stun.call.metmes.pw -d turn.call.metmes.pw
