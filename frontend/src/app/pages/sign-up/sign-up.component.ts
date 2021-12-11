@@ -82,7 +82,7 @@ export class SignUpComponent implements OnInit {
   }
 
   getMessageError() {
-    if (this.isControlError(ESignUpFormField.Username, 'required')) {
+    if (this.isControlError(ESignUpFormField.Name, 'required')) {
       return "Name required";
     }
     if (this.isControlError(ESignUpFormField.Username, 'required')) {
