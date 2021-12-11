@@ -28,11 +28,8 @@
       class="tw-flex tw-flex-col tw-w-80 tw-items-center tw-m-auto tw-space-y-4"
     >
       <div class="tw-absolute tw-top-4">
-        <span
-          class="text-danger tw-mr-1"
-          *ngIf="isFormError()"
-        >
-          {{getMessageError()}}
+        <span class="text-danger tw-mr-1" *ngIf="isFormError()">
+          {{ getMessageError() }}
         </span>
       </div>
       <input
@@ -66,6 +63,7 @@
         type="password"
         placeholder="Password"
         [formControlName]="ESignUpFormField.Password"
+        autocomplete="new-password"
       />
       <input
         class="
