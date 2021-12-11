@@ -13,7 +13,7 @@ export class MessageComponent implements OnInit {
   constructor(
     private titleService: Title
   ) {
-    this.titleService.setTitle("Meet - Message")
+    this.titleService.setTitle("Metmes - Message")
   }
 
   ngOnInit(): void {

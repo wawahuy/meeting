@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
     private notifierService: NotifierService,
     private titleService: Title
   ) {
-    this.titleService.setTitle("Meet - Login");
+    this.titleService.setTitle("Metmes - Login");
     if (this.authService.currentUserValue) {
       this.router.navigate(['/']);
     }

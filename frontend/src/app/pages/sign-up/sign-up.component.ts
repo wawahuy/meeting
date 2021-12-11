@@ -32,7 +32,7 @@ export class SignUpComponent implements OnInit {
     private notifierService: NotifierService,
     private titleService: Title
   ) {
-    this.titleService.setTitle("Meet - Sign Up");
+    this.titleService.setTitle("Metmes - Sign Up");
   }
 
   ngOnInit() {
