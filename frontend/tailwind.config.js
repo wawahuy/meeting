@@ -21,9 +21,28 @@ module.exports = {
           },
           "100%": { opacity: 1, transform: "scale(1)" },
         },
+        bounceHorizontal: {
+          "0%, 100%": {
+            transform: "translateX(0)",
+            "animation-timing-function": "cubic-bezier(0.8, 0, 1, 1)",
+          },
+          "50%": {
+            transform: "translateX(25%)",
+            "animation-timing-function": "cubic-bezier(0, 0, 0.2, 1)",
+          },
+        },
+        fadeInTop: {
+          "0%": {
+            opacity: 0,
+            transform: "translateY(-20%)",
+          },
+          "100%": { opacity: 1, transform: "translateY(0)" },
+        },
       },
       animation: {
         bounceIn: "bounceIn 500ms",
+        bounceHorizontal: "bounceHorizontal 1s infinite",
+        fadeInTop: "fadeInTop 300ms",
       },
     },
     screens: {
