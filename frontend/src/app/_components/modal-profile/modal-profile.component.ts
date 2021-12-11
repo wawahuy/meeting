@@ -17,5 +17,8 @@ export class ModalProfileComponent implements OnInit {
   public show() {
     this.isShow = true;
   }
+  public hidden() {
+    this.isShow = false;
+  }
 
 }

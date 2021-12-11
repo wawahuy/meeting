@@ -1,9 +1,56 @@
-<div *ngIf="isShow" class="tw-absolute tw-inset-0">
-  <div class="tw-h-[100vh] tw-w-full tw-bg-gray-900 tw-bg-opacity-50"></div>
-  <div class="tw-flex-col tw-bg-white tw-m-auto">
-    <div class="tw-flex tw-p-4">
-      <div class="tw-flex-1">Modal</div>
-      <div>
+<div
+  *ngIf="isShow"
+  class="
+    tw-absolute
+    tw-flex
+    tw-inset-0
+    tw-h-[100vh]
+    tw-items-center
+    tw-transition
+    tw-animate-bounce
+    tw-duration-200
+  "
+>
+  <div
+    class="
+      tw-absolute tw-z-10 tw-h-[100vh] tw-w-full tw-bg-gray-900 tw-bg-opacity-70
+    "
+  ></div>
+  <div
+    class="
+      tw-relative
+      tw-z-20
+      tw-w-1/5
+      tw-flex-col
+      tw-bg-shark
+      tw-text-center
+      tw-text-textMain
+      tw-m-auto
+      tw-rounded-lg
+    "
+  >
+    <div class="tw-flex tw-p-4 tw-border-b tw-border-gray-300 tw-relative">
+      <div
+        class="tw-flex-1 tw-items-center tw-m-auto tw-text-lg tw-font-medium"
+      >
+        Profile
+      </div>
+      <div
+        class="
+          tw-rounded-full
+          tw-p-2
+          tw-cursor-pointer
+          tw-absolute
+          tw-top-0
+          tw-right-0
+          tw-mr-2
+          tw-mt-2
+          tw-transition
+          tw-duration-200
+          hover:tw-bg-gray-600
+        "
+        (click)="isShow = false"
+      >
         <span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -11,19 +58,28 @@
             aria-hidden="true"
             role="img"
             class="iconify iconify--mdi tw-m-auto"
-            width="32"
-            height="32"
+            width="20"
+            height="20"
             preserveAspectRatio="xMidYMid meet"
             viewBox="0 0 24 24"
           >
             <path
               d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41z"
-              fill="currentColor"
+              fill="#eeeeee"
             ></path>
           </svg>
         </span>
       </div>
     </div>
-    <div>content</div>
+    <div class="tw-p-4">
+      <div class="tw-flex tw-items-center tw-py-4">
+        <div
+          class="tw-rounded-full tw-bg-gray-700 tw-w-44 tw-h-44 tw-m-auto"
+        ></div>
+      </div>
+      <div>
+        <div>Username</div>
+      </div>
+    </div>
   </div>
 </div>
