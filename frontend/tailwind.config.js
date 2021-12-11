@@ -12,7 +12,20 @@ module.exports = {
   },
   darkMode: "class", // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      keyframes: {
+        bounceIn: {
+          "0%": {
+            opacity: 0,
+            transform: "scale(0)",
+          },
+          "100%": { opacity: 1, transform: "scale(1)" },
+        },
+      },
+      animation: {
+        bounceIn: "bounceIn 500ms",
+      },
+    },
     screens: {
       xs: "376px",
       sm: "640px",
