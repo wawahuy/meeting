@@ -16,7 +16,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     MessageRoutingModule,
     MessageComponentsModule,
     ComponentsModule,
-    TooltipModule.forRoot()
+    TooltipModule.forRoot(),
   ]
 })
 export class MessageModule { }

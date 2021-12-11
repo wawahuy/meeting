@@ -143,6 +143,7 @@
       tw-transition
       hover:tw-bg-gray-900
     "
+    [ngClass]="item.id == 1 ? 'tw-bg-gray-900' : ''"
   >
     <div
       class="tw-rounded-full tw-bg-gray-600 tw-w-16 tw-h-16 tw-overflow-hidden"

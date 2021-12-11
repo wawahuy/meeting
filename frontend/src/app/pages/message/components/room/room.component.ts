@@ -13,6 +13,7 @@ export class RoomComponent implements OnInit {
 
   listUserConnect = [
     {
+      id: 1,
       username: "GiaHuy",
       listMessage: [
         {

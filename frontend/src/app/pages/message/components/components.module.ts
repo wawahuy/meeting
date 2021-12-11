@@ -4,6 +4,7 @@ import { RoomComponent } from './room/room.component';
 import { MainMessageComponent } from './main-message/main-message.component';
 import { ComponentsModule } from 'src/app/_components/components.module';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { BsDropdownModule, BsDropdownConfig  } from 'ngx-bootstrap/dropdown'
 
 
 
@@ -19,7 +20,8 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
   imports: [
     CommonModule,
     ComponentsModule,
-    TooltipModule.forRoot()
-  ]
+    TooltipModule.forRoot(),
+    BsDropdownModule.forRoot()
+  ],
 })
 export class MessageComponentsModule { }

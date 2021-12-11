@@ -12,3 +12,12 @@ textarea:focus,
 input:focus {
     outline: none;
 }
+.dropdown-menu {
+    margin-top: 1rem;
+    color: #d1d5db;
+    background-color: #242526;
+    border: 1px solid gray;
+}
+.dropdown-item {
+    @apply tw-text-textMain hover:tw-bg-gray-700;
+}
