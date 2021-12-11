@@ -50,7 +50,8 @@ module.exports = {
       ...color,
       shark: "#242526",
       grayInput: "#1f2937",
-      textMain: "#d1d5db",
+      textMain300: "#d1d5db",
+      textGray200: "#dddfe1",
     },
   },
   variants: {

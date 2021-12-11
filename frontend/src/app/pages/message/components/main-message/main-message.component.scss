@@ -19,5 +19,5 @@ input:focus {
     border: 1px solid gray;
 }
 .dropdown-item {
-    @apply tw-text-textMain hover:tw-bg-gray-700;
+    @apply tw-text-textMain300 hover:tw-bg-gray-700;
 }
