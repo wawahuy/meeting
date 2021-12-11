@@ -7,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ModalProfileComponent implements OnInit {
 
+  isShow = false;
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  public show() {
+    this.isShow = true;
   }
 
 }
