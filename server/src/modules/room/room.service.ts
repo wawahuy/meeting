@@ -71,7 +71,7 @@ export class RoomService {
     return result?.[0];
   }
 
-  async findPage(search: string, page: number, size: number) {
+  async findPage(excludeUserId: string[], search: string, page: number, size: number) {
     let match: FilterQuery<RoomDocument> = {};
     if (search) {
       search = search.toLowerCase().trim();
@@ -84,22 +84,50 @@ export class RoomService {
             }
           },
           {
-            'users.user.name': {
-              $regex: '.*' + search + '.*',
-              $options: 'i'
-            }
-          },
-          {
-            'users.user.username': search
+            $and: [
+              {
+                $or: [
+                  { 
+                    name: { $exists: false }
+                  },
+                  {
+                    name: ''
+                  }
+                ]
+              },
+              {
+                $or: [
+                  {
+                    users: {
+                      $elemMatch: {
+                        'user._id': { $nin: excludeUserId.map(id => new Types.ObjectId(id.toString())) },
+                        'user.name': {
+                          $regex: '.*' + search + '.*',
+                          $options: 'i'
+                        }
+                      }
+                    }
+                  },
+                  {
+                    users: {
+                      $elemMatch: {
+                        'user._id': { $nin: excludeUserId.map(id => new Types.ObjectId(id.toString())) },
+                        'user.username': {
+                          $regex: '^' + search + '$',
+                          $options: 'i'
+                        }
+                      }
+                    }
+                  }
+                ]  
+              }
+            ]
           }
         ]
       }
     }
     return await this.roomModel
       .aggregate([
-        {
-          $match: match
-        },
         {
           $unwind: {
             path: "$users",
@@ -132,6 +160,9 @@ export class RoomService {
               }
             }
           }
+        },
+        {
+          $match: match
         },
         {
           $project: {
