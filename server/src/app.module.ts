@@ -7,6 +7,7 @@ import { UserModule } from './modules/user/user.module';
 import { SchemaModule } from './schema/schema.module';
 import { SocketModule } from './socket/socket.module';
 import { RoomModule } from './modules/room/room.module';
+import { MessageModule } from './modules/message/message.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { RoomModule } from './modules/room/room.module';
     SchemaModule,
     SocketModule,
     RoomModule,
+    MessageModule,
   ],
   controllers: [AppController],
   providers: [AppService],

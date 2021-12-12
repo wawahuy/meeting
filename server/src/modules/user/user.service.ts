@@ -13,14 +13,16 @@ export class UserService {
   async findPage(search: string, page: number, size: number) {
     let match: FilterQuery<UserDocument> = {};
     if (search) {
+      search = search.toLowerCase().trim();
       match = {
         $or: [
           {
-            username: search 
+            username: search
           },
           {
             name: { 
-              $regex: '.*' + search + '.*' 
+              $regex: '.*' + search + '.*',
+              $options: 'i'
             }
           }
         ]
@@ -28,6 +30,7 @@ export class UserService {
     }
 
     return await this.userModel.find(match)
+      .select('-password -__v')
       .skip((page - 1) * size)
       .limit(size)
       .catch(e => null);

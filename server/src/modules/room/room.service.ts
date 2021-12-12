@@ -66,16 +66,19 @@ export class RoomService {
   async findPage(search: string, page: number, size: number) {
     let match: FilterQuery<RoomDocument> = {};
     if (search) {
+      search = search.toLowerCase().trim();
       match = {
         $or: [
           {
             name: { 
-              $regex: '.*' + search + '.*' 
+              $regex: '.*' + search + '.*',
+              $options: 'i'
             }
           },
           {
             'users.user.name': {
-              $regex: '.*' + search + '.*' 
+              $regex: '.*' + search + '.*',
+              $options: 'i'
             }
           },
           {
