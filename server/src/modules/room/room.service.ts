@@ -13,6 +13,15 @@ export class RoomService {
   ) {
   }
 
+  async getByRoomUserId(roomId: string, userId: string) {
+    return await this.roomModel
+      .findOne({
+        _id: new Types.ObjectId(roomId),
+        'users.user': new Types.ObjectId(userId)
+      })
+      .populate('users.user', '_id name username avatar socketId socketDate');
+  }
+
   async get(roomId: string) {
     return await this.roomModel
       .findOne({
@@ -23,9 +32,16 @@ export class RoomService {
 
   async getRoomByUserTwoMember(userHost: string, userRecv: string) {
     const match: FilterQuery<RoomDocument> = {
-      'users.user': {
-        $in: [new Types.ObjectId(userHost), new Types.ObjectId(userRecv)]
-      },
+      $or: [
+        {
+          'users.user.0': new Types.ObjectId(userHost),
+          'users.user.1': new Types.ObjectId(userRecv),
+        },
+        {
+          'users.user.1': new Types.ObjectId(userHost),
+          'users.user.0': new Types.ObjectId(userRecv),
+        },
+      ],
       users: { $size: 2 }
     }
     return await this.roomModel
@@ -71,7 +87,7 @@ export class RoomService {
     return result?.[0];
   }
 
-  async findPage(search: string, page: number, size: number) {
+  async findPage(excludeUserId: string[], search: string, page: number, size: number) {
     let match: FilterQuery<RoomDocument> = {};
     if (search) {
       search = search.toLowerCase().trim();
@@ -84,22 +100,32 @@ export class RoomService {
             }
           },
           {
-            'users.user.name': {
-              $regex: '.*' + search + '.*',
-              $options: 'i'
+            users: {
+              $elemMatch: {
+                'user._id': { $nin: excludeUserId.map(id => new Types.ObjectId(id.toString())) },
+                'user.name': {
+                  $regex: '.*' + search + '.*',
+                  $options: 'i'
+                }
+              }
             }
           },
           {
-            'users.user.username': search
+            users: {
+              $elemMatch: {
+                'user._id': { $nin: excludeUserId.map(id => new Types.ObjectId(id.toString())) },
+                'user.username': {
+                  $regex: '^' + search + '$',
+                  $options: 'i'
+                }
+              }
+            }
           }
         ]
       }
     }
     return await this.roomModel
       .aggregate([
-        {
-          $match: match
-        },
         {
           $unwind: {
             path: "$users",
@@ -132,6 +158,9 @@ export class RoomService {
               }
             }
           }
+        },
+        {
+          $match: match
         },
         {
           $project: {
