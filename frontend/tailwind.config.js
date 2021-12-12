@@ -38,11 +38,25 @@ module.exports = {
           },
           "100%": { opacity: 1, transform: "translateY(0)" },
         },
+        tiktok: {
+          "0%": {
+            transform: "scale(1)",
+          },
+          "50%": {
+            transform: "scale(2)",
+            transform: "translate(60%)",
+          },
+          "100%": {
+            transform: "scale(1)",
+            transform: "translate(0)",
+          },
+        },
       },
       animation: {
         bounceIn: "bounceIn 500ms",
         bounceHorizontal: "bounceHorizontal 1s infinite",
         fadeInTop: "fadeInTop 300ms",
+        tiktok: "tiktok 1s infinite",
       },
     },
     screens: {
