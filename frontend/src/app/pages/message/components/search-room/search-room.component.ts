@@ -1,3 +1,4 @@
+import { RoomService } from './../../../../_services/room.service';
 import { NotifierModule, NotifierService } from 'angular-notifier';
 import { UserService } from './../../../../_services/user.service';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
@@ -19,13 +20,12 @@ export class SearchRoomComponent implements OnInit, OnChanges {
   roomData: Room[];
   isLoading = true;
 
-  constructor(private userService: UserService, private notifierService: NotifierService) { }
+  constructor(private userService: UserService, private notifierService: NotifierService, private roomService: RoomService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     const { searchString } = changes;
     
     this.isLoading = true;
-    this.roomData = [];
     if (searchString.previousValue !== searchString.currentValue && searchString.currentValue) {
       setTimeout(()=>{
         this.loadData()
@@ -37,6 +37,12 @@ export class SearchRoomComponent implements OnInit, OnChanges {
   }
   loadData = _.debounce( async () => {
     this.userData = await this.userService.search(this.searchString)
+    .catch(err => { 
+      this.notifierService.notify('error', err?.error?.message || 'Unknown Error'); 
+      return null
+    })
+    
+    this.roomData = await this.roomService.search(this.searchString)
     .catch(err => { 
       this.notifierService.notify('error', err?.error?.message || 'Unknown Error'); 
       return null
