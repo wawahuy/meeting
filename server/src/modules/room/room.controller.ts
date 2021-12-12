@@ -79,7 +79,7 @@ export class RoomController {
     @Query('page') page: number = 1,
     @Query('size') size: number = 10,
   ) {
-    let r = await this.roomService.findPage([user._id], search, page, size);
+    let r = await this.roomService.findPage(user._id, search, page, size);
 
     let result = [];
     for(let item of r) {
