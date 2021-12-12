@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { FilterQuery, Model } from 'mongoose';
+import { FilterQuery, Model, Types } from 'mongoose';
 import { User, UserDocument } from 'src/schema/user.schema';
 
 @Injectable()
@@ -10,11 +10,16 @@ export class UserService {
   ) {
   }
 
-  async findPage(search: string, page: number, size: number) {
-    let match: FilterQuery<UserDocument> = {};
+  async findPage(excludeUserId: string, search: string, page: number, size: number) {
+    let match: FilterQuery<UserDocument> = {
+      _id: {
+        $nin: [new Types.ObjectId(excludeUserId)]
+      }
+    };
     if (search) {
       search = search.toLowerCase().trim();
       match = {
+        ...match,
         $or: [
           {
             username: search
