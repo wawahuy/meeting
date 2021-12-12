@@ -1,0 +1,47 @@
+import { NotifierModule, NotifierService } from 'angular-notifier';
+import { UserService } from './../../../../_services/user.service';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { User } from 'src/app/_models/user';
+import * as _ from 'lodash';
+import { Room } from 'src/app/_models/room';
+
+
+
+@Component({
+  selector: 'app-search-room',
+  templateUrl: './search-room.component.html',
+  styleUrls: ['./search-room.component.scss']
+})
+export class SearchRoomComponent implements OnInit, OnChanges {
+  @Input() searchString;
+
+  userData: User[];
+  roomData: Room[];
+  isLoading = true;
+
+  constructor(private userService: UserService, private notifierService: NotifierService) { }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const { searchString } = changes;
+    
+    this.isLoading = true;
+    this.roomData = [];
+    if (searchString.previousValue !== searchString.currentValue && searchString.currentValue) {
+      setTimeout(()=>{
+        this.loadData()
+      })
+    }
+  }
+
+  ngOnInit(): void {
+  }
+  loadData = _.debounce( async () => {
+    this.userData = await this.userService.search(this.searchString)
+    .catch(err => { 
+      this.notifierService.notify('error', err?.error?.message || 'Unknown Error'); 
+      return null
+    })
+      this.isLoading = false;
+  }, 250)
+
+}
