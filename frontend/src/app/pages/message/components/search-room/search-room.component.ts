@@ -47,6 +47,7 @@ export class SearchRoomComponent implements OnInit, OnChanges {
       this.notifierService.notify('error', err?.error?.message || 'Unknown Error'); 
       return null
     })
+    
       this.isLoading = false;
   }, 250)
 
