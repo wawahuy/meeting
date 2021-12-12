@@ -40,15 +40,41 @@ module.exports = {
         },
         tiktok: {
           "0%": {
+            transform: "scale(2)",
+            opacity: 1,
+            transform: "translateX(0)",
+          },
+          "25%": {
             transform: "scale(1)",
+            opacity: 0,
+            transform: "translate(1rem, -1rem)",
           },
           "50%": {
-            transform: "scale(2)",
-            transform: "translate(60%)",
+            transform: "scale(1)",
+            opacity: 0,
+            transform: "translate(-1rem, 1rem)",
+          },
+          "51%": {
+            transform: "scale(1)",
+            opacity: 1,
+            transform: "translate(-1rem, 1rem)",
           },
           "100%": {
             transform: "scale(1)",
+            opacity: 1,
             transform: "translate(0)",
+          },
+        },
+        tiktokIn: {
+          "0%": {
+            transform: "scale(1)",
+            opacity: 0,
+            transform: "translate(-1rem, 1rem)",
+          },
+          "100%": {
+            transform: "scale(2)",
+            opacity: 1,
+            transform: "translateX(0)",
           },
         },
       },
@@ -56,7 +82,8 @@ module.exports = {
         bounceIn: "bounceIn 500ms",
         bounceHorizontal: "bounceHorizontal 1s infinite",
         fadeInTop: "fadeInTop 300ms",
-        tiktok: "tiktok 1s infinite",
+        tiktok: "tiktok 1s",
+        tiktokIn: "tiktokIn 1s",
       },
     },
     screens: {
