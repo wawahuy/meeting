@@ -84,44 +84,26 @@ export class RoomService {
             }
           },
           {
-            $and: [
-              {
-                $or: [
-                  { 
-                    name: { $exists: false }
-                  },
-                  {
-                    name: ''
-                  }
-                ]
-              },
-              {
-                $or: [
-                  {
-                    users: {
-                      $elemMatch: {
-                        'user._id': { $nin: excludeUserId.map(id => new Types.ObjectId(id.toString())) },
-                        'user.name': {
-                          $regex: '.*' + search + '.*',
-                          $options: 'i'
-                        }
-                      }
-                    }
-                  },
-                  {
-                    users: {
-                      $elemMatch: {
-                        'user._id': { $nin: excludeUserId.map(id => new Types.ObjectId(id.toString())) },
-                        'user.username': {
-                          $regex: '^' + search + '$',
-                          $options: 'i'
-                        }
-                      }
-                    }
-                  }
-                ]  
+            users: {
+              $elemMatch: {
+                'user._id': { $nin: excludeUserId.map(id => new Types.ObjectId(id.toString())) },
+                'user.name': {
+                  $regex: '.*' + search + '.*',
+                  $options: 'i'
+                }
               }
-            ]
+            }
+          },
+          {
+            users: {
+              $elemMatch: {
+                'user._id': { $nin: excludeUserId.map(id => new Types.ObjectId(id.toString())) },
+                'user.username': {
+                  $regex: '^' + search + '$',
+                  $options: 'i'
+                }
+              }
+            }
           }
         ]
       }
