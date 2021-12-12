@@ -40,7 +40,7 @@ export class RoomController {
     }
 
     res.status(status).json({
-      room,
+      roomDetail: room,
       messageLasted: null
     });
   }
@@ -63,7 +63,7 @@ export class RoomController {
     }
 
     res.status(status).json({
-      room,
+      roomDetail: room,
       messageLasted: null
     });
   }
@@ -83,7 +83,7 @@ export class RoomController {
     let result = [];
     for(let item of r) {
       result.push({
-        rom: item,
+        roomDetail: item,
         messageLasted: null
       })
     }
