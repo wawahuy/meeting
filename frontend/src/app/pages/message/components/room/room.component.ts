@@ -156,7 +156,8 @@ export class RoomComponent implements OnInit {
       status: false,
       avatarUrl: "../../../../../assets/images/thien.jpg"
     },
-  ]
+  ];
+  searchString = '';
 
   constructor(
     private router: Router,

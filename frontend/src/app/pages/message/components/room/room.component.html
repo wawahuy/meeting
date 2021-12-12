@@ -30,7 +30,7 @@
           ></path>
         </svg>
       </button>
-      <div class="btn-group" dropdown isAnimated="true" placement="bottom left">
+      <div class="btn-group" dropdown placement="bottom left">
         <button
           dropdownToggle
           class="
@@ -120,6 +120,7 @@
         tw-bg-gray-800
       "
       placeholder="Search"
+      [(ngModel)]="searchString"
     />
     <span class="tw-absolute tw-mt-2 tw-mr-4 tw-right-0">
       <svg
@@ -141,10 +142,12 @@
     </span>
   </div>
 </header>
-<div class="tw-flex-1 tw-h-[82vh] tw-overflow-y-scroll">
+<div *ngIf="!searchString" class="tw-flex-1 tw-h-[82vh] tw-overflow-y-scroll">
   <div
     *ngFor="let item of listUserConnect"
     class="
+      tw-border-b
+      tw-border-gray-500
       tw-flex
       tw-py-2
       tw-px-4
@@ -179,4 +182,7 @@
       tooltip="Online 4 minutes ago"
     ></div>
   </div>
+</div>
+<div *ngIf="!!searchString" class="tw-flex-1 tw-h-[82vh] tw-overflow-y-scroll">
+  <app-search-room [searchString]="searchString"></app-search-room>
 </div>
