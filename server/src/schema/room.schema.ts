@@ -17,6 +17,7 @@ export class RoomUser {
 
   @Prop({ 
     type: MSchema.Types.String,
+    index: true
   })
   nickName: string;
 }
@@ -30,6 +31,7 @@ const RoomUserSchema = SchemaFactory.createForClass(RoomUser);
 export class Room {
   @Prop({ 
     type: MSchema.Types.String,
+    index: true
   })
   name: string;
 

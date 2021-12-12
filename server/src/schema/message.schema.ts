@@ -3,6 +3,32 @@ import { Document, ObjectId, Schema as MSchema } from 'mongoose';
 import { Room } from './room.schema';
 import { User } from './user.schema';
 
+export enum StatusReceiverStatus {
+  Received = 1,
+  Watched = 2
+}
+
+@Schema({
+  _id: false
+})
+export class StatusReceiver {
+  @Prop({ 
+    type: MSchema.Types.ObjectId,
+    index: true,
+    ref: User.name
+  })
+  user: any;
+
+  @Prop({ 
+    type: MSchema.Types.Number,
+    required: true,
+    enum: Object.values(StatusReceiverStatus).filter(v => Number(v))
+  })
+  type: StatusReceiverStatus;
+}
+
+const StatusReceiverSchema = SchemaFactory.createForClass(StatusReceiver);
+
 export enum MessageType {
   Text = 1,
   Call = 2,
@@ -33,12 +59,8 @@ export class Message {
   })
   user: any;
 
-  // @Prop({ 
-  //   type: MSchema.Types.Subdocument,
-  //   required: true,
-  //   index: true,
-  // })
-  // statusReceiver: [];
+  @Prop({ type: [StatusReceiverSchema] })
+  statusReceiver: StatusReceiver[];
 
   @Prop({ 
     type: MSchema.Types.Number,

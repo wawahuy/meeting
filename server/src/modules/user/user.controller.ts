@@ -29,11 +29,12 @@ export class UserController {
   @ApiQuery({ name: 'size', required: false })
   async search(
     @Res() res: Response,
+    @GetUser() user: UserDocument,
     @Query('search') search: string,
     @Query('page') page: number = 1,
     @Query('size') size: number = 10,
   ) {
-    const result = await this.userService.findPage(search, page, size);
+    const result = await this.userService.findPage(user._id, search, page, size);
     if (result) {
       res.status(HttpStatus.OK).json(result);
     } else {

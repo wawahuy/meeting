@@ -5,7 +5,7 @@ import { RoomService } from './room.service';
 import { GetUser } from 'src/utils/get-user.decorator';
 import { UserDocument } from 'src/schema/user.schema';
 import { CreateRoomDto } from './dto/room.dto';
-import { Response } from 'express';
+import e, { Response } from 'express';
 
 @ApiTags('room')
 @ApiBearerAuth()
@@ -27,7 +27,7 @@ export class RoomController {
   ) {
     let room = await this.roomService.getRoomByUserTwoMember(user._id, userId);
     if (!room) {
-      room = await this.roomService.create(user._id, { users: [userId] })
+      room = await this.roomService.create(user._id, { users: [userId] });
     }
 
     let status = HttpStatus.OK;
@@ -35,6 +35,8 @@ export class RoomController {
       status = (<any>room).status;
       res.status(status).json(room);
       return;
+    } else {
+      room = await this.roomService.get(room._id);
     }
 
     res.status(status).json({
@@ -49,13 +51,15 @@ export class RoomController {
     @GetUser() user: UserDocument,
     @Body() dto: CreateRoomDto
   ){
-    const room = await this.roomService.create(user._id, dto);
+    let room = await this.roomService.create(user._id, dto);
 
     let status = HttpStatus.OK;
     if (room instanceof HttpException) {
       status = (<any>room).status;
       res.status(status).json(room);
       return;
+    } else {
+      room = await this.roomService.get(room._id);
     }
 
     res.status(status).json({

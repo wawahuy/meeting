@@ -22,7 +22,10 @@ export class User {
   })
   password: string;
 
-  @Prop({ type: MSchema.Types.String })
+  @Prop({ 
+    type: MSchema.Types.String,
+    index: true
+  })
   name: string;
 
   @Prop({ type: MSchema.Types.String })
