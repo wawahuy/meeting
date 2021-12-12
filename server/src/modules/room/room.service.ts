@@ -13,6 +13,14 @@ export class RoomService {
   ) {
   }
 
+  async get(roomId: string) {
+    return await this.roomModel
+      .findOne({
+        _id: new Types.ObjectId(roomId)
+      })
+      .populate('users.user', '_id name username avatar socketId socketDate');
+  }
+
   async getRoomByUserTwoMember(userHost: string, userRecv: string) {
     const match: FilterQuery<RoomDocument> = {
       'users.user': {
@@ -22,7 +30,7 @@ export class RoomService {
     }
     return await this.roomModel
       .findOne(match)
-      .populate('users.user', '_id name username socketId socketDate');
+      .populate('users.user', '_id name username avatar socketId socketDate');
   }
 
   async create(userHost: string, d: CreateRoomDto) {
@@ -90,15 +98,40 @@ export class RoomService {
     return await this.roomModel
       .aggregate([
         {
+          $match: match
+        },
+        {
+          $unwind: {
+            path: "$users",
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
           $lookup: {
             from: 'users',
             localField: 'users.user',
             foreignField: '_id',
-            as: 'users.user'
+            as: 'tmp'
           }
         },
         {
-          $match: match
+          $unwind: {
+            path: "$tmp",
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $group: {
+            _id: '$_id',
+            name: { $first: "$name" },
+            updatedAt: { $first: "$updatedAt" },
+            users: {
+              $push: {
+                nickName: "$users.nickName",
+                user: "$tmp"
+              }
+            }
+          }
         },
         {
           $project: {
@@ -107,6 +140,7 @@ export class RoomService {
             'users.user._id': 1,
             'users.user.name': 1,
             'users.user.username': 1,
+            'users.user.avatar': 1,
             'users.user.socketId': 1,
             'users.user.socketDate': 1,
             'updatedAt': 1,
