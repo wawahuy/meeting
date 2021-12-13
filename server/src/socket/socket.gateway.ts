@@ -4,7 +4,7 @@ import { Server, Socket } from 'socket.io';
 import { AuthService } from 'src/modules/auth/auth.service';
 import { UserService } from 'src/modules/user/user.service';
 
-@WebSocketGateway({ cors: { origin: ['http://localhost:4200', 'https://api.metmes.pw'] }})
+@WebSocketGateway({ cors: { origin: ['http://localhost:4200', 'https://metmes.pw'] }})
 export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 
   @WebSocketServer()
