@@ -87,7 +87,7 @@ export class RoomService {
     return result?.[0];
   }
 
-  async findPage(excludeUserId: string[], search: string, page: number, size: number) {
+  async findPage(userHost: string, search: string, page: number, size: number) {
     let match: FilterQuery<RoomDocument> = {};
     if (search) {
       search = search.toLowerCase().trim();
@@ -102,7 +102,7 @@ export class RoomService {
           {
             users: {
               $elemMatch: {
-                'user._id': { $nin: excludeUserId.map(id => new Types.ObjectId(id.toString())) },
+                'user._id': { $ne: new Types.ObjectId(userHost) },
                 'user.name': {
                   $regex: '.*' + search + '.*',
                   $options: 'i'
@@ -113,7 +113,7 @@ export class RoomService {
           {
             users: {
               $elemMatch: {
-                'user._id': { $nin: excludeUserId.map(id => new Types.ObjectId(id.toString())) },
+                'user._id': { $ne: new Types.ObjectId(userHost) },
                 'user.username': {
                   $regex: '^' + search + '$',
                   $options: 'i'
@@ -126,6 +126,11 @@ export class RoomService {
     }
     return await this.roomModel
       .aggregate([
+        {
+          $match: {
+            'users.user': new Types.ObjectId(userHost)
+          }
+        },
         {
           $unwind: {
             path: "$users",
