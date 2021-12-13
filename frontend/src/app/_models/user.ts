@@ -6,4 +6,6 @@ export class User {
   createdAt: Date;
   updatedAt: Date;
   token: string;
+  sockets: string[];
+  onlineLasted: Date;
 }

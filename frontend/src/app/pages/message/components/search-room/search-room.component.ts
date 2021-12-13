@@ -5,7 +5,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { User } from 'src/app/_models/user';
 import * as _ from 'lodash';
 import { Room } from 'src/app/_models/room';
-
+import { computeOnlineTime } from 'src/app/_helpers/func';
 
 
 @Component({
@@ -20,11 +20,15 @@ export class SearchRoomComponent implements OnInit, OnChanges {
   roomData: Room[];
   isLoading = true;
 
-  constructor(private userService: UserService, private notifierService: NotifierService, private roomService: RoomService) { }
+  constructor(
+    private userService: UserService,
+    private notifierService: NotifierService,
+    private roomService: RoomService
+  ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     const { searchString } = changes;
-    
+
     this.isLoading = true;
     if (searchString.previousValue !== searchString.currentValue && searchString.currentValue) {
       setTimeout(()=>{
@@ -35,20 +39,25 @@ export class SearchRoomComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
   }
+
   loadData = _.debounce( async () => {
     this.userData = await this.userService.search(this.searchString)
-    .catch(err => { 
-      this.notifierService.notify('error', err?.error?.message || 'Unknown Error'); 
+    .catch(err => {
+      this.notifierService.notify('error', err?.error?.message || 'Unknown Error');
       return null
     })
-    
+
     this.roomData = await this.roomService.search(this.searchString)
-    .catch(err => { 
-      this.notifierService.notify('error', err?.error?.message || 'Unknown Error'); 
+    .catch(err => {
+      this.notifierService.notify('error', err?.error?.message || 'Unknown Error');
       return null
     })
-    
+
       this.isLoading = false;
   }, 250)
+
+  getOnlineTimeByUser(user: User) {
+    return user.onlineLasted ? computeOnlineTime(user.onlineLasted) : '-';
+  }
 
 }
