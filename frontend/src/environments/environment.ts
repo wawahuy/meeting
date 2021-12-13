@@ -5,13 +5,15 @@
 // export const environment = {
 //   production: false,
 //   testWsEndpoint: 'ws://localhost:24000',
-//   apiEndpoint: 'http://localhost:3000/'
+//   apiEndpoint: 'http://localhost:3000/',
+//   ioEndpoint: 'http://localhost:3000/'
 // };
 
 export const environment = {
   production: false,
   testWsEndpoint: 'ws://localhost:24000',
-  apiEndpoint: 'https://api.metmes.pw/'
+  apiEndpoint: 'https://api.metmes.pw/',
+  ioEndpoint: 'https://api.metmes.pw/'
 };
 
 /*

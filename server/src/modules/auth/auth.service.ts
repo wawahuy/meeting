@@ -16,7 +16,7 @@ export class AuthService {
   }
 
   async signIn(dto: SignInDto) {
-    const user = await this.userModel.findOne({ username: dto.username.toLowerCase() })
+    const user = await this.userModel.findOne({ username: dto.username.toLowerCase().trim() })
 
     if (!user) {
       return new UnauthorizedException("User not exits");
@@ -36,7 +36,7 @@ export class AuthService {
   }
 
   async signUp(dto: SignUpDto) {
-    let user = await this.userModel.findOne({ username: dto.username })
+    let user = await this.userModel.findOne({ username: dto.username.trim() })
 
     if (user) {
       return new ConflictException("User exits");
@@ -44,7 +44,7 @@ export class AuthService {
 
     const createUser = new this.userModel({
       name: dto.name,
-      username: dto.username.toLowerCase(),
+      username: dto.username.toLowerCase().trim(),
       password: bcrypt.hashSync(dto.password, 12)
     });
     
@@ -66,5 +66,15 @@ export class AuthService {
       user,
       type
     })
+  }
+
+  verifyJwt(token: string) {
+    return this.jwtService.verify(
+      token,
+      {
+        ignoreExpiration: false,
+        secret: process.env.JWT_SECRET
+      }
+    )
   }
 }

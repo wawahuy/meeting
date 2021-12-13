@@ -11,60 +11,31 @@ export class MessageService {
   ) {
   }
 
-  async findPage(search: string, page: number, size: number) {
-    let match: FilterQuery<MessageDocument> = {};
+  async findPage(roomId: string, search: string, page: number, size: number) {
+    let match: FilterQuery<MessageDocument> = {
+      // room: new Ty
+    };
     if (search) {
+      search = search.toLowerCase().trim();
       match = {
         $or: [
           {
+            username: search
+          },
+          {
             name: { 
-              $regex: '.*' + search + '.*' 
+              $regex: '.*' + search + '.*',
+              $options: 'i'
             }
-          },
-          {
-            'users.user.name': {
-              $regex: '.*' + search + '.*' 
-            }
-          },
-          {
-            'users.user.username': search
           }
         ]
       }
     }
-    return await this.messageModel
-      .aggregate([
-        {
-          $lookup: {
-            from: 'users',
-            localField: 'users.user',
-            foreignField: '_id',
-            as: 'users.user'
-          }
-        },
-        {
-          $match: match
-        },
-        {
-          $project: {
-            _id: 1,
-            name: 1,
-            'users.user._id': 1,
-            'users.user.name': 1,
-            'users.user.username': 1,
-            'users.user.socketId': 1,
-            'users.user.socketDate': 1,
-            'updatedAt': 1,
-          }
-        },
-        {
-          $sort: {
-            updatedAt: -1
-          }
-        },
-        { $skip: (page - 1) * size },
-        { $limit: Number(size) }
-      ])
+
+    return await this.messageModel.find(match)
+      .select('-password -__v')
+      .skip((page - 1) * size)
+      .limit(size)
       .catch(e => null);
   }
 }

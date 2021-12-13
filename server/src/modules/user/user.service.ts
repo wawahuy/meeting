@@ -10,6 +10,10 @@ export class UserService {
   ) {
   }
 
+  async getByUsername(username: string): Promise<UserDocument> {
+    return await this.userModel.findOne({ username }).catch(e => null);
+  }
+
   async findPage(excludeUserId: string, search: string, page: number, size: number) {
     let match: FilterQuery<UserDocument> = {
       _id: {
@@ -22,7 +26,10 @@ export class UserService {
         ...match,
         $or: [
           {
-            username: search
+            username: { 
+              $regex: '.*' + search + '.*',
+              $options: 'i'
+            }
           },
           {
             name: { 
@@ -40,4 +47,31 @@ export class UserService {
       .limit(size)
       .catch(e => null);
   }
+
+  async pushSocketId(userId: string, socketId: string) {
+    return await this.userModel.updateOne(
+      {
+        userId: new Types.ObjectId(userId)
+      },
+      {
+        $push: {
+          sockets: socketId
+        }
+      }
+    )
+  }
+
+  async pullSocketId(userId: string, socketId: string) {
+    return await this.userModel.updateOne(
+      {
+        userId: new Types.ObjectId(userId)
+      },
+      {
+        $pull: {
+          sockets: socketId
+        }
+      }
+    )
+  }
+  
 }

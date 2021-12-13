@@ -1,27 +1,60 @@
-import { ConnectedSocket, MessageBody, OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import { ConnectedSocket, MessageBody, OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer, WsException } from '@nestjs/websockets';
+import * as moment from 'moment';
 import { Server, Socket } from 'socket.io';
+import { AuthService } from 'src/modules/auth/auth.service';
+import { UserService } from 'src/modules/user/user.service';
 
-@WebSocketGateway()
+@WebSocketGateway({ cors: { origin: ['http://localhost:4200', 'https://api.metmes.pw'] }})
 export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 
   @WebSocketServer()
   server: Server;
 
+  constructor(
+    private authService: AuthService,
+    private userService: UserService
+  ) {
+  }
+
   afterInit(server: Server) {
   }
 
-  handleConnection(client: Socket, ...args: any[]) {
-    const authorization = client.handshake.headers.authorization;
+  async handleConnection(client: Socket, ...args: any[]) {
+    try {
+      const token = client.handshake.headers.authorization;
+      const decodeToken = this.authService.verifyJwt(token);
+      const user = await this.userService.getByUsername(decodeToken.user);
+      if (!user) {
+        throw new WsException('Error ws');
+      }
 
+      client.data.user = user;
+      await this.userService.pushSocketId(user._id, client.id);
+    } catch (e) {
+      await this.disconnect(client);
+    }
   }
 
-  handleDisconnect(client: Socket) {
+  async handleDisconnect(client: Socket) {
+    await this.disconnect(client);
   }
 
-  @SubscribeMessage('message')
+  @SubscribeMessage('ping')
   handleMessage(  
     @MessageBody() data: string,
     @ConnectedSocket() client: Socket
   ) {
+    client.emit('pong');
+  }
+
+  async disconnect(socket: Socket) {
+    const user = socket.data?.user;
+    
+    if (user) {
+      user.onlineLasted = moment().toDate();
+      await user.save();
+      await this.userService.pullSocketId(user._id, socket.id);
+    }
+    socket.disconnect();
   }
 }

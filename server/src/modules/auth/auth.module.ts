@@ -12,6 +12,9 @@ import { SchemaModule } from 'src/schema/schema.module';
     }),
     SchemaModule
   ],
+  exports: [
+    AuthService
+  ],
   providers: [AuthService, JwtStrategy],
   controllers: [AuthController]
 })

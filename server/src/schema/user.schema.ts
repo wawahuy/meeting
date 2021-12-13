@@ -32,16 +32,16 @@ export class User {
   avatar: string;
 
   @Prop({ 
-    type: MSchema.Types.String,
+    type: [MSchema.Types.String],
     index: true
   })
-  socketId: string;
+  sockets: string[];
 
   @Prop({ 
     type: MSchema.Types.Date,
     index: true
   })
-  socketDate: Date;
+  onlineLasted: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -10,6 +10,8 @@ import { JwtInterceptor } from './_helpers/jwt.interceptor';
 import { ErrorInterceptor } from './_helpers/error.interceptor';
 
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { SocketIoModule } from 'ngx-socket-io';
+import { SocketService } from './_services/socket.service';
 
 @NgModule({
   declarations: [
@@ -20,14 +22,16 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    TooltipModule.forRoot(),
+    SocketIoModule,
     NotifierModule.withConfig({
       theme: "material"
     }),
-    TooltipModule.forRoot()
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    SocketService
   ],
   bootstrap: [AppComponent]
 })

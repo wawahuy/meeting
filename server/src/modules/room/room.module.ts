@@ -8,6 +8,9 @@ import { SchemaModule } from 'src/schema/schema.module';
   controllers: [RoomController],
   imports: [
     SchemaModule
+  ],
+  exports: [
+    RoomService
   ]
 })
 export class RoomModule {}

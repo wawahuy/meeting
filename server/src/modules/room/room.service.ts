@@ -115,7 +115,7 @@ export class RoomService {
               $elemMatch: {
                 'user._id': { $ne: new Types.ObjectId(userHost) },
                 'user.username': {
-                  $regex: '^' + search + '$',
+                  $regex: '.*' + search + '.*',
                   $options: 'i'
                 }
               }
