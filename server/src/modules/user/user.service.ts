@@ -51,7 +51,7 @@ export class UserService {
   async pushSocketId(userId: string, socketId: string) {
     return await this.userModel.updateOne(
       {
-        userId: new Types.ObjectId(userId)
+        _id: new Types.ObjectId(userId)
       },
       {
         $push: {
@@ -64,7 +64,7 @@ export class UserService {
   async pullSocketId(userId: string, socketId: string) {
     return await this.userModel.updateOne(
       {
-        userId: new Types.ObjectId(userId)
+        _id: new Types.ObjectId(userId)
       },
       {
         $pull: {
