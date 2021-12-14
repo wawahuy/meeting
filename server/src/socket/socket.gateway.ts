@@ -20,20 +20,16 @@ export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   }
 
   async handleConnection(client: Socket, ...args: any[]) {
-    console.log('connected', client.id)
     try {
       const token = client.handshake.headers.authorization;
-      console.log(token);
       const decodeToken = this.authService.verifyJwt(token);
       const user = await this.userService.getByUsername(decodeToken.user);
-      console.log(user);
       if (!user) {
         throw new WsException('Error ws');
       }
 
       client.data.user = user;
-      const result = await this.userService.pushSocketId(user._id, client.id);
-      console.log(result);
+      await this.userService.pushSocketId(user._id, client.id);
     } catch (e) {
       await this.disconnect(client);
     }
@@ -53,7 +49,6 @@ export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 
   async disconnect(socket: Socket) {
     const user = socket.data?.user;
-    console.log('disconnect', socket.id);
     
     if (user) {
       user.onlineLasted = moment().toDate();
