@@ -169,7 +169,6 @@
   <div
     *ngFor="let item of listRoom"
     class="
-      tw-border-b
       tw-border-gray-700
       tw-flex
       tw-py-2
@@ -183,6 +182,11 @@
       hover:tw-bg-gray-900
     "
     [ngClass]="item.roomDetail._id === currentRoomId ? 'tw-bg-gray-900' : ''"
+    [ngClass]="
+      item.roomDetail._id === listRoom[listRoom.length - 1].roomDetail._id
+        ? 'tw-border-none'
+        : 'tw-border-b'
+    "
     (click)="currentRoomId = item.roomDetail._id"
   >
     <div
@@ -198,6 +202,9 @@
         <span>{{ getName(item)[0].name }}</span>
         <span class="tw-text-gray-500">({{ getName(item)[0].username }})</span>
       </div>
+      <div *ngIf="!getName(item)[0].username" class="tw-flex-1 tw-text-md">
+        {{ getName(item) }}
+      </div>
       <div class="tw-flex-1 tw-text-xs tw-text-gray-500">
         {{ item.messageLasted }}
       </div>
@@ -207,7 +214,11 @@
       class="tw-m-auto tw-rounded-full tw-bg-green-400 tw-w-2 tw-h-2"
     ></div>
     <div
-      *ngIf="!item.status"
+      *ngIf="!!getStatusRoom(item)"
+      class="tw-m-auto tw-rounded-full tw-bg-green-400 tw-w-2 tw-h-2"
+    ></div>
+    <div
+      *ngIf="!getStatusRoom(item)"
       class="tw-m-auto tw-rounded-full tw-bg-gray-700 tw-w-2 tw-h-2"
       tooltip="Online 4 minutes ago"
     ></div>

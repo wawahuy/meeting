@@ -79,4 +79,8 @@ export class SearchRoomComponent implements OnInit, OnChanges {
   getRoomNameBySearch(room: Room) {
     return this.roomService.getRoomName(room);
   }
+
+  getStatusRoom(room: Room) {
+    return this.roomService.getStatusRoom(room);
+  }
 }
