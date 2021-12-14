@@ -12,6 +12,7 @@
         "
         tooltip="New chat"
         placement="bottom"
+        (click)="createRoom.show()"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -165,6 +166,7 @@
     </span>
   </div>
 </header>
+<app-create-room #createRoom></app-create-room>
 <div *ngIf="!searchString" class="tw-flex-1 tw-h-[82vh] tw-overflow-y-scroll">
   <div
     *ngFor="let item of listRoom"
