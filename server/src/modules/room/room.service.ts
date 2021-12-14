@@ -19,7 +19,7 @@ export class RoomService {
         _id: new Types.ObjectId(roomId),
         'users.user': new Types.ObjectId(userId)
       })
-      .populate('users.user', '_id name username avatar socketId socketDate');
+      .populate('users.user', '_id name username avatar sockets onlineLasted');
   }
 
   async get(roomId: string) {
@@ -27,7 +27,7 @@ export class RoomService {
       .findOne({
         _id: new Types.ObjectId(roomId)
       })
-      .populate('users.user', '_id name username avatar socketId socketDate');
+      .populate('users.user', '_id name username avatar sockets onlineLasted');
   }
 
   async getRoomByUserTwoMember(userHost: string, userRecv: string) {
@@ -46,7 +46,7 @@ export class RoomService {
     }
     return await this.roomModel
       .findOne(match)
-      .populate('users.user', '_id name username avatar socketId socketDate');
+      .populate('users.user', '_id name username avatar sockets onlineLasted');
   }
 
   async create(userHost: string, d: CreateRoomDto) {
@@ -175,8 +175,8 @@ export class RoomService {
             'users.user.name': 1,
             'users.user.username': 1,
             'users.user.avatar': 1,
-            'users.user.socketId': 1,
-            'users.user.socketDate': 1,
+            'users.user.sockets': 1,
+            'users.user.onlineLasted': 1,
             'updatedAt': 1,
           }
         },
@@ -185,7 +185,7 @@ export class RoomService {
             updatedAt: -1
           }
         },
-        { $skip: (page - 1) * size },
+        { $skip: Number((page - 1) * size) },
         { $limit: Number(size) }
       ])
       .catch(e => null);

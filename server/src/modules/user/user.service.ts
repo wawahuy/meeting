@@ -43,8 +43,8 @@ export class UserService {
 
     return await this.userModel.find(match)
       .select('-password -__v')
-      .skip((page - 1) * size)
-      .limit(size)
+      .skip(Number((page - 1) * size))
+      .limit(Number(size))
       .catch(e => null);
   }
 
