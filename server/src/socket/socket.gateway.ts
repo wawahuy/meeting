@@ -32,7 +32,8 @@ export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGate
       }
 
       client.data.user = user;
-      await this.userService.pushSocketId(user._id, client.id);
+      const result = await this.userService.pushSocketId(user._id, client.id);
+      console.log(result);
     } catch (e) {
       await this.disconnect(client);
     }
