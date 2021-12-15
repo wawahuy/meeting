@@ -42,6 +42,15 @@ export class RoomService {
     );
   }
 
+  createRoomByUser(name: string = '', users: string[]) {
+    const url = environment.apiEndpoint + 'room/create';
+    const body: Object = {
+      name: name.toString(),
+      users: users,
+    };
+    return this.http.post(url, body, httpOptions).toPromise();
+  }
+
   search(search: string, page: number = 1, size: number = 10) {
     const url = environment.apiEndpoint + 'room/search';
     const param: { [key: string]: string } = {

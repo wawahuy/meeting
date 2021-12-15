@@ -1,3 +1,4 @@
+import { RoomService } from './../../_services/room.service';
 import { NotifierService } from 'angular-notifier';
 import { User } from 'src/app/_models/user';
 import { UserService } from './../../_services/user.service';
@@ -11,6 +12,7 @@ import {
 } from '@angular/core';
 import { ECreateRoomFormField } from './model';
 import * as _ from 'lodash';
+import { result } from 'lodash';
 
 @Component({
   selector: 'app-create-room',
@@ -21,38 +23,25 @@ export class CreateRoomComponent implements OnInit {
   searchString: string;
   roomName: string;
 
-  isShow = true;
+  isShow = false;
   isLoading: Boolean;
-  searchLoading: Boolean;
+  isCreating: Boolean;
 
   selectedUsers: string[];
   listUser: User[];
   form: FormGroup;
-  // readonly ECreateRoomFormField = ECreateRoomFormField;
 
   constructor(
     private userService: UserService,
-    private notifierService: NotifierService
+    private notifierService: NotifierService,
+    private roomService: RoomService
   ) {}
 
   ngOnInit(): void {
-    // this.form = this.formBuilder.group({
-    //   [ECreateRoomFormField.Name]: [null],
-    // });
     this.loadData();
     this.selectedUsers = [];
     this.searchString = '';
   }
-
-  // isControlError(field: ECreateRoomFormField, type: string) {
-  //   const control = this.form.controls[field];
-  //   if (control.invalid && (control.touched || control.dirty)) {
-  //     if (control.errors[type]) {
-  //       return true;
-  //     }
-  //   }
-  //   return false;
-  // }
 
   public show() {
     this.isShow = true;
@@ -61,8 +50,30 @@ export class CreateRoomComponent implements OnInit {
     this.isShow = false;
   }
 
-  submitCreateRoom() {
-    console.log('Created');
+  async submitCreateRoom() {
+    this.isCreating = true;
+    if (this.selectedUsers.length > 0) {
+      await this.roomService
+        .createRoomByUser(this.roomName, this.selectedUsers)
+        .then((result) => {
+          if (result) {
+            console.log(result);
+
+            this.notifierService.notify('success', 'Created');
+          }
+        })
+        .catch((err) => {
+          this.notifierService.notify(
+            'error',
+            err?.error?.message || 'Unknown Error'
+          );
+          return null;
+        });
+    }
+    setTimeout(() => {
+      this.isCreating = false;
+      this.isShow = false;
+    }, 2000);
   }
 
   loadData = _.debounce(async () => {

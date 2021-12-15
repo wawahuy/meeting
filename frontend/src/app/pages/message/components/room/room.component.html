@@ -184,11 +184,6 @@
       hover:tw-bg-gray-900
     "
     [ngClass]="item.roomDetail._id === currentRoomId ? 'tw-bg-gray-900' : ''"
-    [ngClass]="
-      item.roomDetail._id === listRoom[listRoom.length - 1].roomDetail._id
-        ? 'tw-border-none'
-        : 'tw-border-b'
-    "
     (click)="currentRoomId = item.roomDetail._id"
   >
     <div

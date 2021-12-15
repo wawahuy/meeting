@@ -273,18 +273,55 @@
                 tw-duration-500
                 tw-rounded-lg
                 tw-border
-                tw-border-puertoRico-500
                 tw-text-puertoRico-500
                 tw-px-4
                 tw-py-2
-                hover:tw-bg-puertoRico-500 hover:tw-text-white
+                hover:tw-text-white
               "
+              [ngClass]="
+                selectedUsers.length === 0
+                  ? 'tw-border-gray-800 hover:tw-bg-transparent'
+                  : 'tw-border-puertoRico-500 hover:tw-bg-puertoRico-500'
+              "
+              [disabled]="selectedUsers.length === 0"
               (click)="submitCreateRoom()"
             >
               Create
               <span *ngIf="selectedUsers.length > 0">
                 ({{ selectedUsers.length }})</span
               >
+              <span *ngIf="!!isCreating" class="tw-float-right tw-text-white">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  aria-hidden="true"
+                  role="img"
+                  class="iconify iconify--eos-icons tw-m-auto"
+                  width="20"
+                  height="20"
+                  preserveAspectRatio="xMidYMid meet"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8a8 8 0 0 1-8 8z"
+                    opacity=".5"
+                    fill="currentColor"
+                  ></path>
+                  <path
+                    d="M20 12h2A10 10 0 0 0 12 2v2a8 8 0 0 1 8 8z"
+                    fill="currentColor"
+                  >
+                    <animateTransform
+                      attributeName="transform"
+                      type="rotate"
+                      from="0 12 12"
+                      to="360 12 12"
+                      dur="1s"
+                      repeatCount="indefinite"
+                    ></animateTransform>
+                  </path>
+                </svg>
+              </span>
             </button>
           </div>
         </div>
