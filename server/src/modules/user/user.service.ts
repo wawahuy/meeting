@@ -77,5 +77,18 @@ export class UserService {
       }
     )
   }
+
+  async clearAllSocket() {
+    return await this.userModel.updateMany(
+      {
+        'sockets.0': { $exists: true }
+      },
+      {
+        $set: {
+          sockets: []
+        }
+      }
+    )
+  }
   
 }
