@@ -10,7 +10,7 @@ async function bootstrap() {
   const whitelist = [
     'https://metmes.pw',
     'https://api.metmes.pw',
-    'https://localhost:4200',
+    'https://dev.metmes.pw',
     'http://localhost:4200',
     'http://localhost:3000'
   ];
