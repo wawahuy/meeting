@@ -77,6 +77,16 @@ module.exports = {
             transform: "translateX(0)",
           },
         },
+        load: {
+          "0%": {
+            transform: "translate(-2rem, 0)",
+            opacity: 0,
+          },
+          "100%": {
+            transform: "translate(0, 0)",
+            opacity: 1,
+          },
+        },
       },
       animation: {
         bounceIn: "bounceIn 500ms",
@@ -84,6 +94,7 @@ module.exports = {
         fadeInTop: "fadeInTop 300ms",
         tiktok: "tiktok 1s",
         tiktokIn: "tiktokIn 1s",
+        load: "load 1s",
       },
     },
     screens: {

@@ -1,0 +1,14 @@
+::-webkit-scrollbar {
+    width: 2px;
+}
+::-webkit-scrollbar-track {
+    background: #242526;
+}
+::-webkit-scrollbar-thumb {
+    background: rgb(221, 221, 221);
+    border-radius: 20px;
+}
+textarea:focus,
+input:focus {
+    outline: none;
+}

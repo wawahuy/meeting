@@ -2,8 +2,15 @@ import { NotifierService } from 'angular-notifier';
 import { User } from 'src/app/_models/user';
 import { UserService } from './../../_services/user.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { ECreateRoomFormField } from './model';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-create-room',
@@ -11,8 +18,12 @@ import { ECreateRoomFormField } from './model';
   styleUrls: ['./create-room.component.scss'],
 })
 export class CreateRoomComponent implements OnInit {
-  isShow = false;
+  searchString: string;
+  roomName: string;
+
+  isShow = true;
   isLoading: Boolean;
+  searchLoading: Boolean;
 
   selectedUsers: string[];
   listUser: User[];
@@ -30,6 +41,7 @@ export class CreateRoomComponent implements OnInit {
     // });
     this.loadData();
     this.selectedUsers = [];
+    this.searchString = '';
   }
 
   // isControlError(field: ECreateRoomFormField, type: string) {
@@ -53,20 +65,32 @@ export class CreateRoomComponent implements OnInit {
     console.log('Created');
   }
 
-  async loadData() {
+  loadData = _.debounce(async () => {
     this.isLoading = true;
-    this.listUser = await this.userService.search('').catch((err) => {
-      this.notifierService.notify(
-        'error',
-        err?.error?.message || 'Unknown Error'
-      );
-      return null;
-    });
-    this.isLoading = false;
-  }
+    this.listUser = await this.userService
+      .search(this.searchString)
+      .catch((err) => {
+        this.notifierService.notify(
+          'error',
+          err?.error?.message || 'Unknown Error'
+        );
+        return null;
+      });
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 450);
+  }, 300);
 
   addSelectedUsers(id: string) {
-    this.selectedUsers.push(id);
+    if (this.selectedUsers.includes(id)) {
+      console.log(true);
+
+      this.selectedUsers = this.selectedUsers.filter((item) => item !== id);
+    } else this.selectedUsers.push(id);
     console.log(this.selectedUsers);
+  }
+
+  unselectAll() {
+    this.selectedUsers = [];
   }
 }

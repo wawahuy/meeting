@@ -1,3 +1,5 @@
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ModalModule } from 'ngx-bootstrap/modal';
@@ -7,6 +9,11 @@ import { CreateRoomComponent } from './create-room/create-room.component';
 @NgModule({
   declarations: [ModalProfileComponent, CreateRoomComponent],
   exports: [ModalProfileComponent, CreateRoomComponent],
-  imports: [CommonModule, ModalModule.forRoot()],
+  imports: [
+    CommonModule,
+    ModalModule.forRoot(),
+    FormsModule,
+    TooltipModule.forRoot(),
+  ],
 })
 export class ComponentsModule {}
