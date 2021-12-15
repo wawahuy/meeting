@@ -34,6 +34,14 @@ export class RoomService {
         });
   }
 
+  getStatusRoom(room: Room) {
+    return (
+      room.roomDetail.users.filter(
+        (item) => item.user._id !== this.authService.currentUserValue._id
+      )[0].user.sockets.length > 0
+    );
+  }
+
   search(search: string, page: number = 1, size: number = 10) {
     const url = environment.apiEndpoint + 'room/search';
     const param: { [key: string]: string } = {

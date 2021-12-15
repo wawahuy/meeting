@@ -1,0 +1,132 @@
+<div
+  *ngIf="isShow"
+  class="tw-absolute tw-flex tw-inset-0 tw-h-[100vh] tw-items-center tw-animate"
+>
+  <div
+    class="
+      tw-absolute tw-z-10 tw-h-[100vh] tw-w-full tw-bg-gray-900 tw-bg-opacity-70
+    "
+  ></div>
+  <div
+    class="
+      tw-relative
+      tw-z-20
+      tw-w-1/5
+      tw-flex-col
+      tw-bg-shark
+      tw-text-center
+      tw-text-textMain300
+      tw-m-auto
+      tw-rounded-lg
+      tw-animate-bounceIn
+    "
+  >
+    <div class="tw-flex tw-p-4 tw-border-b tw-border-gray-300 tw-relative">
+      <div
+        class="tw-flex-1 tw-items-center tw-m-auto tw-text-lg tw-font-medium"
+      >
+        New chat
+      </div>
+      <div
+        class="
+          tw-rounded-full
+          tw-p-2
+          tw-cursor-pointer
+          tw-absolute
+          tw-top-0
+          tw-right-0
+          tw-mr-2
+          tw-mt-2
+          tw-transition
+          tw-duration-200
+          hover:tw-bg-gray-600
+        "
+        (click)="isShow = false"
+      >
+        <span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            aria-hidden="true"
+            role="img"
+            class="iconify iconify--mdi tw-m-auto"
+            width="20"
+            height="20"
+            preserveAspectRatio="xMidYMid meet"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41z"
+              fill="#eeeeee"
+            ></path>
+          </svg>
+        </span>
+      </div>
+    </div>
+    <div class="tw-p-4">
+      <form
+        [formGroup]="form"
+        class="tw-flex tw-flex-col tw-items-center tw-m-auto tw-space-y-4"
+      >
+        <!-- <div class="tw-absolute tw-top-4">
+          <span
+            class="text-danger tw-mr-1"
+            *ngIf="isControlError(ELoginFormField.Username, 'required')"
+          >
+            Username required
+          </span>
+          <span
+            class="text-danger"
+            *ngIf="isControlError(ELoginFormField.Password, 'required')"
+          >
+            Password required
+          </span>
+        </div> -->
+        <input
+          class="
+            tw-rounded-lg tw-w-auto tw-bg-gray-800
+            sm:tw-w-full
+            tw-relative tw-text-gray-300 tw-border-gray-200
+            focus:tw-border-gray-400
+          "
+          type="text"
+          placeholder="Room name"
+          required="true"
+        />
+        <div class="tw-flex-col tw-p-4 tw-space-y-2">
+          <div
+            *ngFor="let user of listUser"
+            class="tw-flex tw-items-center tw-space-x-2"
+          >
+            <input
+              type="checkbox"
+              [value]="user._id"
+              (click)="addSelectedUsers(user._id)"
+            />
+            <span>{{ user.name }}</span
+            ><span class="tw-text-gray-500">({{ user.username }})</span>
+          </div>
+        </div>
+        <div class="tw-flex tw-space-x-2">
+          <button
+            type="submit"
+            class="
+              tw-transition
+              tw-duration-500
+              tw-rounded-lg
+              tw-border
+              tw-border-puertoRico-500
+              tw-text-puertoRico-500
+              tw-px-4
+              tw-py-2
+              hover:tw-bg-puertoRico-500 hover:tw-text-white
+            "
+            (click)="submitCreateRoom()"
+          >
+            Create
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

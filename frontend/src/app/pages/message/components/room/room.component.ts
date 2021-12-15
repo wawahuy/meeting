@@ -54,4 +54,8 @@ export class RoomComponent implements OnInit {
   getOnlineTimeByUser(user: User) {
     return user.onlineLasted ? computeOnlineTime(user.onlineLasted) : '-';
   }
+
+  getStatusRoom(room: Room) {
+    return this.roomService.getStatusRoom(room);
+  }
 }
