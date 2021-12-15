@@ -1,5 +1,4 @@
 import { ConnectedSocket, MessageBody, OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer, WsException } from '@nestjs/websockets';
-import * as moment from 'moment';
 import { Server, Socket } from 'socket.io';
 import { AuthService } from 'src/modules/auth/auth.service';
 import { UserService } from 'src/modules/user/user.service';
@@ -51,8 +50,6 @@ export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     const user = socket.data?.user;
     
     if (user) {
-      user.onlineLasted = moment().toDate();
-      await user.save();
       await this.userService.pullSocketId(user._id, socket.id);
     }
     socket.disconnect();

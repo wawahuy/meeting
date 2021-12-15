@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import * as moment from 'moment';
 import { FilterQuery, Model, Types } from 'mongoose';
 import { User, UserDocument } from 'src/schema/user.schema';
 
@@ -69,6 +70,9 @@ export class UserService {
       {
         $pull: {
           sockets: socketId
+        },
+        $set: {
+          onlineLasted: moment().toDate()
         }
       }
     )
