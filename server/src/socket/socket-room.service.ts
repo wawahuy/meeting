@@ -1,0 +1,27 @@
+import { Injectable } from '@nestjs/common';
+import { SocketSendName } from 'src/models/socket';
+import { RoomDocument } from 'src/schema/room.schema';
+import { UserDocument } from 'src/schema/user.schema';
+import { SocketGateway } from './socket.gateway';
+
+@Injectable()
+export class SocketRoomService {
+
+  constructor(
+    private socketGateway: SocketGateway
+  ) {
+  }
+
+  emitCreateUpdateRoom(room: { roomDetail: RoomDocument, messageLasted: null }) {
+    room.roomDetail.users.forEach(item => {
+      const socketIds = (<UserDocument>item.user).sockets;
+      socketIds.forEach(socketId => {
+        this.socketGateway.server.to(socketId).emit(
+          SocketSendName.RoomCreateOrUpdate,
+          room
+        )
+      })
+    })
+  }
+
+}

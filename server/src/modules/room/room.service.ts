@@ -1,6 +1,8 @@
 import { ConflictException, Injectable, NotAcceptableException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import * as moment from 'moment';
 import { AnyKeys, FilterQuery, Model, Types } from 'mongoose';
+import { DataPage } from 'src/models/common';
 import { Room, RoomDocument } from 'src/schema/room.schema';
 import { User, UserDocument } from 'src/schema/user.schema';
 import { CreateRoomDto } from './dto/room.dto';
@@ -11,6 +13,17 @@ export class RoomService {
     @InjectModel(Room.name) private roomModel: Model<RoomDocument>,
     @InjectModel(User.name) private userModel: Model<RoomDocument>,
   ) {
+  }
+
+  async orderTop(roomId: string) {
+    return await this.roomModel
+      .updateOne({
+        _id: new Types.ObjectId(roomId)
+      }, {
+        $set: {
+          orderTime: moment().toDate()
+        }
+      });
   }
 
   async getByRoomUserId(roomId: string, userId: string) {
@@ -34,12 +47,12 @@ export class RoomService {
     const match: FilterQuery<RoomDocument> = {
       $or: [
         {
-          'users.user.0': new Types.ObjectId(userHost),
-          'users.user.1': new Types.ObjectId(userRecv),
+          'users.0.user': new Types.ObjectId(userHost),
+          'users.1.user': new Types.ObjectId(userRecv),
         },
         {
-          'users.user.1': new Types.ObjectId(userHost),
-          'users.user.0': new Types.ObjectId(userRecv),
+          'users.0.user': new Types.ObjectId(userHost),
+          'users.1.user': new Types.ObjectId(userRecv),
         },
       ],
       users: { $size: 2 }
@@ -124,49 +137,69 @@ export class RoomService {
         ]
       }
     }
-    return await this.roomModel
-      .aggregate([
-        {
-          $match: {
-            'users.user': new Types.ObjectId(userHost)
-          }
-        },
-        {
-          $unwind: {
-            path: "$users",
-            preserveNullAndEmptyArrays: true
-          }
-        },
-        {
-          $lookup: {
-            from: 'users',
-            localField: 'users.user',
-            foreignField: '_id',
-            as: 'tmp'
-          }
-        },
-        {
-          $unwind: {
-            path: "$tmp",
-            preserveNullAndEmptyArrays: true
-          }
-        },
-        {
-          $group: {
-            _id: '$_id',
-            name: { $first: "$name" },
-            updatedAt: { $first: "$updatedAt" },
-            users: {
-              $push: {
-                nickName: "$users.nickName",
-                user: "$tmp"
-              }
+
+    const agg = [
+      {
+        $match: {
+          'users.user': new Types.ObjectId(userHost)
+        }
+      },
+      {
+        $unwind: {
+          path: "$users",
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'users.user',
+          foreignField: '_id',
+          as: 'tmp'
+        }
+      },
+      {
+        $unwind: {
+          path: "$tmp",
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $group: {
+          _id: '$_id',
+          name: { $first: "$name" },
+          updatedAt: { $first: "$updatedAt" },
+          users: {
+            $push: {
+              nickName: "$users.nickName",
+              user: "$tmp"
             }
           }
-        },
+        }
+      },
+      {
+        $match: match
+      }
+    ];
+
+    const totalQuery = await this.roomModel
+      .aggregate([
+        ...agg,
         {
-          $match: match
-        },
+          $group: {
+            _id: "",
+            total: {
+              $sum: 1
+            }
+          }
+        }
+      ]);
+
+    const total: number = totalQuery?.[0]?.total;
+
+    const items = await this.roomModel
+      .aggregate([
+        ...agg,
         {
           $project: {
             _id: 1,
@@ -182,12 +215,19 @@ export class RoomService {
         },
         {
           $sort: {
-            updatedAt: -1
+            orderTime: -1
           }
         },
         { $skip: Number((page - 1) * size) },
         { $limit: Number(size) }
       ])
       .catch(e => null);
+
+    const data: DataPage<typeof items> = {
+      total,
+      items
+    };
+
+    return data;
   }
 }

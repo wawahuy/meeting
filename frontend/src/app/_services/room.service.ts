@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Room } from '../_models/room';
+import { ResponseSearch } from '../_models/common';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -17,21 +18,19 @@ export class RoomService {
     if (!!room.roomDetail.name) {
       return room.roomDetail.name;
     }
+
+    const users = room.roomDetail.users.filter(
+      (item) => item.user._id !== this.authService.currentUserValue._id
+    );
     if (room.roomDetail.users.length >= 3) {
-      return room.roomDetail.users
-        .filter(
-          (item) => item.user._id !== this.authService.currentUserValue._id
-        )
+      return users
         .map((item) => item.user.name)
         .join(', ');
-    } else
-      return room.roomDetail.users
-        .filter(
-          (item) => item.user._id !== this.authService.currentUserValue._id
-        )
-        .map((item) => {
-          return { username: item.user.username, name: item.user.name };
-        });
+    } else {
+      return users.map((item) => {
+        return { username: item.user.username, name: item.user.name };
+      });
+    }
   }
 
   getStatusRoom(room: Room) {
@@ -48,7 +47,7 @@ export class RoomService {
       name: name.toString(),
       users: users,
     };
-    return this.http.post(url, body, httpOptions).toPromise();
+    return this.http.post<Room>(url, body, httpOptions).toPromise();
   }
 
   search(search: string, page: number = 1, size: number = 10) {
@@ -61,7 +60,7 @@ export class RoomService {
       param['search'] = search;
     }
     return this.http
-      .get<Room[]>(url, { params: param, ...httpOptions })
+      .get<ResponseSearch<Room>>(url, { params: param, ...httpOptions })
       .toPromise();
   }
 }

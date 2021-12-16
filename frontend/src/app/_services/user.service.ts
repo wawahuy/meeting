@@ -3,6 +3,7 @@ import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { User } from '../_models/user';
 import * as moment from 'moment';
+import { ResponseSearch } from '../_models/common';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -23,6 +24,6 @@ export class UserService {
     if (search) {
       param['search'] = search;
     }
-    return this.http.get<User[]>(url, {params: param, ...httpOptions}).toPromise();
+    return this.http.get<ResponseSearch<User>>(url, {params: param, ...httpOptions}).toPromise();
   }
 }

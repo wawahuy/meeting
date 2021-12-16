@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import * as moment from 'moment';
 import { FilterQuery, Model, Types } from 'mongoose';
+import { DataPage } from 'src/models/common';
 import { User, UserDocument } from 'src/schema/user.schema';
 
 @Injectable()
@@ -42,11 +43,20 @@ export class UserService {
       }
     }
 
-    return await this.userModel.find(match)
+    const total = await this.userModel.find(match).count();
+
+    const items = await this.userModel.find(match)
       .select('-password -__v')
       .skip(Number((page - 1) * size))
       .limit(Number(size))
       .catch(e => null);
+
+    const data: DataPage<typeof items> = {
+      total,
+      items
+    };
+
+    return data;
   }
 
   async pushSocketId(userId: string, socketId: string) {

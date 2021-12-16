@@ -167,9 +167,13 @@
   </div>
 </header>
 <app-create-room #createRoom></app-create-room>
-<div *ngIf="!searchString" class="tw-flex-1 tw-h-[82vh] tw-overflow-y-scroll">
+<div
+  *ngIf="!searchString"
+  class="tw-flex-1 tw-h-[82vh] tw-overflow-y-scroll"
+  (scroll)="onScroll($event)"
+>
   <div
-    *ngFor="let item of listRoom"
+    *ngFor="let item of (data?.data || [])"
     class="
       tw-border-gray-700
       tw-flex
@@ -220,7 +224,11 @@
       tooltip="Online 4 minutes ago"
     ></div>
   </div>
+  <app-loading [isLoading]="isLoading"></app-loading>
 </div>
 <div *ngIf="!!searchString" class="tw-flex-1 tw-h-[82vh] tw-overflow-y-scroll">
-  <app-search-room [searchString]="searchString"></app-search-room>
+  <app-search-room
+    [searchString]="searchString"
+    (selectRoom)="onSelectRoom($event)"
+  ></app-search-room>
 </div>

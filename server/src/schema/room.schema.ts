@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import * as moment from 'moment';
 import { Document, ObjectId, Schema as MSchema } from 'mongoose';
 import { User } from './user.schema';
 
@@ -34,6 +35,13 @@ export class Room {
     index: true
   })
   name: string;
+
+  @Prop({ 
+    type: MSchema.Types.Date,
+    default: moment().toDate(),
+    index: true
+  })
+  orderTime: string;
 
   @Prop({ type: [RoomUserSchema] })
   users: RoomUser[];

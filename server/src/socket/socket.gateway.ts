@@ -38,13 +38,6 @@ export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     await this.disconnect(client);
   }
 
-  @SubscribeMessage('ping')
-  handleMessage(  
-    @MessageBody() data: string,
-    @ConnectedSocket() client: Socket
-  ) {
-    client.emit('pong');
-  }
 
   async disconnect(socket: Socket) {
     const user = socket.data?.user;
