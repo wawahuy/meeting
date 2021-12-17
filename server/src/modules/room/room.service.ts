@@ -145,6 +145,27 @@ export class RoomService {
         }
       },
       {
+        $match: {
+          $or: [
+            {
+              $expr:  {
+                $gt:  [
+                  {
+                    $size: "$users"
+                  },
+                  2
+                ]
+              }
+            },
+            {
+              messageLasted: {
+                $exists: true
+              }
+            }
+          ]
+        }
+      },
+      {
         $unwind: {
           path: "$users",
           preserveNullAndEmptyArrays: true

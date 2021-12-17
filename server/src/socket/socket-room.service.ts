@@ -12,8 +12,8 @@ export class SocketRoomService {
   ) {
   }
 
-  emitCreateUpdateRoom(room: { roomDetail: RoomDocument, messageLasted: null }) {
-    room.roomDetail.users.forEach(item => {
+  emitCreateUpdateRoom(room: RoomDocument) {
+    room.users.forEach(item => {
       const socketIds = (<UserDocument>item.user).sockets;
       socketIds.forEach(socketId => {
         this.socketGateway.server.to(socketId).emit(

@@ -27,6 +27,10 @@ export class RoomComponent implements OnInit {
     data: []
   };
 
+  get listRoom() {
+    return this.data?.data || [];
+  }
+
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -40,7 +44,7 @@ export class RoomComponent implements OnInit {
     this.socketService
       .fromEvent<Room>(SocketRecvName.RoomCreateOrUpdate)
       .subscribe(room => {
-        this.onSelectRoom(room);
+        this.onUpdateOrAddRoom(room);
       });
   }
 
@@ -55,10 +59,13 @@ export class RoomComponent implements OnInit {
     }
 
     this.searchString = '';
-    this.currentRoomId = room.roomDetail._id;
-    this.data.total++;
+    this.currentRoomId = room._id;
+    this.onUpdateOrAddRoom(room);
+  }
+
+  onUpdateOrAddRoom(room: Room) {
     this.data.data = this.data.data.filter((item) => {
-      return item.roomDetail._id !== room.roomDetail._id;
+      return item._id !== room._id;
     })
     this.data.data = [room, ...this.data.data];
   }
@@ -73,6 +80,7 @@ export class RoomComponent implements OnInit {
     if (
       !this.isLoading &&
       !!this.data?.data?.length &&
+      this.data?.data?.length < this.data?.total &&
       ((event.target.scrollHeight - event.target.clientHeight - event.target.scrollTop) <= 30)
     ) {
       this.isLoading = true;
@@ -102,7 +110,6 @@ export class RoomComponent implements OnInit {
       size,
       data: result?.items
     }
-
     return r;
   }
 

@@ -43,8 +43,18 @@ export class Room {
   })
   orderTime: string;
 
-  @Prop({ type: [RoomUserSchema] })
+  @Prop({ 
+    type: [RoomUserSchema],
+    index: true
+  })
   users: RoomUser[];
+
+  @Prop({ 
+    type: MSchema.Types.ObjectId,
+    index: true,
+    ref: 'Message'
+  })
+  messageLasted: any;
 }
 
 export const RoomSchema = SchemaFactory.createForClass(Room);

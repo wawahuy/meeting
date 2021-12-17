@@ -1,4 +1,3 @@
-import { RoomDetail } from './../../../../_models/room';
 import { RoomService } from './../../../../_services/room.service';
 import { NotifierModule, NotifierService } from 'angular-notifier';
 import { UserService } from './../../../../_services/user.service';

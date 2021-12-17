@@ -21,39 +21,6 @@ export class RoomController {
   ) {
   }
 
-  @Get('getOrCreateByUser')
-  @ApiQuery({ name: 'userId' })
-  async getOrCreateByUser(
-    @Res() res: Response,
-    @GetUser() user: UserDocument,
-    @Query('userId') userId: string
-  ) {
-    let room = await this.roomService.getRoomByUserTwoMember(user._id, userId);
-    if (!room) {
-      room = await this.roomService.create(user._id, { users: [userId] });
-    } else {
-      await this.roomService.orderTop(room._id);
-    }
-
-    let status = HttpStatus.OK;
-    if (room instanceof HttpException) {
-      status = (<any>room).status;
-      res.status(status).json(room);
-      return;
-    } else {
-      room = await this.roomService.get(room._id);
-    }
-
-    const r = {
-      roomDetail: room,
-      messageLasted: null
-    };
-
-    this.socketRoomService.emitCreateUpdateRoom(r);
-
-    res.status(status).json(r);
-  }
-
   @Post('create') 
   async create(
     @Res() res: Response,
@@ -68,8 +35,6 @@ export class RoomController {
 
     if (!room) {
       room = await this.roomService.create(user._id, dto);
-    } else {
-      await this.roomService.orderTop(room._id);
     }
 
     let status = HttpStatus.OK;
@@ -81,14 +46,11 @@ export class RoomController {
       room = await this.roomService.get(room._id);
     }
 
-    const r = {
-      roomDetail: room,
-      messageLasted: null
-    };
+    if (room.users.length > 2) {
+      this.socketRoomService.emitCreateUpdateRoom(room);
+    }
 
-    this.socketRoomService.emitCreateUpdateRoom(r);
-
-    res.status(status).json(r);
+    res.status(status).json(room);
   }
 
   @Get('search')
@@ -104,19 +66,8 @@ export class RoomController {
   ) {
     let r = await this.roomService.findPage(user._id, search, page, size);
 
-    let result = [];
-    for(let item of r.items) {
-      result.push({
-        roomDetail: item,
-        messageLasted: null
-      })
-    }
-
-    if (result) {
-      res.status(HttpStatus.OK).json({
-        total: r.total,
-        items: result
-      });
+    if (r) {
+      res.status(HttpStatus.OK).json(r);
     } else {
       return new InternalServerErrorException();
     }

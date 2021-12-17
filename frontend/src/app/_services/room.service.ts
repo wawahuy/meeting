@@ -2,7 +2,7 @@ import { AuthService } from './auth.service';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Room } from '../_models/room';
+import { Room, RoomNameResult } from '../_models/room';
 import { ResponseSearch } from '../_models/common';
 
 const httpOptions = {
@@ -14,28 +14,37 @@ const httpOptions = {
 export class RoomService {
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  getRoomName(room: Room) {
-    if (!!room.roomDetail.name) {
-      return room.roomDetail.name;
+  getRoomName(room: Room): RoomNameResult {
+    if (!!room.name) {
+      return {
+        name: room.name
+      };
     }
 
-    const users = room.roomDetail.users.filter(
+    const users = room.users.filter(
       (item) => item.user._id !== this.authService.currentUserValue._id
     );
-    if (room.roomDetail.users.length >= 3) {
-      return users
+    if (users.length >= 2) {
+      const name = users
         .map((item) => item.user.name)
         .join(', ');
+      return {
+        name
+      };
     } else {
-      return users.map((item) => {
+      const r = users.map((item) => {
         return { username: item.user.username, name: item.user.name };
       });
+      return {
+        name: r[0].name,
+        username: r[0].username
+      };
     }
   }
 
   getStatusRoom(room: Room) {
     return (
-      room.roomDetail.users.filter(
+      room.users.filter(
         (item) => item.user._id !== this.authService.currentUserValue._id
       )[0].user.sockets.length > 0
     );
