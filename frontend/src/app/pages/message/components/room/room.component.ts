@@ -24,7 +24,7 @@ export class RoomComponent implements OnInit {
     total: 0,
     page: 0,
     size: 0,
-    data: []
+    data: [],
   };
 
   get listRoom() {
@@ -47,13 +47,13 @@ export class RoomComponent implements OnInit {
   initSocket() {
     this.socketService
       .fromEvent<Room>(SocketRecvName.RoomCreateOrUpdate)
-      .subscribe(room => {
+      .subscribe((room) => {
         this.onUpdateOrAddRoom(room);
       });
 
     this.socketService
       .fromEvent<SocketFriendStatus>(SocketRecvName.FriendStatus)
-      .subscribe(data => {
+      .subscribe((data) => {
         console.log(data);
       });
   }
@@ -76,7 +76,7 @@ export class RoomComponent implements OnInit {
   onUpdateOrAddRoom(room: Room) {
     this.data.data = this.data.data.filter((item) => {
       return item._id !== room._id;
-    })
+    });
     this.data.data = [room, ...this.data.data];
   }
 
@@ -91,21 +91,25 @@ export class RoomComponent implements OnInit {
       !this.isLoading &&
       !!this.data?.data?.length &&
       this.data?.data?.length < this.data?.total &&
-      ((event.target.scrollHeight - event.target.clientHeight - event.target.scrollTop) <= 30)
+      event.target.scrollHeight -
+        event.target.clientHeight -
+        event.target.scrollTop <=
+        30
     ) {
       this.isLoading = true;
       const page = this.data.page + 1;
       const dataNew = await this.fetchData(page);
       this.data = {
         ...dataNew,
-        data: this.data.data.concat(dataNew?.data)
-      }
+        data: this.data.data.concat(dataNew?.data),
+      };
       this.isLoading = false;
     }
   }, 250);
 
   async fetchData(page: number = 1, size: number = 10) {
-    const result = await this.roomService.search('', page, size)
+    const result = await this.roomService
+      .search('', page, size)
       .catch((err) => {
         this.notifierService.notify(
           'error',
@@ -118,8 +122,8 @@ export class RoomComponent implements OnInit {
       total: result?.total,
       page,
       size,
-      data: result?.items
-    }
+      data: result?.items,
+    };
     return r;
   }
 

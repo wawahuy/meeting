@@ -4,7 +4,7 @@
 >
   <div
     class="
-      tw-absolute tw-z-10 tw-h-[100vh] tw-w-full tw-bg-gray-900 tw-bg-opacity-70
+      tw-absolute tw-z-10 tw-h-[100vh] tw-w-full tw-bg-gray-900 tw-bg-opacity-90
     "
   ></div>
   <div
@@ -111,7 +111,7 @@
               "
               placeholder="Search"
               [(ngModel)]="searchString"
-              (keypress)="loadData()"
+              (keydown)="keyPressEvent($event)"
             />
 
             <button
@@ -154,6 +154,59 @@
                 ></path>
               </svg>
             </span>
+          </div>
+          <div
+            *ngIf="!!selectedUsers.length"
+            class="
+              tw-flex
+              tw-overflow-auto
+              tw-w-100
+              tw-px-4
+              tw-pb-4
+              tw-pt-2
+              tw-space-x-2
+              tw-text-white
+            "
+          >
+            <div
+              *ngFor="let user of selectedUsers"
+              class="
+                tw-animate-fadeInTop100
+                tw-border
+                tw-border-puertoRico-500
+                tw-flex
+                tw-items-center
+                tw-p-2
+                tw-space-x-1
+                tw-rounded-full
+                tw-w-50
+                tw-whitespace-nowrap
+              "
+            >
+              <button
+                class="tw-cursor-pointer tw-mt-0.5 tw-mr-2"
+                (click)="addSelectedUser(user)"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  aria-hidden="true"
+                  role="img"
+                  class="iconify iconify--mdi tw-m-auto"
+                  width="18"
+                  height="18"
+                  preserveAspectRatio="xMidYMid meet"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41z"
+                    fill="#eeeeee"
+                  ></path>
+                </svg>
+              </button>
+              {{ user.name }}
+              <span class="tw-text-gray-100">({{ user.username }})</span>
+            </div>
           </div>
           <div *ngIf="!!isLoading" class="tw-p-4 tw-h-[20rem] tw-text-gray-300">
             <svg
@@ -209,7 +262,7 @@
                 tw-bg-gray-800
                 tw-rounded-lg
               "
-              (click)="addSelectedUsers(user._id)"
+              (click)="addSelectedUser(user)"
             >
               <div
                 class="
@@ -221,13 +274,11 @@
                   tw-p-1
                 "
                 [ngClass]="
-                  selectedUsers.includes(user._id)
-                    ? 'tw-bg-puertoRico-500'
-                    : 'tw-bg-gray-700'
+                  userIncludes(user) ? 'tw-bg-puertoRico-500' : 'tw-bg-gray-700'
                 "
               >
                 <div
-                  *ngIf="selectedUsers.includes(user._id)"
+                  *ngIf="userIncludes(user)"
                   class="
                     tw-animate-bounceIn
                     tw-bg-gray-100
@@ -237,8 +288,19 @@
                   "
                 ></div>
               </div>
-              <span>{{ user.name }}</span
-              ><span class="tw-text-gray-500">({{ user.username }})</span>
+              <div class="tw-flex tw-flex-1 tw-justify-between tw-items-center">
+                <div class="tw-flex tw-flex-1 tw-space-x-2">
+                  <span>{{ user.name }}</span>
+                  <span class="tw-text-gray-500">({{ user.username }})</span>
+                </div>
+                <div
+                  class="tw-m-auto tw-rounded-full tw-w-2 tw-h-2"
+                  [ngClass]="
+                    user.sockets?.length ? 'tw-bg-green-400' : 'tw-bg-gray-700'
+                  "
+                  [tooltip]="getOnlineTimeByUser(user)"
+                ></div>
+              </div>
             </div>
           </div>
         </div>
@@ -247,16 +309,16 @@
             <button
               type="submit"
               class="
-                tw-w-full
-                tw-transition
-                tw-duration-500
                 tw-animate-load
-                tw-rounded-lg
                 tw-border
                 tw-border-red-600
-                tw-text-red-600
+                tw-duration-500
+                tw-w-full
                 tw-px-4
                 tw-py-2
+                tw-rounded-lg
+                tw-transition
+                tw-text-red-600
                 hover:tw-bg-red-600 hover:tw-text-white
               "
               (click)="unselectAll()"

@@ -2,17 +2,11 @@ import { RoomService } from './../../_services/room.service';
 import { NotifierService } from 'angular-notifier';
 import { User } from 'src/app/_models/user';
 import { UserService } from './../../_services/user.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
-import { ECreateRoomFormField } from './model';
+import { FormGroup } from '@angular/forms';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import * as _ from 'lodash';
-import { result } from 'lodash';
+import { Room } from 'src/app/_models/room';
+import { computeOnlineTime } from 'src/app/_helpers/func';
 
 @Component({
   selector: 'app-create-room',
@@ -20,6 +14,8 @@ import { result } from 'lodash';
   styleUrls: ['./create-room.component.scss'],
 })
 export class CreateRoomComponent implements OnInit {
+  @Output() selectRoom = new EventEmitter<Room>();
+
   searchString: string;
   roomName: string;
 
@@ -27,7 +23,7 @@ export class CreateRoomComponent implements OnInit {
   isLoading: Boolean;
   isCreating: Boolean;
 
-  selectedUsers: string[];
+  selectedUsers: User[];
   listUser: User[];
   form: FormGroup;
 
@@ -37,14 +33,14 @@ export class CreateRoomComponent implements OnInit {
     private roomService: RoomService
   ) {}
 
-  ngOnInit(): void {
-    this.loadData();
-    this.selectedUsers = [];
-    this.searchString = '';
-  }
+  ngOnInit(): void {}
 
   public show() {
     this.isShow = true;
+    this.selectedUsers = [];
+    this.searchString = '';
+    this.roomName = '';
+    this.loadData();
   }
   public hidden() {
     this.isShow = false;
@@ -53,33 +49,37 @@ export class CreateRoomComponent implements OnInit {
   async submitCreateRoom() {
     this.isCreating = true;
     if (this.selectedUsers.length > 0) {
-      await this.roomService
-        .createRoomByUser(this.roomName, this.selectedUsers)
-        .then((result) => {
-          if (result) {
-            console.log(result);
-
-            this.notifierService.notify('success', 'Created');
-          }
-        })
+      const list = this.selectedUsers.map((user) => user._id);
+      const d = await this.roomService
+        .createRoomByUser(this.roomName, list)
         .catch((err) => {
           this.notifierService.notify(
             'error',
             err?.error?.message || 'Unknown Error'
           );
-          return null;
+          return Promise.resolve(null);
         });
-    }
-    setTimeout(() => {
+
       this.isCreating = false;
       this.isShow = false;
-    }, 2000);
+
+      if (d) {
+        this.selectRoom.emit(d);
+      }
+    }
   }
 
   loadData = _.debounce(async () => {
     this.isLoading = true;
-    this.listUser = await this.userService
-      .search(this.searchString)
+    const [user] = await Promise.all([this.fetchDataUser()]);
+    this.listUser = user;
+    this.isLoading = false;
+  }, 300);
+
+  async fetchDataUser() {
+    return await this.userService
+      .search(this.searchString, 1, 10)
+      .then((res) => res?.items)
       .catch((err) => {
         this.notifierService.notify(
           'error',
@@ -87,18 +87,29 @@ export class CreateRoomComponent implements OnInit {
         );
         return null;
       });
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 450);
-  }, 300);
+  }
 
-  addSelectedUsers(id: string) {
-    if (this.selectedUsers.includes(id)) {
-      console.log(true);
+  keyPressEvent(event) {
+    const { keyCode } = event;
 
-      this.selectedUsers = this.selectedUsers.filter((item) => item !== id);
-    } else this.selectedUsers.push(id);
-    console.log(this.selectedUsers);
+    if ((keyCode > 47 && keyCode < 91) || keyCode === 189 || keyCode === 8)
+      this.loadData();
+  }
+
+  addSelectedUser(user: User) {
+    if (this.userIncludes(user)) {
+      this.selectedUsers = this.selectedUsers.filter(
+        (item) => item._id !== user._id
+      );
+    } else this.selectedUsers.push(user);
+  }
+
+  userIncludes(user: User) {
+    return this.selectedUsers.find((item) => item._id === user._id);
+  }
+
+  getOnlineTimeByUser(user: User) {
+    return user.onlineLasted ? computeOnlineTime(user.onlineLasted) : '-';
   }
 
   unselectAll() {

@@ -166,7 +166,6 @@
     </span>
   </div>
 </header>
-<app-create-room #createRoom></app-create-room>
 <div
   *ngIf="!searchString"
   class="tw-flex-1 tw-h-[82vh] tw-overflow-y-scroll"
@@ -228,3 +227,8 @@
     (selectRoom)="onSelectRoom($event)"
   ></app-search-room>
 </div>
+
+<app-create-room
+  #createRoom
+  (selectRoom)="onSelectRoom($event)"
+></app-create-room>
