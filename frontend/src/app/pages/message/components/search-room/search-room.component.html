@@ -72,7 +72,7 @@
             {{ item.messageLasted }}
           </div> -->
         </div>
-        <app-loading [isLoading]="userIdCreating == item._id" class="tw-m-auto"></app-loading>
+        <app-loading [isLoading]="true" class="tw-m-auto"></app-loading>
         <div
           *ngIf="item.sockets?.length"
           class="tw-m-auto tw-rounded-full tw-bg-green-400 tw-w-2 tw-h-2"

@@ -9,7 +9,7 @@ import * as _ from 'lodash';
 import { User } from 'src/app/_models/user';
 import { DataList } from 'src/app/_models/common';
 import { SocketService } from 'src/app/_services/socket.service';
-import { SocketRecvName } from 'src/app/_models/socket';
+import { SocketFriendStatus, SocketRecvName } from 'src/app/_models/socket';
 
 @Component({
   selector: 'app-room',
@@ -41,10 +41,20 @@ export class RoomComponent implements OnInit {
 
   ngOnInit() {
     this.loadData();
+    this.initSocket();
+  }
+
+  initSocket() {
     this.socketService
       .fromEvent<Room>(SocketRecvName.RoomCreateOrUpdate)
       .subscribe(room => {
         this.onUpdateOrAddRoom(room);
+      });
+
+    this.socketService
+      .fromEvent<SocketFriendStatus>(SocketRecvName.FriendStatus)
+      .subscribe(data => {
+        console.log(data);
       });
   }
 

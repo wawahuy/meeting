@@ -42,6 +42,13 @@ export class User {
     index: true
   })
   onlineLasted: Date;
+
+  @Prop({ 
+    type: [MSchema.Types.ObjectId],
+    index: true,
+    ref: User.name
+  })
+  friends: any[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

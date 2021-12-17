@@ -13,7 +13,7 @@ export class UserService {
   }
 
   async getByUsername(username: string): Promise<UserDocument> {
-    return await this.userModel.findOne({ username }).catch(e => null);
+    return await this.userModel.findOne({ username }).select('-fiends').catch(e => null);
   }
 
   async findPage(excludeUserId: string, search: string, page: number, size: number) {
@@ -46,7 +46,7 @@ export class UserService {
     const total = await this.userModel.find(match).count();
 
     const items = await this.userModel.find(match)
-      .select('-password -__v')
+      .select('-password -__v -friends')
       .skip(Number((page - 1) * size))
       .limit(Number(size))
       .catch(e => null);

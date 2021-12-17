@@ -16,9 +16,12 @@ export class AuthService {
   }
 
   async signIn(dto: SignInDto) {
-    const user = await this.userModel.findOne({ username: dto.username.toLowerCase().trim() })
+    const user = await this.userModel
+      .findOne({ username: dto.username.toLowerCase().trim() })
+      .select('-friends');
 
     if (!user) {
+      // @ts-ignore
       return new UnauthorizedException("User not exits");
     }
 
@@ -36,7 +39,9 @@ export class AuthService {
   }
 
   async signUp(dto: SignUpDto) {
-    let user = await this.userModel.findOne({ username: dto.username.trim() })
+    let user = await this.userModel
+      .findOne({ username: dto.username.trim() })
+      .select('-friends');
 
     if (user) {
       return new ConflictException("User exits");

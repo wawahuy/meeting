@@ -1,3 +1,12 @@
 export enum SocketSendName {
-  RoomCreateOrUpdate = 'room:CoU'
+  // room
+  RoomCreateOrUpdate = 'room:CoU',
+
+  // friend
+  FriendStatus ='friend:status'
+}
+
+export interface SocketFriendStatus {
+  status: boolean;
+  userId: string;
 }

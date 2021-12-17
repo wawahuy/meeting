@@ -9,6 +9,7 @@ import { SocketModule } from './socket/socket.module';
 import { RoomModule } from './modules/room/room.module';
 import { MessageModule } from './modules/message/message.module';
 import { UserService } from './modules/user/user.service';
+import { FriendModule } from './modules/friend/friend.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { UserService } from './modules/user/user.service';
     SocketModule,
     RoomModule,
     MessageModule,
+    FriendModule,
   ],
   controllers: [AppController],
   providers: [AppService],

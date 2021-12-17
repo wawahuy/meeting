@@ -34,6 +34,7 @@ async function bootstrap() {
     .addBearerAuth()
     .addTag('auth')
     .addTag('user')
+    .addTag('friend')
     .addTag('room')
     .addTag('message')
     .build();

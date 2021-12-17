@@ -2,6 +2,7 @@ import { ConnectedSocket, MessageBody, OnGatewayConnection, OnGatewayDisconnect,
 import { Server, Socket } from 'socket.io';
 import { AuthService } from 'src/modules/auth/auth.service';
 import { UserService } from 'src/modules/user/user.service';
+import { SocketFriendService } from './socket-friend.service';
 
 @WebSocketGateway({ cors: { origin: ['http://localhost:4200', 'https://dev.metmes.pw', 'https://metmes.pw'] }})
 export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
@@ -11,8 +12,10 @@ export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 
   constructor(
     private authService: AuthService,
-    private userService: UserService
+    private userService: UserService,
+    private socketFriendService: SocketFriendService
   ) {
+    socketFriendService.inject(this);
   }
 
   afterInit(server: Server) {
@@ -29,6 +32,10 @@ export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 
       client.data.user = user;
       await this.userService.pushSocketId(user._id, client.id);
+
+      if (user.sockets?.length == 0) {
+        await this.socketFriendService.emitStatusAllFriend(user._id, true);
+      }
     } catch (e) {
       await this.disconnect(client);
     }
@@ -44,6 +51,9 @@ export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     
     if (user) {
       await this.userService.pullSocketId(user._id, socket.id);
+      if (user.sockets?.length == 0) {
+        await this.socketFriendService.emitStatusAllFriend(user._id, false);
+      }
     }
     socket.disconnect();
   }
