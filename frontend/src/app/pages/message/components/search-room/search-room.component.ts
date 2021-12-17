@@ -27,6 +27,7 @@ export class SearchRoomComponent implements OnInit, OnChanges {
   userData: User[];
   roomData: Room[];
   isLoading = true;
+  userIdCreating: string;
 
   constructor(
     private userService: UserService,
@@ -89,14 +90,21 @@ export class SearchRoomComponent implements OnInit, OnChanges {
   }
 
   async createRoom(userId: string) {
+    if (this.userIdCreating) {
+      return;
+    }
+
+    this.userIdCreating = userId;
     const d = await this.roomService.createRoomByUser("", [userId])
       .catch((err) => {
         this.notifierService.notify(
           'error',
           err?.error?.message || 'Unknown Error'
         );
-        return null;
+        return Promise.resolve(null);
       });
+
+    this.userIdCreating = null;
 
     if (d) {
       this.selectRoom.emit(d);
