@@ -39,11 +39,14 @@ export class MainMessageComponent implements OnInit {
 
   getRoomOnlineTime() {
     const room = this.roomCurrent;
+    const users = room.users.filter(
+      item => item.user._id !== this.authService.currentUserValue._id
+    )
     if (room.users?.length == 2) {
-      const user = room.users.filter(
-        item => item.user._id !== this.authService.currentUserValue._id
-      )?.[0]?.user;
+      const user = users?.[0]?.user;
       return user.onlineLasted ? computeOnlineTime(user.onlineLasted) : '-';
+    } else {
+      return users.map(u => (u.nickName || u.user.name)).join(', ');
     }
     return null;
   }

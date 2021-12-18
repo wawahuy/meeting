@@ -112,6 +112,7 @@ export class RoomComponent implements OnInit {
   async loadData() {
     this.isLoading = true;
     this.data = await this.fetchData();
+    this.handleSelectRoom(this.data?.data?.[0]);
     this.isLoading = false;
   }
 
