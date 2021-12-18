@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { RoomService } from './room.service';
 import { RoomController } from './room.controller';
 import { SchemaModule } from 'src/schema/schema.module';
@@ -9,7 +9,7 @@ import { SocketModule } from 'src/socket/socket.module';
   controllers: [RoomController],
   imports: [
     SchemaModule,
-    SocketModule
+    forwardRef(() => SocketModule)
   ],
   exports: [
     RoomService

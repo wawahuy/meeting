@@ -1,8 +1,11 @@
-import { ConnectedSocket, MessageBody, OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer, WsException } from '@nestjs/websockets';
+import { forwardRef, Inject } from '@nestjs/common';
+import { ConnectedSocket, MessageBody, OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer, WsException, WsResponse } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { SocketMessageNewRecv, SocketRecvName } from 'src/models/socket';
 import { AuthService } from 'src/modules/auth/auth.service';
 import { UserService } from 'src/modules/user/user.service';
 import { SocketFriendService } from './socket-friend.service';
+import { SocketMessageService } from './socket-message.service';
 
 @WebSocketGateway({ cors: { origin: ['http://localhost:4200', 'https://dev.metmes.pw', 'https://metmes.pw'] }})
 export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
@@ -13,9 +16,9 @@ export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   constructor(
     private authService: AuthService,
     private userService: UserService,
-    private socketFriendService: SocketFriendService
+    @Inject(forwardRef(() => SocketFriendService)) private socketFriendService: SocketFriendService,
+    @Inject(forwardRef(() => SocketMessageService)) private socketMessageService: SocketMessageService,
   ) {
-    socketFriendService.inject(this);
   }
 
   afterInit(server: Server) {
@@ -32,10 +35,7 @@ export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 
       client.data.user = user;
       await this.userService.pushSocketId(user._id, client.id);
-
-      if (user.sockets?.length == 0) {
-        await this.socketFriendService.emitStatusAllFriend(user._id, client.id, true);
-      }
+      await this.socketFriendService.emitStatusAllFriend(user._id, client.id, true);
     } catch (e) {
       await this.disconnect(client);
     }
@@ -51,10 +51,16 @@ export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     
     if (user) {
       await this.userService.pullSocketId(user._id, socket.id);
-      if (user.sockets?.length == 0) {
-        await this.socketFriendService.emitStatusAllFriend(user._id, socket.id, false);
-      }
+      await this.socketFriendService.emitStatusAllFriend(user._id, socket.id, false);
     }
     socket.disconnect();
+  }
+
+  @SubscribeMessage(SocketRecvName.MessageNew)
+  handleEvent(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() data: SocketMessageNewRecv
+  ) {
+    this.socketMessageService.onMessageNew(client, data);
   }
 }
