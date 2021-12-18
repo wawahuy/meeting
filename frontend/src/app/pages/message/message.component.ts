@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
 @Component({
@@ -6,7 +6,7 @@ import { Title } from '@angular/platform-browser';
   templateUrl: './message.component.html',
   styleUrls: ['./message.component.scss']
 })
-export class MessageComponent implements OnInit {
+export class MessageComponent implements OnInit, AfterViewInit {
 
   isLoading = true
 
@@ -17,13 +17,9 @@ export class MessageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.setLoading();
   }
 
-  setLoading() {
-    setTimeout(()=>{
-      this.isLoading = false;
-    }, 2000)
+  ngAfterViewInit(): void {
+    setTimeout(() => this.isLoading = false, 0);
   }
-
 }

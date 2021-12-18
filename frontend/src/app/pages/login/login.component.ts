@@ -13,6 +13,7 @@ import { ELoginFormField } from './model';
 })
 export class LoginComponent implements OnInit {
   form: FormGroup;
+  isLoading: boolean;
 
   readonly ELoginFormField = ELoginFormField;
 
@@ -37,6 +38,7 @@ export class LoginComponent implements OnInit {
   }
 
   async submitSignIn() {
+    this.isLoading = true;
     const values = this.form.value;
     await this.authService.login(values.username, values.password)
       .then(res => {
@@ -45,6 +47,7 @@ export class LoginComponent implements OnInit {
       .catch(err => {
         this.notifierService.notify('error', err?.error?.message || 'Unknown Error')
       })
+    this.isLoading = false;
   }
 
   isControlError(field: ELoginFormField, type: string) {

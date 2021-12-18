@@ -81,7 +81,10 @@
           [disabled]="form.invalid"
           (click)="submitSignIn()"
         >
-          Sign In
+          <app-loading *ngIf="isLoading" [isLoading]="true" [hasPadding]="false"></app-loading>
+          <ng-container *ngIf="!isLoading">
+            Sign In
+          </ng-container>
         </button>
         <button
           routerLink="/sign-up"

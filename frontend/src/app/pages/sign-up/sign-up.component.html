@@ -131,7 +131,10 @@
           [disabled]="form.invalid"
           (click)="submitSignUp()"
         >
-          Sign Up
+          <app-loading *ngIf="isLoading" [isLoading]="true" [hasPadding]="false"></app-loading>
+          <ng-container *ngIf="!isLoading">
+            Sign Up
+          </ng-container>
         </button>
       </div>
     </form>

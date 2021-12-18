@@ -1,4 +1,4 @@
-<div *ngIf="isLoading" class="tw-p-4 tw-text-gray-300">
+<div *ngIf="isLoading" class="tw-text-gray-300" [ngClass]="{ 'tw-p-4': hasPadding }">
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlns:xlink="http://www.w3.org/1999/xlink"

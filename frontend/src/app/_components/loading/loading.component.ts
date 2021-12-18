@@ -7,6 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class LoadingComponent implements OnInit {
   @Input() isLoading: boolean;
+  @Input() hasPadding: boolean = true;
 
   constructor() { }
 

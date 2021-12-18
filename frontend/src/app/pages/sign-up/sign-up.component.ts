@@ -12,7 +12,7 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./sign-up.component.scss']
 })
 export class SignUpComponent implements OnInit {
-
+  isLoading: boolean;
   form: FormGroup;
 
   readonly ESignUpFormField = ESignUpFormField;
@@ -61,6 +61,7 @@ export class SignUpComponent implements OnInit {
   }
 
   async submitSignUp() {
+    this.isLoading = true;
     const values = this.form.value;
     await this.authService.register(values.name, values.username, values.password)
       .then(res => {
@@ -69,6 +70,7 @@ export class SignUpComponent implements OnInit {
       .catch(err => {
         this.notifierService.notify('error', err?.error?.message || 'Unknown Error')
       })
+    this.isLoading = false;
   }
 
   isFormError() {
