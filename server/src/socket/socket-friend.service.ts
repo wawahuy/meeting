@@ -17,11 +17,12 @@ export class SocketFriendService {
     this.socketGateway = s;
   }
 
-  async emitStatusAllFriend(userId: string, status: boolean) {
+  async emitStatusAllFriend(userId: string, socketId: string, status: boolean) {
     const friendData = await this.friendService.getFriendOnline(userId);
     const d: SocketFriendStatus = {
       userId,
-      status
+      status,
+      socketId
     };
     if (friendData) {
       friendData.friends?.forEach((friend: UserDocument) => {

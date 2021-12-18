@@ -38,7 +38,6 @@ export class Room {
 
   @Prop({ 
     type: MSchema.Types.Date,
-    default: moment().toDate(),
     index: true
   })
   orderTime: string;

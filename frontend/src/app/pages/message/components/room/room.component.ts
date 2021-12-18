@@ -54,7 +54,7 @@ export class RoomComponent implements OnInit {
     this.socketService
       .fromEvent<SocketFriendStatus>(SocketRecvName.FriendStatus)
       .subscribe((data) => {
-        console.log(data);
+        this.onUpdateOnline(data);
       });
   }
 
@@ -78,6 +78,27 @@ export class RoomComponent implements OnInit {
       return item._id !== room._id;
     });
     this.data.data = [room, ...this.data.data];
+  }
+
+  onUpdateOnline(d: SocketFriendStatus) {
+    if (!this.data?.data) {
+      return;
+    }
+    this.data.data.forEach(room => {
+      room.users?.some(item => {
+        const user = item.user;
+        if (user && user._id === d.userId) {
+          if (d.status) {
+            user.sockets = [
+              ...user.sockets,
+              d.socketId
+            ]
+          } else {
+            user.sockets = user.sockets?.filter(item => item !== d.socketId);
+          }
+        }
+      })
+    });
   }
 
   async loadData() {
@@ -131,8 +152,14 @@ export class RoomComponent implements OnInit {
     return this.roomService.getRoomName(room);
   }
 
-  getOnlineTimeByUser(user: User) {
-    return user.onlineLasted ? computeOnlineTime(user.onlineLasted) : '-';
+  getOnlineTimeByRoom(room: Room) {
+    if (room.users?.length == 2) {
+      const user = room.users.filter(
+        item => item.user._id !== this.authService.currentUserValue._id
+      )?.[0]?.user;
+      return user.onlineLasted ? computeOnlineTime(user.onlineLasted) : '-';
+    }
+    return null;
   }
 
   getStatusRoom(room: Room) {

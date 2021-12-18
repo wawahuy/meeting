@@ -34,7 +34,7 @@ export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGate
       await this.userService.pushSocketId(user._id, client.id);
 
       if (user.sockets?.length == 0) {
-        await this.socketFriendService.emitStatusAllFriend(user._id, true);
+        await this.socketFriendService.emitStatusAllFriend(user._id, client.id, true);
       }
     } catch (e) {
       await this.disconnect(client);
@@ -52,7 +52,7 @@ export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     if (user) {
       await this.userService.pullSocketId(user._id, socket.id);
       if (user.sockets?.length == 0) {
-        await this.socketFriendService.emitStatusAllFriend(user._id, false);
+        await this.socketFriendService.emitStatusAllFriend(user._id, socket.id, false);
       }
     }
     socket.disconnect();

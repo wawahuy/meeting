@@ -216,7 +216,7 @@
     <div
       *ngIf="!getStatusRoom(item)"
       class="tw-m-auto tw-rounded-full tw-bg-gray-700 tw-w-2 tw-h-2"
-      tooltip="Online 4 minutes ago"
+      [tooltip]="getOnlineTimeByRoom(item)"
     ></div>
   </div>
   <app-loading [isLoading]="isLoading"></app-loading>

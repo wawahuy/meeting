@@ -46,7 +46,7 @@ export class RoomService {
     return (
       room.users.filter(
         (item) => item.user._id !== this.authService.currentUserValue._id
-      )[0].user.sockets.length > 0
+      ).some(item => item.user.sockets.length > 0)
     );
   }
 

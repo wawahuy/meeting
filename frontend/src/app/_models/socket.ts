@@ -9,4 +9,5 @@ export enum SocketRecvName {
 export interface SocketFriendStatus {
   status: boolean;
   userId: string;
+  socketId: string;
 }

@@ -86,6 +86,7 @@ export class RoomService {
     // create
     const data: AnyKeys<RoomDocument>[] = [{
       name: d.name,
+      orderTime: moment().toDate(),
       users: [
         {
           user: new Types.ObjectId(userHost),
@@ -190,6 +191,7 @@ export class RoomService {
           _id: '$_id',
           name: { $first: "$name" },
           updatedAt: { $first: "$updatedAt" },
+          orderTime: { $first: "$orderTime" },
           users: {
             $push: {
               nickName: "$users.nickName",
@@ -222,6 +224,11 @@ export class RoomService {
       .aggregate([
         ...agg,
         {
+          $sort: {
+            orderTime: -1
+          }
+        },
+        {
           $project: {
             _id: 1,
             name: 1,
@@ -232,11 +239,6 @@ export class RoomService {
             'users.user.sockets': 1,
             'users.user.onlineLasted': 1,
             'updatedAt': 1,
-          }
-        },
-        {
-          $sort: {
-            orderTime: -1
           }
         },
         { $skip: Number((page - 1) * size) },
