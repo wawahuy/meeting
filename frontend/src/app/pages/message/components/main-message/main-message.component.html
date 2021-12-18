@@ -1,71 +1,24 @@
 <app-modal-profile #profile></app-modal-profile>
-<div
-  class="
-    tw-flex
-    tw-justify-between
-    tw-items-center
-    tw-p-4
-    tw-border-b
-    tw-border-gray-800
-  "
->
-  <div class="tw-flex tw-flex-1 tw-space-x-4">
-    <div class="tw-rounded-full tw-bg-gray-600 tw-w-12 tw-h-12"></div>
-    <div class="tw-flex tw-flex-col tw-flex-1">
-      <div class="">{{ userConnect.username }}</div>
-      <div class="tw-text-xs tw-text-gray-600">Online 1h ago</div>
+<ng-container *ngIf="!!roomCurrent">
+  <div
+    class="
+      tw-flex
+      tw-justify-between
+      tw-items-center
+      tw-p-4
+      tw-border-b
+      tw-border-gray-800
+    "
+  >
+    <div class="tw-flex tw-flex-1 tw-space-x-4">
+      <div class="tw-rounded-full tw-bg-gray-600 tw-w-12 tw-h-12"></div>
+      <div class="tw-flex tw-flex-col tw-flex-1">
+        <div class="">{{ getRoomName() }}</div>
+        <div class="tw-text-xs tw-text-gray-600">{{ getRoomOnlineTime() }}</div>
+      </div>
     </div>
-  </div>
-  <div class="tw-flex tw-flex-1 tw-space-x-4 tw-justify-end">
-    <button
-      class="
-        tw-rounded-full tw-bg-gray-600 tw-w-10 tw-h-10
-        hover:tw-bg-gray-500
-      "
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        aria-hidden="true"
-        role="img"
-        class="iconify iconify--mdi m-auto"
-        width="20"
-        height="20"
-        preserveAspectRatio="xMidYMid meet"
-        viewBox="0 0 24 24"
-      >
-        <path
-          d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"
-          fill="currentColor"
-        ></path>
-      </svg>
-    </button>
-    <button
-      class="
-        tw-rounded-full tw-bg-gray-600 tw-w-10 tw-h-10
-        hover:tw-bg-gray-500
-      "
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        aria-hidden="true"
-        role="img"
-        class="iconify iconify--ic m-auto"
-        width="20"
-        height="20"
-        preserveAspectRatio="xMidYMid meet"
-        viewBox="0 0 24 24"
-      >
-        <path
-          d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02c-.37-1.11-.56-2.3-.56-3.53c0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99C3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"
-          fill="currentColor"
-        ></path>
-      </svg>
-    </button>
-    <div class="btn-group" dropdown autoClose="true" placement="bottom left">
+    <div class="tw-flex tw-flex-1 tw-space-x-4 tw-justify-end">
       <button
-        dropdownToggle
         class="
           tw-rounded-full tw-bg-gray-600 tw-w-10 tw-h-10
           hover:tw-bg-gray-500
@@ -76,319 +29,369 @@
           xmlns:xlink="http://www.w3.org/1999/xlink"
           aria-hidden="true"
           role="img"
-          class="iconify iconify--ion m-auto"
+          class="iconify iconify--mdi m-auto"
           width="20"
           height="20"
-          preserveAspectRatio="xMidYMid meet"
-          viewBox="0 0 512 512"
-        >
-          <path
-            d="M255.8 218c-21 0-38 17-38 38s17 38 38 38 38-17 38-38-17-38-38-38z"
-            fill="currentColor"
-          ></path>
-          <path
-            d="M102 218c-21 0-38 17-38 38s17 38 38 38 38-17 38-38-17-38-38-38z"
-            fill="currentColor"
-          ></path>
-          <path
-            d="M410 218c-21 0-38 17-38 38s17 38 38 38 38-17 38-38-17-38-38-38z"
-            fill="currentColor"
-          ></path>
-        </svg>
-      </button>
-      <ul
-        id="dropdown-basic"
-        *dropdownMenu
-        class="dropdown-menu dropdown-menu-right"
-        role="menu"
-        aria-labelledby="button-basic"
-      >
-        <li role="menuitem"><a class="dropdown-item" href="#">Profile</a></li>
-        <li role="menuitem"><a class="dropdown-item" href="#">Setting</a></li>
-      </ul>
-    </div>
-  </div>
-</div>
-<!-- Main message -->
-
-<div
-  class="
-    tw-flex-1
-    tw-h-[calc(100vh-10rem)]
-    tw-text-3.25
-    tw-overflow-y-auto
-    tw-px-4
-    tw-pb-4
-    tw-space-y-4
-    2xl:tw-text-sm
-    tw-relative
-  "
->
-  <div
-    class="tw-sticky tw-top-0"
-    [ngClass]="
-      !isConnect
-        ? 'tw-animate-fadeInTop100'
-        : 'tw-animate-fadeOutTop100 tw-translate-y-[-8rem] tw-h-0'
-    "
-  >
-    <div class="tw-bg-shark">
-      <div class="tw-p-4 tw-text-center tw-uppercase">Add to your contact?</div>
-      <div class="tw-flex">
-        <div
-          *ngFor="let item of btnConnect; index as i"
-          class="
-            tw-flex-1
-            tw-border
-            tw-cursor-pointer
-            tw-duration-200
-            tw-transition
-            tw-border-gray-800
-            tw-items-center
-            tw-m-auto
-            tw-py-6
-            tw-text-center
-            hover:tw-text-white
-          "
-          [ngClass]="
-            i === 1
-              ? 'tw-text-puertoRico-500 hover:tw-bg-puertoRico-500 '
-              : 'tw-text-red-500 hover:tw-bg-red-500 '
-          "
-          (click)="isConnect = true"
-        >
-          {{ item }}
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- friends -->
-  <div class="tw-flex tw-w-full tw-text-gray-200 tw-space-x-3">
-    <div>
-      <div
-        class="tw-rounded-full tw-bg-gray-700 tw-w-8 tw-h-8 tw-cursor-pointer"
-        (click)="profile.show()"
-      ></div>
-    </div>
-    <div class="tw-space-y-2 tw-w-1/2">
-      <div class="">
-        <p
-          class="
-            tw-m-0
-            tw-py-2
-            tw-px-3
-            tw-inline-block
-            tw-leading-5
-            tw-rounded-lg
-            tw-bg-gray-700
-          "
-        >
-          Hello Huy
-        </p>
-      </div>
-      <div class="">
-        <p
-          class="
-            tw-m-0
-            tw-py-2
-            tw-px-3
-            tw-inline-block
-            tw-leading-5
-            tw-rounded-lg
-            tw-bg-gray-700
-          "
-        >
-          Làm project này cho cẩn thận nha em
-        </p>
-      </div>
-      <div class="">
-        <p
-          class="
-            tw-m-0
-            tw-py-2
-            tw-px-3
-            tw-inline-block
-            tw-leading-5
-            tw-rounded-lg
-            tw-bg-gray-700
-          "
-        >
-          Xong sớm có thưởng nhé em <3
-        </p>
-      </div>
-    </div>
-  </div>
-  <!-- me -->
-  <div class="tw-flex tw-w-full tw-text-gray-200 tw-space-x-3 tw-justify-end">
-    <div class="tw-flex tw-flex-col tw-w-1/2 tw-items-end tw-space-y-1">
-      <div class="">
-        <p
-          class="
-            tw-m-0
-            tw-py-2
-            tw-px-3
-            tw-inline-block
-            tw-leading-5
-            tw-rounded-lg
-            tw-bg-green-600
-          "
-        >
-          Dạ okeee anh
-        </p>
-      </div>
-      <div class="">
-        <p
-          class="
-            tw-m-0
-            tw-py-2
-            tw-px-3
-            tw-inline-block
-            tw-leading-5
-            tw-rounded-lg
-            tw-bg-green-600
-          "
-        >
-          Em sẽ cố gắng hết sức anh ơi
-        </p>
-      </div>
-    </div>
-  </div>
-  <!-- loop -->
-</div>
-<!-- bottom main -->
-<div class="tw-flex tw-items-center tw-justify-between tw-p-4 tw-space-x-4">
-  <div class="tw-flex tw-items-center">
-    <button
-      class="
-        tw-rounded-full tw-bg-gray-600 tw-w-10 tw-h-10 tw-m-auto
-        hover:tw-bg-gray-500
-      "
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        aria-hidden="true"
-        role="img"
-        class="iconify iconify--ic m-auto"
-        width="20"
-        height="20"
-        preserveAspectRatio="xMidYMid meet"
-        viewBox="0 0 24 24"
-      >
-        <path
-          d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1z"
-          fill="currentColor"
-        ></path>
-      </svg>
-    </button>
-  </div>
-  <div class="tw-flex-1 tw-relative">
-    <input
-      class="
-        tw-text-gray-300
-        tw-rounded-full
-        tw-pl-4
-        tw-pr-20
-        tw-py-2
-        tw-flex-1
-        tw-w-full
-        tw-bg-gray-800
-        focus:tw-border-none
-      "
-      placeholder="Messages"
-    />
-    <div
-      class="
-        tw-absolute
-        tw-flex
-        tw-space-x-2
-        tw-w-max-content
-        tw-mt-2
-        tw-mr-4
-        tw-top-0
-        tw-right-0
-      "
-    >
-      <span
-        class="
-          tw-cursor-pointer tw-duration-200 tw-transition tw-text-gray-600
-          hover:tw-text-gray-300
-        "
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          aria-hidden="true"
-          role="img"
-          class="iconify iconify--fluent"
-          width="22"
-          height="22"
-          preserveAspectRatio="xMidYMid meet"
-          viewBox="0 0 12 12"
-        >
-          <g fill="none">
-            <path
-              d="M3 1h6a2 2 0 0 1 2 2v3H8c-.725 0-1.36.385-1.71.962a.918.918 0 0 1-.294.048c-.318 0-.572-.157-.768-.353a1.785 1.785 0 0 1-.281-.37a.5.5 0 0 0-.894.447v.002l.002.001l.002.005l.008.015a1.776 1.776 0 0 0 .113.187c.075.114.19.266.343.42c.303.304.797.646 1.475.646H6V11H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2zm1.5 4a.5.5 0 1 0 0-1a.5.5 0 0 0 0 1zm3 0a.5.5 0 1 0 0-1a.5.5 0 0 0 0 1zM11 7H8a1 1 0 0 0-1 1v3h.5a.5.5 0 0 0 .354-.146l3-3A.5.5 0 0 0 11 7.5V7z"
-              fill="currentColor"
-            ></path>
-          </g>
-        </svg>
-      </span>
-      <span
-        class="
-          tw-cursor-pointer tw-duration-200 tw-transition tw-text-gray-600
-          hover:tw-text-gray-300
-        "
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          aria-hidden="true"
-          role="img"
-          class="iconify iconify--mdi"
-          width="22"
-          height="22"
           preserveAspectRatio="xMidYMid meet"
           viewBox="0 0 24 24"
         >
           <path
-            d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10A10 10 0 0 0 12 2M7 9.5C7 8.7 7.7 8 8.5 8s1.5.7 1.5 1.5S9.3 11 8.5 11S7 10.3 7 9.5m5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81M15.5 11c-.8 0-1.5-.7-1.5-1.5S14.7 8 15.5 8s1.5.7 1.5 1.5s-.7 1.5-1.5 1.5z"
+            d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"
             fill="currentColor"
           ></path>
         </svg>
-      </span>
+      </button>
+      <button
+        class="
+          tw-rounded-full tw-bg-gray-600 tw-w-10 tw-h-10
+          hover:tw-bg-gray-500
+        "
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          aria-hidden="true"
+          role="img"
+          class="iconify iconify--ic m-auto"
+          width="20"
+          height="20"
+          preserveAspectRatio="xMidYMid meet"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02c-.37-1.11-.56-2.3-.56-3.53c0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99C3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"
+            fill="currentColor"
+          ></path>
+        </svg>
+      </button>
+      <div class="btn-group" dropdown autoClose="true" placement="bottom left">
+        <button
+          dropdownToggle
+          class="
+            tw-rounded-full tw-bg-gray-600 tw-w-10 tw-h-10
+            hover:tw-bg-gray-500
+          "
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            aria-hidden="true"
+            role="img"
+            class="iconify iconify--ion m-auto"
+            width="20"
+            height="20"
+            preserveAspectRatio="xMidYMid meet"
+            viewBox="0 0 512 512"
+          >
+            <path
+              d="M255.8 218c-21 0-38 17-38 38s17 38 38 38 38-17 38-38-17-38-38-38z"
+              fill="currentColor"
+            ></path>
+            <path
+              d="M102 218c-21 0-38 17-38 38s17 38 38 38 38-17 38-38-17-38-38-38z"
+              fill="currentColor"
+            ></path>
+            <path
+              d="M410 218c-21 0-38 17-38 38s17 38 38 38 38-17 38-38-17-38-38-38z"
+              fill="currentColor"
+            ></path>
+          </svg>
+        </button>
+        <ul
+          id="dropdown-basic"
+          *dropdownMenu
+          class="dropdown-menu dropdown-menu-right"
+          role="menu"
+          aria-labelledby="button-basic"
+        >
+          <li role="menuitem"><a class="dropdown-item" href="#">Profile</a></li>
+          <li role="menuitem"><a class="dropdown-item" href="#">Setting</a></li>
+        </ul>
+      </div>
     </div>
   </div>
-  <div class="tw-flex tw-items-center">
-    <button
-      class="
-        tw-group
-        tw-transition
-        tw-duration-500
-        tw-rounded-full
-        tw-bg-gray-600
-        tw-w-10
-        tw-h-10
-        tw-m-auto
-        hover:tw-bg-puertoRico-500
+
+  <!-- Main message -->
+  <div
+    class="
+      tw-flex-1
+      tw-h-[calc(100vh-10rem)]
+      tw-text-3.25
+      tw-overflow-y-auto
+      tw-px-4
+      tw-pb-4
+      tw-space-y-4
+      2xl:tw-text-sm
+      tw-relative
+    "
+  >
+    <div
+      class="tw-sticky tw-top-0"
+      [ngClass]="
+        !isConnect
+          ? 'tw-animate-fadeInTop100'
+          : 'tw-animate-fadeOutTop100 tw-translate-y-[-8rem] tw-h-0'
       "
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        aria-hidden="true"
-        role="img"
-        class="iconify iconify--ri m-auto group-hover:tw-animate-tiktok"
-        width="20"
-        height="20"
-        preserveAspectRatio="xMidYMid meet"
-        viewBox="0 0 24 24"
-      >
-        <path
-          d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8l-8 6l-8.054-2.685z"
-          fill="currentColor"
-        ></path>
-      </svg>
-    </button>
+      <div class="tw-bg-shark">
+        <div class="tw-p-4 tw-text-center tw-uppercase">Add to your contact?</div>
+        <div class="tw-flex">
+          <div
+            *ngFor="let item of btnConnect; index as i"
+            class="
+              tw-flex-1
+              tw-border
+              tw-cursor-pointer
+              tw-duration-200
+              tw-transition
+              tw-border-gray-800
+              tw-items-center
+              tw-m-auto
+              tw-py-6
+              tw-text-center
+              hover:tw-text-white
+            "
+            [ngClass]="
+              i === 1
+                ? 'tw-text-puertoRico-500 hover:tw-bg-puertoRico-500 '
+                : 'tw-text-red-500 hover:tw-bg-red-500 '
+            "
+            (click)="isConnect = true"
+          >
+            {{ item }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- friends -->
+    <div class="tw-flex tw-w-full tw-text-gray-200 tw-space-x-3">
+      <div>
+        <div
+          class="tw-rounded-full tw-bg-gray-700 tw-w-8 tw-h-8 tw-cursor-pointer"
+          (click)="profile.show()"
+        ></div>
+      </div>
+      <div class="tw-space-y-2 tw-w-1/2">
+        <div class="">
+          <p
+            class="
+              tw-m-0
+              tw-py-2
+              tw-px-3
+              tw-inline-block
+              tw-leading-5
+              tw-rounded-lg
+              tw-bg-gray-700
+            "
+          >
+            Hello Huy
+          </p>
+        </div>
+        <div class="">
+          <p
+            class="
+              tw-m-0
+              tw-py-2
+              tw-px-3
+              tw-inline-block
+              tw-leading-5
+              tw-rounded-lg
+              tw-bg-gray-700
+            "
+          >
+            Làm project này cho cẩn thận nha em
+          </p>
+        </div>
+        <div class="">
+          <p
+            class="
+              tw-m-0
+              tw-py-2
+              tw-px-3
+              tw-inline-block
+              tw-leading-5
+              tw-rounded-lg
+              tw-bg-gray-700
+            "
+          >
+            Xong sớm có thưởng nhé em <3
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- me -->
+    <div class="tw-flex tw-w-full tw-text-gray-200 tw-space-x-3 tw-justify-end">
+      <div class="tw-flex tw-flex-col tw-w-1/2 tw-items-end tw-space-y-1">
+        <div class="">
+          <p
+            class="
+              tw-m-0
+              tw-py-2
+              tw-px-3
+              tw-inline-block
+              tw-leading-5
+              tw-rounded-lg
+              tw-bg-green-600
+            "
+          >
+            Dạ okeee anh
+          </p>
+        </div>
+        <div class="">
+          <p
+            class="
+              tw-m-0
+              tw-py-2
+              tw-px-3
+              tw-inline-block
+              tw-leading-5
+              tw-rounded-lg
+              tw-bg-green-600
+            "
+          >
+            Em sẽ cố gắng hết sức anh ơi
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- loop -->
   </div>
-</div>
+
+  <!-- bottom main -->
+  <div class="tw-flex tw-items-center tw-justify-between tw-p-4 tw-space-x-4">
+    <div class="tw-flex tw-items-center">
+      <button
+        class="
+          tw-rounded-full tw-bg-gray-600 tw-w-10 tw-h-10 tw-m-auto
+          hover:tw-bg-gray-500
+        "
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          aria-hidden="true"
+          role="img"
+          class="iconify iconify--ic m-auto"
+          width="20"
+          height="20"
+          preserveAspectRatio="xMidYMid meet"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1z"
+            fill="currentColor"
+          ></path>
+        </svg>
+      </button>
+    </div>
+    <div class="tw-flex-1 tw-relative">
+      <input
+        class="
+          tw-text-gray-300
+          tw-rounded-full
+          tw-pl-4
+          tw-pr-20
+          tw-py-2
+          tw-flex-1
+          tw-w-full
+          tw-bg-gray-800
+          focus:tw-border-none
+        "
+        placeholder="Messages"
+      />
+      <div
+        class="
+          tw-absolute
+          tw-flex
+          tw-space-x-2
+          tw-w-max-content
+          tw-mt-2
+          tw-mr-4
+          tw-top-0
+          tw-right-0
+        "
+      >
+        <span
+          class="
+            tw-cursor-pointer tw-duration-200 tw-transition tw-text-gray-600
+            hover:tw-text-gray-300
+          "
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            aria-hidden="true"
+            role="img"
+            class="iconify iconify--fluent"
+            width="22"
+            height="22"
+            preserveAspectRatio="xMidYMid meet"
+            viewBox="0 0 12 12"
+          >
+            <g fill="none">
+              <path
+                d="M3 1h6a2 2 0 0 1 2 2v3H8c-.725 0-1.36.385-1.71.962a.918.918 0 0 1-.294.048c-.318 0-.572-.157-.768-.353a1.785 1.785 0 0 1-.281-.37a.5.5 0 0 0-.894.447v.002l.002.001l.002.005l.008.015a1.776 1.776 0 0 0 .113.187c.075.114.19.266.343.42c.303.304.797.646 1.475.646H6V11H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2zm1.5 4a.5.5 0 1 0 0-1a.5.5 0 0 0 0 1zm3 0a.5.5 0 1 0 0-1a.5.5 0 0 0 0 1zM11 7H8a1 1 0 0 0-1 1v3h.5a.5.5 0 0 0 .354-.146l3-3A.5.5 0 0 0 11 7.5V7z"
+                fill="currentColor"
+              ></path>
+            </g>
+          </svg>
+        </span>
+        <span
+          class="
+            tw-cursor-pointer tw-duration-200 tw-transition tw-text-gray-600
+            hover:tw-text-gray-300
+          "
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            aria-hidden="true"
+            role="img"
+            class="iconify iconify--mdi"
+            width="22"
+            height="22"
+            preserveAspectRatio="xMidYMid meet"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10A10 10 0 0 0 12 2M7 9.5C7 8.7 7.7 8 8.5 8s1.5.7 1.5 1.5S9.3 11 8.5 11S7 10.3 7 9.5m5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81M15.5 11c-.8 0-1.5-.7-1.5-1.5S14.7 8 15.5 8s1.5.7 1.5 1.5s-.7 1.5-1.5 1.5z"
+              fill="currentColor"
+            ></path>
+          </svg>
+        </span>
+      </div>
+    </div>
+    <div class="tw-flex tw-items-center">
+      <button
+        class="
+          tw-group
+          tw-transition
+          tw-duration-500
+          tw-rounded-full
+          tw-bg-gray-600
+          tw-w-10
+          tw-h-10
+          tw-m-auto
+          hover:tw-bg-puertoRico-500
+        "
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          aria-hidden="true"
+          role="img"
+          class="iconify iconify--ri m-auto group-hover:tw-animate-tiktok"
+          width="20"
+          height="20"
+          preserveAspectRatio="xMidYMid meet"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8l-8 6l-8.054-2.685z"
+            fill="currentColor"
+          ></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</ng-container>

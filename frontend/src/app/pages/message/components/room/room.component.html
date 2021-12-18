@@ -186,8 +186,8 @@
       tw-transition
       hover:tw-bg-gray-900
     "
-    [ngClass]="item._id === currentRoomId ? 'tw-bg-gray-900' : ''"
-    (click)="currentRoomId = item._id"
+    [ngClass]="item._id === roomSelected?._id ? 'tw-bg-gray-900' : ''"
+    (click)="handleSelectRoom(item)"
   >
     <div
       class="tw-rounded-full tw-bg-gray-600 tw-w-16 tw-h-16 tw-overflow-hidden"

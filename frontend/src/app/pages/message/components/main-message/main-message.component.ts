@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { computeOnlineTime } from 'src/app/_helpers/func';
+import { Room } from 'src/app/_models/room';
+import { AuthService } from 'src/app/_services/auth.service';
+import { RoomService } from 'src/app/_services/room.service';
 
 @Component({
   selector: 'app-main-message',
@@ -18,7 +22,29 @@ export class MainMessageComponent implements OnInit {
 
   isConnect = false;
 
-  constructor() {}
+  roomCurrent: Room;
 
-  ngOnInit(): void {}
+  constructor(
+    private roomService: RoomService,
+    private authService: AuthService,
+  ) {}
+
+  ngOnInit(): void {
+    this.roomService.roomSelected$.subscribe(r => this.roomCurrent = r);
+  }
+
+  getRoomName() {
+    return this.roomService.getRoomName(this.roomCurrent).name;
+  }
+
+  getRoomOnlineTime() {
+    const room = this.roomCurrent;
+    if (room.users?.length == 2) {
+      const user = room.users.filter(
+        item => item.user._id !== this.authService.currentUserValue._id
+      )?.[0]?.user;
+      return user.onlineLasted ? computeOnlineTime(user.onlineLasted) : '-';
+    }
+    return null;
+  }
 }

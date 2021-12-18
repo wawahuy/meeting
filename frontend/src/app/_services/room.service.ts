@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Room, RoomNameResult } from '../_models/room';
 import { ResponseSearch } from '../_models/common';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -12,6 +13,9 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class RoomService {
+  public readonly roomSelectedSubject = new BehaviorSubject<Room>(null);
+  public readonly roomSelected$ = this.roomSelectedSubject.asObservable();
+
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   getRoomName(room: Room): RoomNameResult {

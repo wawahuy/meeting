@@ -18,7 +18,7 @@ import { SocketFriendStatus, SocketRecvName } from 'src/app/_models/socket';
 })
 export class RoomComponent implements OnInit {
   isLoading = true;
-  currentRoomId = '';
+  roomSelected: Room;
   searchString = '';
   data: DataList<Room> = {
     total: 0,
@@ -42,6 +42,9 @@ export class RoomComponent implements OnInit {
   ngOnInit() {
     this.loadData();
     this.initSocket();
+    this.roomService.roomSelected$.subscribe((room) => {
+      this.roomSelected = room;
+    });
   }
 
   initSocket() {
@@ -63,14 +66,19 @@ export class RoomComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
+  handleSelectRoom(room: Room) {
+    this.roomService.roomSelectedSubject.next(room);
+  }
+
   onSelectRoom(room: Room) {
     if (!this.data?.data) {
       return;
     }
 
     this.searchString = '';
-    this.currentRoomId = room._id;
+    this.roomSelected = room;
     this.onUpdateOrAddRoom(room);
+    this.handleSelectRoom(room);
   }
 
   onUpdateOrAddRoom(room: Room) {
