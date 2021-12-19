@@ -21,7 +21,7 @@ export class RoomService {
   getRoomName(room: Room): RoomNameResult {
     if (!!room.name) {
       return {
-        name: room.name
+        name: room.name,
       };
     }
 
@@ -30,10 +30,16 @@ export class RoomService {
     );
     if (users.length >= 2) {
       const name = users
-        .map((item) => item.user.name)
+        .filter((item, index) => index < 2)
+        .map((user) => user.user.name)
         .join(', ');
       return {
-        name
+        name:
+          'You, ' +
+          name +
+          (users.length - 3 > 0
+            ? ' and ' + (users.length - 3) + ' other users'
+            : ''),
       };
     } else {
       const r = users.map((item) => {
@@ -41,17 +47,15 @@ export class RoomService {
       });
       return {
         name: r[0].name,
-        username: r[0].username
+        username: r[0].username,
       };
     }
   }
 
   getStatusRoom(room: Room) {
-    return (
-      room.users.filter(
-        (item) => item.user._id !== this.authService.currentUserValue._id
-      ).some(item => item.user.sockets.length > 0)
-    );
+    return room.users
+      .filter((item) => item.user._id !== this.authService.currentUserValue._id)
+      .some((item) => item.user.sockets.length > 0);
   }
 
   createRoomByUser(name: string = '', users: string[]) {

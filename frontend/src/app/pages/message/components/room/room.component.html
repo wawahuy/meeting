@@ -202,7 +202,10 @@
         <span>{{ getName(item).name }}</span>
         <span class="tw-text-gray-500">({{ getName(item).username }})</span>
       </div>
-      <div *ngIf="!getName(item).username" class="tw-flex-1 tw-text-md">
+      <div
+        *ngIf="!getName(item).username"
+        class="tw-flex-1 tw-text-md tw-line-clamp-1"
+      >
         {{ getName(item).name }}
       </div>
       <div class="tw-flex-1 tw-text-xs tw-text-gray-500">
