@@ -7,6 +7,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import * as _ from 'lodash';
 import { Room } from 'src/app/_models/room';
 import { computeOnlineTime } from 'src/app/_helpers/func';
+import { DataList } from 'src/app/_models/common';
 
 @Component({
   selector: 'app-create-room',
@@ -22,9 +23,15 @@ export class CreateRoomComponent implements OnInit {
   isShow = false;
   isLoading: Boolean;
   isCreating: Boolean;
+  isLoadmore: Boolean;
 
   selectedUsers: User[];
-  listUser: User[];
+  data: DataList<User> = {
+    total: 0,
+    page: 0,
+    size: 0,
+    data: [],
+  };
   form: FormGroup;
 
   constructor(
@@ -44,6 +51,10 @@ export class CreateRoomComponent implements OnInit {
   }
   public hidden() {
     this.isShow = false;
+  }
+
+  get listUser() {
+    return this.data?.data || [];
   }
 
   async submitCreateRoom() {
@@ -69,24 +80,53 @@ export class CreateRoomComponent implements OnInit {
     }
   }
 
+  onScroll = _.debounce(async (event: any) => {
+    if (
+      !this.isLoading &&
+      !!this.data?.data?.length &&
+      this.data?.data?.length < this.data?.total &&
+      event.target.scrollHeight -
+        event.target.clientHeight -
+        event.target.scrollTop <=
+        30
+    ) {
+      this.isLoadmore = true;
+      const page = this.data.page + 1;
+      const dataNew = await this.fetchDataUser(page);
+      setTimeout(() => {
+        this.isLoadmore = false;
+        this.data = {
+          ...dataNew,
+          data: this.data.data.concat(dataNew?.data),
+        };
+      }, 500);
+    }
+  }, 250);
+
   loadData = _.debounce(async () => {
     this.isLoading = true;
-    const [user] = await Promise.all([this.fetchDataUser()]);
-    this.listUser = user;
+    const user = await this.fetchDataUser();
+    this.data = user;
     this.isLoading = false;
   }, 300);
 
-  async fetchDataUser() {
-    return await this.userService
-      .search(this.searchString, 1, 10)
-      .then((res) => res?.items)
+  async fetchDataUser(page: number = 1, size: number = 10) {
+    const result = await this.userService
+      .search(this.searchString, page, size)
       .catch((err) => {
         this.notifierService.notify(
           'error',
           err?.error?.message || 'Unknown Error'
         );
-        return null;
+        return Promise.resolve(null);
       });
+    const u: DataList<User> = {
+      total: result?.total,
+      page,
+      size,
+      data: result?.items,
+    };
+    return u;
   }
 
   keyPressEvent(event) {

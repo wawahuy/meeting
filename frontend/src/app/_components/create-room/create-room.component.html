@@ -251,6 +251,7 @@
               tw-space-y-2
               tw-cursor-pointer
             "
+            (scroll)="onScroll($event)"
           >
             <div
               *ngFor="let user of listUser"
@@ -301,6 +302,13 @@
                   [tooltip]="getOnlineTimeByUser(user)"
                 ></div>
               </div>
+            </div>
+            <div class="tw-h-6">
+              <app-loading
+                *ngIf="isLoadmore"
+                [isLoading]="true"
+                [hasPadding]="true"
+              ></app-loading>
             </div>
           </div>
         </div>
