@@ -72,7 +72,7 @@ export class Message {
   @Prop({ 
     type: MSchema.Types.String,
   })
-  message: string;
+  msg: string;
 }
 
 export const MessageSchema = SchemaFactory.createForClass(Message);

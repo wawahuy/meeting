@@ -10,6 +10,9 @@ import { RoomModule } from '../room/room.module';
   imports: [
     SchemaModule,
     RoomModule
-  ] 
+  ],
+  exports: [
+    MessageService
+  ]
 })
 export class MessageModule {}

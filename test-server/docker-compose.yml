@@ -1,8 +1,0 @@
-version: "3.7"
-services:
-  meeting_test_app:
-    image: zayuh/meeting_test_app:lasted
-    ports:
-      - "24000:24000"
-    restart: always
-    build: .
