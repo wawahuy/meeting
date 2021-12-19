@@ -15,7 +15,7 @@
       <div class="tw-flex tw-flex-col tw-flex-1 tw-p-2">
         <div class="tw-line-clamp-1">{{ getRoomName() }}</div>
         <div class="tw-text-xs tw-text-gray-600 tw-line-clamp-1">
-          {{ getRoomOnlineTime() }}
+          {{ getStatusRoom() ? "Online" : getRoomOnlineTime() }}
         </div>
       </div>
     </div>

@@ -106,4 +106,8 @@ export class MainMessageComponent implements OnInit {
         return Promise.resolve(null);
       });
   }
+  getStatusRoom() {
+    if (this.roomCurrent.users.length === 2)
+      return this.roomService.getStatusRoom(this.roomCurrent);
+  }
 }
