@@ -14,31 +14,28 @@ export class MessageService {
   async get(messageId: string) {
     return await this.messageModel
       .findOne({ _id: new Types.ObjectId(messageId) })
-      .populate('user', '-password -friends ');
+      .populate('user', '-password -friends')
+      .populate('statusReceiver.user', '-password -friends')
   }
 
   async create(data: MessageDocument) {
     return await this.messageModel.create([data]);
   }
 
-  async findPage(roomId: string, search: string, page: number, size: number) {
+  async findPage(userHost: string, roomId: string, search: string, page: number, size: number) {
     let match: FilterQuery<MessageDocument> = {
-      // room: new Ty
+      room: new Types.ObjectId(roomId),
+      'users.user': new Types.ObjectId(userHost)
     };
+
     if (search) {
       search = search.toLowerCase().trim();
       match = {
-        $or: [
-          {
-            username: search
-          },
-          {
-            name: { 
-              $regex: '.*' + search + '.*',
-              $options: 'i'
-            }
-          }
-        ]
+        ...match,
+        msg: {
+          $regex: '.*' + search + '.*',
+          $options: 'i'
+        }
       }
     }
 
@@ -46,6 +43,8 @@ export class MessageService {
       .select('-password -__v')
       .skip((page - 1) * size)
       .limit(size)
+      .populate('user', '-password -friends')
+      .populate('statusReceiver.user', '-password -friends')
       .catch(e => null);
   }
 }

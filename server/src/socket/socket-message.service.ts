@@ -50,7 +50,10 @@ export class SocketMessageService {
       socketIds.forEach(socketId => {
         this.socketGateway.server.to(socketId).emit(
           SocketSendName.MessageMsg,
-          message
+          {
+            room,
+            message
+          }
         )
       })
     })

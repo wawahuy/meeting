@@ -27,22 +27,62 @@ export class RoomService {
   }
 
   async getByRoomUserId(roomId: string, userId: string) {
-    return await this.roomModel
-      .findOne({
-        _id: new Types.ObjectId(roomId),
-        'users.user': new Types.ObjectId(userId)
-      })
-      .populate('users.user', '_id name username avatar sockets onlineLasted')
-      .populate('messageLasted');
+    return new Promise<RoomDocument>((resolve, reject) => {
+      this.roomModel
+        .findOne({
+          _id: new Types.ObjectId(roomId),
+          'users.user': new Types.ObjectId(userId)
+        })
+        .populate('users.user', '_id name username avatar sockets onlineLasted')
+        .populate('messageLasted')
+        .exec((err, room) => {
+          if (err) {
+            return reject(err);
+          }
+          this.userModel.populate(
+            room,
+            {
+              path: 'messageLasted.user',
+              select: '-password -friends'
+            },
+            (error, updatedRoom) => {
+              if (error) {
+                return reject(error);
+              }
+              resolve(updatedRoom);
+            }
+          )
+        })
+    });
   }
 
   async get(roomId: string) {
-    return await this.roomModel
-      .findOne({
-        _id: new Types.ObjectId(roomId)
-      })
-      .populate('users.user', '_id name username avatar sockets onlineLasted')
-      .populate('messageLasted');
+    return new Promise<RoomDocument>((resolve, reject) => {
+      this.roomModel
+        .findOne({
+          _id: new Types.ObjectId(roomId)
+        })
+        .populate('users.user', '_id name username avatar sockets onlineLasted')
+        .populate('messageLasted')
+        .exec((err, room) => {
+          if (err) {
+            return reject(err);
+          }
+          this.userModel.populate(
+            room,
+            {
+              path: 'messageLasted.user',
+              select: '-password -friends'
+            },
+            (error, updatedRoom) => {
+              if (error) {
+                return reject(error);
+              }
+              resolve(updatedRoom);
+            }
+          )
+        })
+    });
   }
 
   async getRoomByUserTwoMember(userHost: string, userRecv: string) {
@@ -59,10 +99,30 @@ export class RoomService {
       ],
       users: { $size: 2 }
     }
-    return await this.roomModel
-      .findOne(match)
-      .populate('users.user', '_id name username avatar sockets onlineLasted')
-      .populate('messageLasted');
+    return new Promise<RoomDocument>((resolve, reject) => {
+      this.roomModel
+        .findOne(match)
+        .populate('users.user', '_id name username avatar sockets onlineLasted')
+        .populate('messageLasted')
+        .exec((err, room) => {
+          if (err) {
+            return reject(err);
+          }
+          this.userModel.populate(
+            room,
+            {
+              path: 'messageLasted.user',
+              select: '-password -friends'
+            },
+            (error, updatedRoom) => {
+              if (error) {
+                return reject(error);
+              }
+              resolve(updatedRoom);
+            }
+          )
+        })
+    });
   }
 
   async create(userHost: string, d: CreateRoomDto) {
@@ -262,26 +322,26 @@ export class RoomService {
             preserveNullAndEmptyArrays: true
           }
         },
-        // {
-        //   $lookup: {
-        //     from: 'users',
-        //     localField: 'messageLasted.user',
-        //     foreignField: '_id',
-        //     as: 'messageLasted.user'
-        //   }
-        // },
-        // {
-        //   $unwind: {
-        //     path: "$messageLasted.user",
-        //     preserveNullAndEmptyArrays: true
-        //   }
-        // },
-        // {
-        //   $project: {
-        //     'messageLasted.user.password': 0,
-        //     'messageLasted.user.friends': 0,
-        //   }
-        // }
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'messageLasted.user',
+            foreignField: '_id',
+            as: 'messageLasted.user'
+          }
+        },
+        {
+          $unwind: {
+            path: "$messageLasted.user",
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $project: {
+            'messageLasted.user.password': 0,
+            'messageLasted.user.friends': 0,
+          }
+        }
       ])
       .catch(e => null);
 

@@ -37,7 +37,7 @@ export class MessageController {
       throw new ForbiddenException();
     }
 
-    const result = await this.messageService.findPage(roomId, search, page, size);
+    const result = await this.messageService.findPage(user._id, roomId, search, page, size);
     if (result) {
       res.status(HttpStatus.OK).json(result);
     } else {
