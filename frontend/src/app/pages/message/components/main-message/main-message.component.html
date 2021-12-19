@@ -12,9 +12,11 @@
   >
     <div class="tw-flex tw-flex-1 tw-space-x-4">
       <div class="tw-rounded-full tw-bg-gray-600 tw-w-12 tw-h-12"></div>
-      <div class="tw-flex tw-flex-col tw-flex-1">
-        <div class="">{{ getRoomName() }}</div>
-        <div class="tw-text-xs tw-text-gray-600">{{ getRoomOnlineTime() }}</div>
+      <div class="tw-flex tw-flex-col tw-flex-1 tw-p-2">
+        <div class="tw-line-clamp-1">{{ getRoomName() }}</div>
+        <div class="tw-text-xs tw-text-gray-600 tw-line-clamp-1">
+          {{ getRoomOnlineTime() }}
+        </div>
       </div>
     </div>
     <div class="tw-flex tw-flex-1 tw-space-x-4 tw-justify-end">
@@ -118,23 +120,25 @@
       tw-h-[calc(100vh-10rem)]
       tw-text-3.25
       tw-overflow-y-auto
-      tw-px-4
-      tw-pb-4
+      tw-p-4
       tw-space-y-4
       2xl:tw-text-sm
       tw-relative
     "
   >
     <div
+      *ngIf="isConnect"
       class="tw-sticky tw-top-0"
       [ngClass]="
-        !isConnect
+        isConnect
           ? 'tw-animate-fadeInTop100'
           : 'tw-animate-fadeOutTop100 tw-translate-y-[-8rem] tw-h-0'
       "
     >
       <div class="tw-bg-shark">
-        <div class="tw-p-4 tw-text-center tw-uppercase">Add to your contact?</div>
+        <div class="tw-p-4 tw-text-center tw-uppercase">
+          Add to your contact?
+        </div>
         <div class="tw-flex">
           <div
             *ngFor="let item of btnConnect; index as i"
@@ -156,7 +160,7 @@
                 ? 'tw-text-puertoRico-500 hover:tw-bg-puertoRico-500 '
                 : 'tw-text-red-500 hover:tw-bg-red-500 '
             "
-            (click)="isConnect = true"
+            (click)="i == 0 ? (isConnect = false) : addFriend()"
           >
             {{ item }}
           </div>
