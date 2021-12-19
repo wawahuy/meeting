@@ -9,7 +9,8 @@ import * as _ from 'lodash';
 import { User } from 'src/app/_models/user';
 import { DataList } from 'src/app/_models/common';
 import { SocketService } from 'src/app/_services/socket.service';
-import { SocketFriendStatus, SocketRecvName } from 'src/app/_models/socket';
+import { SocketFriendStatus, SocketMessageNew, SocketRecvName } from 'src/app/_models/socket';
+import { Message } from 'src/app/_models/message';
 
 @Component({
   selector: 'app-room',
@@ -58,6 +59,14 @@ export class RoomComponent implements OnInit {
       .fromEvent<SocketFriendStatus>(SocketRecvName.FriendStatus)
       .subscribe((data) => {
         this.onUpdateOnline(data);
+      });
+
+    this.socketService
+      .fromEvent<SocketMessageNew>(SocketRecvName.MessageMsg)
+      .subscribe((data) => {
+        const { room, message } = data;
+        room.messageLasted = message;
+        this.onUpdateOrAddRoom(room);
       });
   }
 
@@ -173,5 +182,17 @@ export class RoomComponent implements OnInit {
 
   getStatusRoom(room: Room) {
     return this.roomService.getStatusRoom(room);
+  }
+
+  getNameSender(item: Message) {
+    let name = item?.user?.name;
+    if (item?.user?._id == this.authService.currentUserValue._id) {
+      name = 'You';
+    }
+
+    if (name) {
+      return name + ': ';
+    }
+    return '';
   }
 }

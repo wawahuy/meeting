@@ -1,3 +1,4 @@
+import { Message } from "./message";
 import { User } from "./user";
 
 export interface CreateRoom {
@@ -11,7 +12,7 @@ export interface Room {
     nickName: string;
     user: User;
   }[],
-  messageLasted: any;
+  messageLasted: Message;
 };
 
 export interface RoomNameResult {

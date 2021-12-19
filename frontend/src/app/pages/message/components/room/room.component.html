@@ -206,7 +206,8 @@
         {{ getName(item).name }}
       </div>
       <div class="tw-flex-1 tw-text-xs tw-text-gray-500">
-        {{ item.messageLasted }}
+        {{ getNameSender(item.messageLasted) }}
+        {{ item.messageLasted?.msg }}
       </div>
     </div>
     <div
