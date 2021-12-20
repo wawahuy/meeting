@@ -1,3 +1,4 @@
+import { MessageService } from './../../../../_services/message.service';
 import { NotifierService } from 'angular-notifier';
 import { FriendService } from './../../../../_services/friend.service';
 import { Component, OnInit } from '@angular/core';
@@ -31,13 +32,19 @@ export class MainMessageComponent implements OnInit {
     private notifierService: NotifierService,
     private roomService: RoomService,
     private authService: AuthService,
-    private friendService: FriendService
+    private friendService: FriendService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
     this.roomService.roomSelected$.subscribe(
-      (r) => (this.roomCurrent = r) && this.getHasFriend(r)
+      (r) => (this.roomCurrent = r) && this.loadMainMessage(r)
     );
+  }
+
+  loadMainMessage(r) {
+    this.getHasFriend(r);
+    this.fetchMessageByRoomId(r._id, '', 1, 10);
   }
 
   getRoomName() {
@@ -109,5 +116,25 @@ export class MainMessageComponent implements OnInit {
   getStatusRoom() {
     if (this.roomCurrent.users.length === 2)
       return this.roomService.getStatusRoom(this.roomCurrent);
+  }
+
+  fetchMessageByRoomId(
+    roomId,
+    search: string = '',
+    page: number = 1,
+    size: number = 10
+  ) {
+    this.messageService
+      .getMessagesByRoomId(roomId, search, page, size)
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((err) => {
+        this.notifierService.notify(
+          'error',
+          err?.error?.message || 'Unknown Error'
+        );
+        return Promise.resolve(null);
+      });
   }
 }
