@@ -82,7 +82,7 @@ export class CreateRoomComponent implements OnInit {
 
   onScroll = _.debounce(async (event: any) => {
     if (
-      !this.isLoading &&
+      !this.isLoadmore &&
       !!this.data?.data?.length &&
       this.data?.data?.length < this.data?.total &&
       event.target.scrollHeight -
@@ -93,13 +93,11 @@ export class CreateRoomComponent implements OnInit {
       this.isLoadmore = true;
       const page = this.data.page + 1;
       const dataNew = await this.fetchDataUser(page);
-      setTimeout(() => {
-        this.isLoadmore = false;
-        this.data = {
-          ...dataNew,
-          data: this.data.data.concat(dataNew?.data),
-        };
-      }, 500);
+      this.isLoadmore = false;
+      this.data = {
+        ...dataNew,
+        data: this.data.data.concat(dataNew?.data),
+      };
     }
   }, 250);
 
