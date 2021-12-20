@@ -11,7 +11,10 @@
     "
   >
     <div class="tw-flex tw-flex-1 tw-space-x-4">
-      <div class="tw-rounded-full tw-bg-gray-600 tw-w-12 tw-h-12"></div>
+      <div
+        class="tw-rounded-full tw-bg-gray-600 tw-w-12 tw-h-12"
+        (click)="profile.show()"
+      ></div>
       <div class="tw-flex tw-flex-col tw-flex-1">
         <div class="tw-line-clamp-1">{{ getRoomName() }}</div>
         <div class="tw-text-xs tw-text-gray-600 tw-line-clamp-1">
@@ -121,7 +124,7 @@
       tw-text-3.25
       tw-overflow-y-auto
       tw-p-4
-      tw-space-y-4
+      tw-space-y-2
       2xl:tw-text-sm
       tw-relative
     "
@@ -168,30 +171,34 @@
       </div>
     </div>
     <!-- friends -->
-    <div class="tw-flex tw-w-full tw-text-gray-200 tw-space-x-3">
-      <div>
+    <div
+      *ngFor="let item of messageRoom; index as i"
+      class="tw-flex tw-w-full tw-text-gray-200 tw-space-x-3"
+      [ngClass]="myMessage(item) ? ' tw-justify-end' : ''"
+    >
+      <!-- <div>
         <div
           class="tw-rounded-full tw-bg-gray-700 tw-w-8 tw-h-8 tw-cursor-pointer"
           (click)="profile.show()"
         ></div>
-      </div>
-      <div class="tw-space-y-2 tw-w-1/2">
-        <div class="">
-          <p
-            class="
-              tw-m-0
-              tw-py-2
-              tw-px-3
-              tw-inline-block
-              tw-leading-5
-              tw-rounded-lg
-              tw-bg-gray-700
-            "
-          >
-            Hello Huy
-          </p>
+      </div> -->
+      <div
+        class="tw-w-1/2"
+        [ngClass]="
+          myMessage(item)
+            ? 'tw-flex tw-flex-col tw-items-end tw-space-y-1'
+            : 'tw-space-y-2 '
+        "
+      >
+        <div
+          class="
+            tw-m-0 tw-py-2 tw-px-3 tw-inline-block tw-leading-5 tw-rounded-lg
+          "
+          [ngClass]="myMessage(item) ? 'tw-bg-green-600' : 'tw-bg-gray-700'"
+        >
+          {{ item.msg }}
         </div>
-        <div class="">
+        <!-- <div class="">
           <p
             class="
               tw-m-0
@@ -220,6 +227,70 @@
           >
             Xong sớm có thưởng nhé em <3
           </p>
+        </div> -->
+      </div>
+      <div *ngIf="myMessage(item)">
+        <div *ngIf="i < messageRoom.length - 1" class="tw-w-[15px]"></div>
+        <div
+          class="
+            tw-mt-auto
+            tw-mb-1
+            tw-rounded-full
+            tw-h-3.5
+            tw-h-3.75
+            tw-border-white
+          "
+          *ngIf="i === messageRoom.length - 1"
+          [ngClass]="true ? '' : 'tw-bg-white tw-border'"
+        >
+          <!-- đang gửi -->
+          <app-loading
+            *ngIf="false"
+            [isLoading]="true"
+            [hasPadding]="false"
+          ></app-loading>
+          <!-- đã gửi -->
+          <svg
+            *ngIf="true"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            aria-hidden="true"
+            role="img"
+            class="iconify iconify--teenyicons"
+            width="15"
+            height="15"
+            preserveAspectRatio="xMidYMid meet"
+            viewBox="0 0 15 15"
+          >
+            <g fill="none">
+              <path
+                d="M4 7.5L7 10l4-5m-3.5 9.5a7 7 0 1 1 0-14a7 7 0 0 1 0 14z"
+                stroke="currentColor"
+              ></path>
+            </g>
+          </svg>
+          <!-- đã nhận -->
+          <svg
+            *ngIf="false"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            aria-hidden="true"
+            role="img"
+            class="iconify iconify--teenyicons tw-text-puertoRico-500"
+            width="15"
+            height="15"
+            preserveAspectRatio="xMidYMid meet"
+            viewBox="0 0 15 15"
+          >
+            <g fill="#fff">
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M0 7.5a7.5 7.5 0 1 1 15 0a7.5 7.5 0 0 1-15 0zm7.072 3.21l4.318-5.398l-.78-.624l-3.682 4.601L4.32 7.116l-.64.768l3.392 2.827z"
+                fill="currentColor"
+              ></path>
+            </g>
+          </svg>
         </div>
       </div>
     </div>

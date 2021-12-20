@@ -7,6 +7,7 @@ import { Room } from 'src/app/_models/room';
 import { AuthService } from 'src/app/_services/auth.service';
 import { RoomService } from 'src/app/_services/room.service';
 import { result } from 'lodash';
+import { Message } from 'src/app/_models/message';
 
 @Component({
   selector: 'app-main-message',
@@ -27,6 +28,7 @@ export class MainMessageComponent implements OnInit {
   isConnect = false;
 
   roomCurrent: Room;
+  messageRoom: Message[];
 
   constructor(
     private notifierService: NotifierService,
@@ -44,7 +46,7 @@ export class MainMessageComponent implements OnInit {
 
   loadMainMessage(r) {
     this.getHasFriend(r);
-    this.fetchMessageByRoomId(r._id, '', 1, 10);
+    this.fetchMessageByRoomId(r._id);
   }
 
   getRoomName() {
@@ -127,7 +129,8 @@ export class MainMessageComponent implements OnInit {
     this.messageService
       .getMessagesByRoomId(roomId, search, page, size)
       .then((result) => {
-        console.log(result);
+        const data = result;
+        this.messageRoom = data.reverse();
       })
       .catch((err) => {
         this.notifierService.notify(
@@ -136,5 +139,11 @@ export class MainMessageComponent implements OnInit {
         );
         return Promise.resolve(null);
       });
+  }
+
+  myMessage(message: Message) {
+    const currentId = this.authService.currentUserValue._id;
+    if (message.user._id !== currentId) return false;
+    return true;
   }
 }

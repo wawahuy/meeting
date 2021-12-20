@@ -22,7 +22,7 @@ export class MessageService {
     };
 
     return this.http
-      .get<Message>(url, { params: params, ...httpOptions })
+      .get<Message[]>(url, { params: params, ...httpOptions })
       .toPromise();
   }
 }
