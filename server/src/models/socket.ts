@@ -1,3 +1,5 @@
+import { MessageReceiverStatus, MessageType } from "src/schema/message.schema";
+
 export enum SocketSendName {
   // room
   RoomCreateOrUpdate = 'room:CoU',
@@ -7,11 +9,13 @@ export enum SocketSendName {
 
   // message
   MessageMsg = 'message:msg',
+  MessageReceiverStatus = 'message:receiverStatus',
 }
 
 export enum SocketRecvName {
   // message
   MessageNew = 'message:new',
+  MessageReceiverStatus = 'message:receiverStatus',
 }
 
 export interface SocketFriendStatus {
@@ -23,5 +27,10 @@ export interface SocketFriendStatus {
 export interface SocketMessageNewRecv {
   room: string;
   msg: string;
-  type: number;
+  type: MessageType;
+}
+
+export interface SocketMessageReceiverStatusRecv {
+  type: MessageReceiverStatus,
+  user: string;
 }

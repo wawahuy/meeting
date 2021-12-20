@@ -3,7 +3,7 @@ import { Document, ObjectId, Schema as MSchema } from 'mongoose';
 import { Room } from './room.schema';
 import { User } from './user.schema';
 
-export enum StatusReceiverStatus {
+export enum MessageReceiverStatus {
   Received = 1,
   Watched = 2
 }
@@ -22,9 +22,9 @@ export class StatusReceiver {
   @Prop({ 
     type: MSchema.Types.Number,
     required: true,
-    enum: Object.values(StatusReceiverStatus).filter(v => Number(v))
+    enum: Object.values(MessageReceiverStatus).filter(v => Number(v))
   })
-  type: StatusReceiverStatus;
+  type: MessageReceiverStatus;
 }
 
 const StatusReceiverSchema = SchemaFactory.createForClass(StatusReceiver);

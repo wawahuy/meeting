@@ -306,7 +306,7 @@ export class RoomService {
             'updatedAt': 1,
           }
         },
-        { $skip: Number((page - 1) * size) },
+        { $skip: (Number(page) - 1) * size },
         { $limit: Number(size) },
         {
           $lookup: {
