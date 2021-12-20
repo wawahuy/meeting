@@ -41,6 +41,7 @@ export class MessageService {
 
     return await this.messageModel.find(match)
       .select('-password -__v')
+      .sort({ createdAt: -1 })
       .skip((page - 1) * size)
       .limit(size)
       .populate('user', '-password -friends')

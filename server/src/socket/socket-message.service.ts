@@ -1,7 +1,7 @@
 import { forwardRef, Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import * as moment from 'moment';
 import { Socket } from 'socket.io';
-import { SocketMessageNewRecv, SocketSendName } from 'src/models/socket';
+import { SocketMessageNewRecv, SocketMessageReceiverStatusRecv, SocketSendName } from 'src/models/socket';
 import { MessageService } from 'src/modules/message/message.service';
 import { RoomService } from 'src/modules/room/room.service';
 import { MessageDocument, MessageType } from 'src/schema/message.schema';
@@ -57,5 +57,9 @@ export class SocketMessageService {
         )
       })
     })
+  }
+
+  async onMessageReceiverStatus(client: Socket, data: SocketMessageReceiverStatusRecv) {
+    
   }
 }

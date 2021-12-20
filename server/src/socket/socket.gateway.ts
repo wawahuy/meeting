@@ -1,7 +1,7 @@
 import { forwardRef, Inject } from '@nestjs/common';
 import { ConnectedSocket, MessageBody, OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer, WsException, WsResponse } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { SocketMessageNewRecv, SocketRecvName } from 'src/models/socket';
+import { SocketMessageNewRecv, SocketMessageReceiverStatusRecv, SocketRecvName } from 'src/models/socket';
 import { AuthService } from 'src/modules/auth/auth.service';
 import { UserService } from 'src/modules/user/user.service';
 import { SocketFriendService } from './socket-friend.service';
@@ -57,10 +57,18 @@ export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   }
 
   @SubscribeMessage(SocketRecvName.MessageNew)
-  handleEvent(
+  handleMessageNewEvent(
     @ConnectedSocket() client: Socket,
     @MessageBody() data: SocketMessageNewRecv
   ) {
     this.socketMessageService.onMessageNew(client, data);
+  }
+
+  @SubscribeMessage(SocketRecvName.MessageReceiverStatus)
+  handleMessageReceiverStatusEvent(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() data: SocketMessageReceiverStatusRecv
+  ) {
+    this.socketMessageService.onMessageReceiverStatus(client, data);
   }
 }
