@@ -229,20 +229,9 @@
           </p>
         </div> -->
       </div>
-      <div *ngIf="myMessage(item)">
+      <ng-container *ngIf="myMessage(item)">
         <div *ngIf="i < messageRoom.length - 1" class="tw-w-[15px]"></div>
-        <div
-          class="
-            tw-mt-auto
-            tw-mb-1
-            tw-rounded-full
-            tw-h-3.5
-            tw-h-3.75
-            tw-border-white
-          "
-          *ngIf="i === messageRoom.length - 1"
-          [ngClass]="true ? '' : 'tw-bg-white tw-border'"
-        >
+        <div class="tw-mt-auto tw-mb-1" *ngIf="i === messageRoom.length - 1">
           <!-- đang gửi -->
           <app-loading
             *ngIf="false"
@@ -251,7 +240,7 @@
           ></app-loading>
           <!-- đã gửi -->
           <svg
-            *ngIf="true"
+            *ngIf="false"
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
             aria-hidden="true"
@@ -271,12 +260,12 @@
           </svg>
           <!-- đã nhận -->
           <svg
-            *ngIf="false"
+            *ngIf="true"
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
             aria-hidden="true"
             role="img"
-            class="iconify iconify--teenyicons tw-text-puertoRico-500"
+            class="iconify iconify--teenyicons"
             width="15"
             height="15"
             preserveAspectRatio="xMidYMid meet"
@@ -292,7 +281,7 @@
             </g>
           </svg>
         </div>
-      </div>
+      </ng-container>
     </div>
     <!-- me -->
     <!-- <div class="tw-flex tw-w-full tw-text-gray-200 tw-space-x-3 tw-justify-end">
