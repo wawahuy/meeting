@@ -52,7 +52,8 @@ export class SocketMessageService {
           SocketSendName.MessageMsg,
           {
             room,
-            message
+            message,
+            uuid: msg.uuid
           }
         )
       })

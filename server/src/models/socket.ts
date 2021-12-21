@@ -28,6 +28,7 @@ export interface SocketMessageNewRecv {
   room: string;
   msg: string;
   type: MessageType;
+  uuid: string;
 }
 
 export interface SocketMessageReceiverStatusRecv {
