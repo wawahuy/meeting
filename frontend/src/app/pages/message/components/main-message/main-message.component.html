@@ -1,4 +1,4 @@
-<app-modal-profile #profile></app-modal-profile>
+<app-modal-profile #profile [roomCurrent]="roomCurrent"></app-modal-profile>
 <ng-container *ngIf="!!roomCurrent">
   <div
     class="
@@ -12,7 +12,7 @@
   >
     <div class="tw-flex tw-flex-1 tw-space-x-4">
       <div
-        class="tw-rounded-full tw-bg-gray-600 tw-w-12 tw-h-12"
+        class="tw-rounded-full tw-bg-gray-600 tw-w-12 tw-h-12 tw-cursor-pointer"
         (click)="profile.show()"
       ></div>
       <div class="tw-flex tw-flex-col tw-flex-1">
