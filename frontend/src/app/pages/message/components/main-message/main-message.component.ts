@@ -1,27 +1,34 @@
-import { SocketMessageNewSend } from './../../../../_models/socket';
 import { SocketService } from 'src/app/_services/socket.service';
-import { MessageService } from './../../../../_services/message.service';
-import { NotifierService } from 'angular-notifier';
-import { FriendService } from './../../../../_services/friend.service';
-import { Component, OnInit } from '@angular/core';
-import { computeOnlineTime, autoScrollBottom } from 'src/app/_helpers/func';
-import { Room } from 'src/app/_models/room';
+import { MessageService } from 'src/app/_services/message.service';
+import { FriendService } from 'src/app/_services/friend.service';
 import { AuthService } from 'src/app/_services/auth.service';
 import { RoomService } from 'src/app/_services/room.service';
+import { NotifierService } from 'angular-notifier';
+import { computeOnlineTime } from 'src/app/_helpers/func';
+import { Room } from 'src/app/_models/room';
 import { Message } from 'src/app/_models/message';
 import {
   SocketMessageNew,
   SocketRecvName,
   SocketSendName,
+  SocketMessageNewSend,
 } from 'src/app/_models/socket';
 import { v4 as uuidv4 } from 'uuid';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  AfterViewChecked,
+} from '@angular/core';
 
 @Component({
   selector: 'app-main-message',
   templateUrl: './main-message.component.html',
   styleUrls: ['./main-message.component.scss'],
 })
-export class MainMessageComponent implements OnInit {
+export class MainMessageComponent implements OnInit, AfterViewChecked {
+  @ViewChild('messageBody') private scrollToBottom: ElementRef;
   userConnect = {
     id: 2,
     username: 'Heyday',
@@ -34,6 +41,7 @@ export class MainMessageComponent implements OnInit {
 
   isConnect = false;
   sending = false;
+  scrolled = false;
 
   roomCurrent: Room;
   messageRoom: Message[];
@@ -56,10 +64,20 @@ export class MainMessageComponent implements OnInit {
     );
   }
 
+  ngAfterViewChecked() {
+    this.autoScrollBottom();
+  }
+
   loadMainMessage(r) {
     this.getHasFriend(r);
     this.fetchMessageByRoomId(r._id);
-    autoScrollBottom('message-body');
+  }
+
+  autoScrollBottom() {
+    try {
+      this.scrollToBottom.nativeElement.scrollTop =
+        this.scrollToBottom.nativeElement.scrollHeight;
+    } catch (err) {}
   }
 
   getRoomName() {
@@ -181,6 +199,7 @@ export class MainMessageComponent implements OnInit {
         }
         if (data.message.user._id === this.authService.currentUserValue._id)
           this.sending = false;
+        this.autoScrollBottom();
       });
   }
 

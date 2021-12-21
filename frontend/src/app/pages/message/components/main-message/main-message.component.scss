@@ -21,3 +21,6 @@ input:focus {
 .dropdown-item {
     @apply tw-text-textMain300 hover:tw-bg-gray-700;
 }
+#message-body {
+    scroll-behavior: smooth;
+}
