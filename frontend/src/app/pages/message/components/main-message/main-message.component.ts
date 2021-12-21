@@ -1,3 +1,5 @@
+import { SocketMessageNewSend } from './../../../../_models/socket';
+import { SocketService } from 'src/app/_services/socket.service';
 import { MessageService } from './../../../../_services/message.service';
 import { NotifierService } from 'angular-notifier';
 import { FriendService } from './../../../../_services/friend.service';
@@ -6,8 +8,13 @@ import { computeOnlineTime } from 'src/app/_helpers/func';
 import { Room } from 'src/app/_models/room';
 import { AuthService } from 'src/app/_services/auth.service';
 import { RoomService } from 'src/app/_services/room.service';
-import { result } from 'lodash';
 import { Message } from 'src/app/_models/message';
+import {
+  SocketMessageNew,
+  SocketRecvName,
+  SocketSendName,
+} from 'src/app/_models/socket';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-main-message',
@@ -26,19 +33,24 @@ export class MainMessageComponent implements OnInit {
   btnConnect = ['DISMISS', 'CONFIRM'];
 
   isConnect = false;
+  sending = false;
 
   roomCurrent: Room;
   messageRoom: Message[];
+
+  message: string;
 
   constructor(
     private notifierService: NotifierService,
     private roomService: RoomService,
     private authService: AuthService,
     private friendService: FriendService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private socketService: SocketService
   ) {}
 
   ngOnInit(): void {
+    this.initSocket();
     this.roomService.roomSelected$.subscribe(
       (r) => (this.roomCurrent = r) && this.loadMainMessage(r)
     );
@@ -143,7 +155,42 @@ export class MainMessageComponent implements OnInit {
 
   myMessage(message: Message) {
     const currentId = this.authService.currentUserValue._id;
-    if (message.user._id !== currentId) return false;
+    if (message?.user?._id !== currentId) return false;
     return true;
+  }
+
+  initSocket() {
+    this.socketService
+      .fromEvent<SocketMessageNew>(SocketRecvName.MessageMsg)
+      .subscribe((data) => {
+        if (data.room._id !== this.roomCurrent._id) return;
+        const result = this.messageRoom.some((message, index) => {
+          if (message._id === data.uuid) {
+            this.messageRoom[index] = data.message;
+            return true;
+          }
+          return false;
+        });
+        if (!result) this.messageRoom.push(data.message);
+        if (data.message.user._id === this.authService.currentUserValue._id)
+          this.sending = false;
+      });
+  }
+
+  sendMessage() {
+    const data: SocketMessageNewSend = {
+      msg: this.message,
+      type: 1,
+      room: this.roomCurrent._id,
+      uuid: uuidv4(),
+    };
+    const message: Message = <any>{
+      msg: data.msg,
+      _id: data.uuid,
+      type: data.type,
+    };
+    this.messageRoom.push(message);
+    this.sending = true;
+    this.socketService.emit(SocketSendName.MessageNew, data);
   }
 }

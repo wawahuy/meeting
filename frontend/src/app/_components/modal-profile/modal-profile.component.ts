@@ -3,16 +3,16 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-modal-profile',
   templateUrl: './modal-profile.component.html',
-  styleUrls: ['./modal-profile.component.scss']
+  styleUrls: ['./modal-profile.component.scss'],
 })
 export class ModalProfileComponent implements OnInit {
-
   isShow = false;
 
-  constructor() { }
+  nickName: String;
 
-  ngOnInit(): void {
-  }
+  constructor() {}
+
+  ngOnInit(): void {}
 
   public show() {
     this.isShow = true;
@@ -20,5 +20,4 @@ export class ModalProfileComponent implements OnInit {
   public hidden() {
     this.isShow = false;
   }
-
 }

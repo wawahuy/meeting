@@ -234,7 +234,7 @@
         <div class="tw-mt-auto tw-mb-1" *ngIf="i === messageRoom.length - 1">
           <!-- đang gửi -->
           <app-loading
-            *ngIf="false"
+            *ngIf="sending"
             [isLoading]="true"
             [hasPadding]="false"
           ></app-loading>
@@ -260,7 +260,7 @@
           </svg>
           <!-- đã nhận -->
           <svg
-            *ngIf="true"
+            *ngIf="!sending"
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
             aria-hidden="true"
@@ -369,6 +369,7 @@
           focus:tw-border-none
         "
         placeholder="Messages"
+        [(ngModel)]="message"
       />
       <div
         class="
@@ -445,6 +446,7 @@
           tw-m-auto
           hover:tw-bg-puertoRico-500
         "
+        (click)="sendMessage()"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
