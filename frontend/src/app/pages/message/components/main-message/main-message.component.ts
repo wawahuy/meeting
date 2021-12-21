@@ -100,7 +100,7 @@ export class MainMessageComponent implements OnInit {
           );
           return Promise.resolve(null);
         });
-    }
+    } else this.isConnect = false;
   }
 
   addFriend() {
