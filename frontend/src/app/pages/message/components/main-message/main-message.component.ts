@@ -4,7 +4,7 @@ import { MessageService } from './../../../../_services/message.service';
 import { NotifierService } from 'angular-notifier';
 import { FriendService } from './../../../../_services/friend.service';
 import { Component, OnInit } from '@angular/core';
-import { computeOnlineTime } from 'src/app/_helpers/func';
+import { computeOnlineTime, autoScrollBottom } from 'src/app/_helpers/func';
 import { Room } from 'src/app/_models/room';
 import { AuthService } from 'src/app/_services/auth.service';
 import { RoomService } from 'src/app/_services/room.service';
@@ -59,6 +59,7 @@ export class MainMessageComponent implements OnInit {
   loadMainMessage(r) {
     this.getHasFriend(r);
     this.fetchMessageByRoomId(r._id);
+    autoScrollBottom('message-body');
   }
 
   getRoomName() {
@@ -159,6 +160,10 @@ export class MainMessageComponent implements OnInit {
     return true;
   }
 
+  keyPressEvent(event) {
+    if (!!this.message && event.keyCode === 13) this.sendMessage();
+  }
+
   initSocket() {
     this.socketService
       .fromEvent<SocketMessageNew>(SocketRecvName.MessageMsg)
@@ -171,13 +176,16 @@ export class MainMessageComponent implements OnInit {
           }
           return false;
         });
-        if (!result) this.messageRoom.push(data.message);
+        if (!result) {
+          this.messageRoom.push(data.message);
+        }
         if (data.message.user._id === this.authService.currentUserValue._id)
           this.sending = false;
       });
   }
 
   sendMessage() {
+    if (!this.message) return;
     const data: SocketMessageNewSend = {
       msg: this.message,
       type: 1,
@@ -191,6 +199,7 @@ export class MainMessageComponent implements OnInit {
     };
     this.messageRoom.push(message);
     this.sending = true;
+    this.message = '';
     this.socketService.emit(SocketSendName.MessageNew, data);
   }
 }

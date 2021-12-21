@@ -1,4 +1,4 @@
-import * as moment from "moment";
+import * as moment from 'moment';
 
 export function computeOnlineTime(date: Date) {
   const c = moment();
@@ -26,4 +26,10 @@ export function computeOnlineTime(date: Date) {
   }
 
   return `Online ${r} ago`;
+}
+export function autoScrollBottom(id: string) {
+  window.setInterval(() => {
+    let elem = document.getElementById(id);
+    elem.scrollTop = elem.scrollHeight;
+  });
 }
