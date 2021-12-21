@@ -70,8 +70,13 @@
         ></div>
       </div>
       <div class="tw-flex tw-flex-col tw-space-y-2">
-        <div>{{ getUser().name }}</div>
-        <div>{{ getUser().username }}</div>
+        <div class="tw-flex tw-justify-center tw-items-center">
+          {{ getUser().name }}
+          <span class="tw-ml-1 tw-text-gray-500 tw-text-xs">
+            ({{ getUser().username }})
+          </span>
+        </div>
+
         <div class="tw-relative tw-pb-2">
           <input
             class="
