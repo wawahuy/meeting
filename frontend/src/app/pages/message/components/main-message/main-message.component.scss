@@ -12,6 +12,10 @@ textarea:focus,
 input:focus {
     outline: none;
 }
+textarea {
+    resize: none;
+    border: none;
+}
 .dropdown-menu {
     margin-top: 0.5rem;
     color: #d1d5db;

@@ -358,7 +358,8 @@
       </button>
     </div>
     <div class="tw-flex-1 tw-relative">
-      <input
+      <textarea
+        #inputMessage
         class="
           tw-text-gray-300
           tw-rounded-full
@@ -370,10 +371,11 @@
           tw-bg-gray-800
           focus:tw-border-none
         "
+        rows="1"
         placeholder="Messages"
         [(ngModel)]="message"
         (keydown)="keyPressEvent($event)"
-      />
+      ></textarea>
       <div
         class="
           tw-absolute

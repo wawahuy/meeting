@@ -21,6 +21,7 @@ import {
   ViewChild,
   AfterViewChecked,
 } from '@angular/core';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-main-message',
@@ -29,6 +30,7 @@ import {
 })
 export class MainMessageComponent implements OnInit, AfterViewChecked {
   @ViewChild('messageBody') private scrollToBottom: ElementRef;
+  @ViewChild('inputMessage') private setInput: ElementRef;
   userConnect = {
     id: 2,
     username: 'Heyday',
@@ -178,9 +180,11 @@ export class MainMessageComponent implements OnInit, AfterViewChecked {
     return true;
   }
 
-  keyPressEvent(event) {
-    if (!!this.message && event.keyCode === 13) this.sendMessage();
-  }
+  keyPressEvent = _.debounce((event) => {
+    const message = this.message.trim();
+    if (!!message && event.keyCode === 13) this.sendMessage();
+    this.setInput.nativeElement.focus();
+  }, 100);
 
   initSocket() {
     this.socketService
