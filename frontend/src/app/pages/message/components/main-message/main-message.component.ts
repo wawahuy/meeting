@@ -204,7 +204,6 @@ export class MainMessageComponent implements OnInit, AfterViewChecked {
         }
         if (data.message.user._id === this.authService.currentUserValue._id)
           this.sending = false;
-        this.autoScrollBottom();
       });
   }
   insertEmoji(event) {
