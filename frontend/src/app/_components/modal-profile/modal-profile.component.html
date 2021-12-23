@@ -69,9 +69,29 @@
           class="tw-rounded-full tw-bg-gray-700 tw-w-44 tw-h-44 tw-m-auto"
         ></div>
       </div>
-      <div>
-        <div>Name</div>
-        <div>Username</div>
+      <div class="tw-flex tw-flex-col tw-space-y-2">
+        <div class="tw-flex tw-justify-center tw-items-center">
+          {{ getUser().name }}
+          <span class="tw-ml-1 tw-text-gray-500 tw-text-xs">
+            ({{ getUser().username }})
+          </span>
+        </div>
+
+        <div class="tw-relative tw-pb-2">
+          <input
+            class="
+              tw-text-gray-300
+              tw-rounded-full
+              tw-pl-4
+              tw-pr-10
+              tw-py-2
+              tw-flex-1
+              tw-w-full
+              tw-bg-gray-800
+            "
+            placeholder="Nickname"
+          />
+        </div>
       </div>
     </div>
   </div>

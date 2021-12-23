@@ -1,16 +1,20 @@
 ::-webkit-scrollbar {
-    width: 2px;
+    width: 5px;
 }
 ::-webkit-scrollbar-track {
     background: #242526;
 }
 ::-webkit-scrollbar-thumb {
     background: rgb(221, 221, 221);
-    border-radius: 20px;
+    border-radius: 40px;
 }
 textarea:focus,
 input:focus {
     outline: none;
+}
+textarea {
+    resize: none;
+    border: none;
 }
 .dropdown-menu {
     margin-top: 0.5rem;
@@ -20,4 +24,7 @@ input:focus {
 }
 .dropdown-item {
     @apply tw-text-textMain300 hover:tw-bg-gray-700;
+}
+#message-body {
+    scroll-behavior: smooth;
 }

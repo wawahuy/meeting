@@ -4,29 +4,19 @@ import { RoomComponent } from './room/room.component';
 import { MainMessageComponent } from './main-message/main-message.component';
 import { ComponentsModule } from 'src/app/_components/components.module';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { BsDropdownModule, BsDropdownConfig  } from 'ngx-bootstrap/dropdown';
-import { SearchRoomComponent } from './search-room/search-room.component'
+import { BsDropdownModule, BsDropdownConfig } from 'ngx-bootstrap/dropdown';
+import { SearchRoomComponent } from './search-room/search-room.component';
 import { FormsModule } from '@angular/forms';
 
-
-
-
 @NgModule({
-  declarations: [
-    RoomComponent,
-    MainMessageComponent,
-    SearchRoomComponent
-  ],
-  exports: [
-    RoomComponent,
-    MainMessageComponent
-  ],
+  declarations: [RoomComponent, MainMessageComponent, SearchRoomComponent],
+  exports: [RoomComponent, MainMessageComponent],
   imports: [
     CommonModule,
     ComponentsModule,
     TooltipModule.forRoot(),
     BsDropdownModule.forRoot(),
-    FormsModule
+    FormsModule,
   ],
 })
-export class MessageComponentsModule { }
+export class MessageComponentsModule {}

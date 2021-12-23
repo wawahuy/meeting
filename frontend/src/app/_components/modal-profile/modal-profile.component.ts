@@ -1,18 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { RoomService } from 'src/app/_services/room.service';
 
 @Component({
   selector: 'app-modal-profile',
   templateUrl: './modal-profile.component.html',
-  styleUrls: ['./modal-profile.component.scss']
+  styleUrls: ['./modal-profile.component.scss'],
 })
 export class ModalProfileComponent implements OnInit {
-
+  @Input() roomCurrent;
   isShow = false;
 
-  constructor() { }
+  nickName: String;
 
-  ngOnInit(): void {
-  }
+  constructor(private roomService: RoomService) {}
+
+  ngOnInit(): void {}
 
   public show() {
     this.isShow = true;
@@ -21,4 +23,8 @@ export class ModalProfileComponent implements OnInit {
     this.isShow = false;
   }
 
+  getUser() {
+    const user = this.roomService.getRoomName(this.roomCurrent);
+    return user;
+  }
 }

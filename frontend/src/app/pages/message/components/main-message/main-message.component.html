@@ -1,4 +1,4 @@
-<app-modal-profile #profile></app-modal-profile>
+<app-modal-profile #profile [roomCurrent]="roomCurrent"></app-modal-profile>
 <ng-container *ngIf="!!roomCurrent">
   <div
     class="
@@ -12,7 +12,7 @@
   >
     <div class="tw-flex tw-flex-1 tw-space-x-4">
       <div
-        class="tw-rounded-full tw-bg-gray-600 tw-w-12 tw-h-12"
+        class="tw-rounded-full tw-bg-gray-600 tw-w-12 tw-h-12 tw-cursor-pointer"
         (click)="profile.show()"
       ></div>
       <div class="tw-flex tw-flex-col tw-flex-1">
@@ -118,6 +118,8 @@
 
   <!-- Main message -->
   <div
+    #messageBody
+    id="message-body"
     class="
       tw-flex-1
       tw-h-[calc(100vh-10rem)]
@@ -174,7 +176,7 @@
     <div
       *ngFor="let item of messageRoom; index as i"
       class="tw-flex tw-w-full tw-text-gray-200 tw-space-x-3"
-      [ngClass]="myMessage(item) ? ' tw-justify-end' : ''"
+      [ngClass]="myMessage(item) || item.myMess ? ' tw-justify-end' : ''"
     >
       <!-- <div>
         <div
@@ -185,7 +187,7 @@
       <div
         class="tw-w-1/2"
         [ngClass]="
-          myMessage(item)
+          myMessage(item) || item.myMess
             ? 'tw-flex tw-flex-col tw-items-end tw-space-y-1'
             : 'tw-space-y-2 '
         "
@@ -194,7 +196,11 @@
           class="
             tw-m-0 tw-py-2 tw-px-3 tw-inline-block tw-leading-5 tw-rounded-lg
           "
-          [ngClass]="myMessage(item) ? 'tw-bg-green-600' : 'tw-bg-gray-700'"
+          [ngClass]="
+            myMessage(item) || item.myMess
+              ? 'tw-bg-green-600'
+              : 'tw-bg-gray-700'
+          "
         >
           {{ item.msg }}
         </div>
@@ -234,7 +240,7 @@
         <div class="tw-mt-auto tw-mb-1" *ngIf="i === messageRoom.length - 1">
           <!-- đang gửi -->
           <app-loading
-            *ngIf="false"
+            *ngIf="sending"
             [isLoading]="true"
             [hasPadding]="false"
           ></app-loading>
@@ -260,7 +266,7 @@
           </svg>
           <!-- đã nhận -->
           <svg
-            *ngIf="true"
+            *ngIf="!sending"
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
             aria-hidden="true"
@@ -356,7 +362,8 @@
       </button>
     </div>
     <div class="tw-flex-1 tw-relative">
-      <input
+      <textarea
+        #inputMessage
         class="
           tw-text-gray-300
           tw-rounded-full
@@ -368,8 +375,11 @@
           tw-bg-gray-800
           focus:tw-border-none
         "
+        rows="1"
         placeholder="Messages"
-      />
+        [(ngModel)]="message"
+        (keypress)="keyPressEvent($event)"
+      ></textarea>
       <div
         class="
           tw-absolute
@@ -445,6 +455,7 @@
           tw-m-auto
           hover:tw-bg-puertoRico-500
         "
+        (click)="sendMessage()"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

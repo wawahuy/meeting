@@ -1,12 +1,12 @@
-import { Message } from "./message";
-import { Room } from "./room";
+import { Message } from './message';
+import { Room } from './room';
 
 export enum SocketRecvName {
   // room
   RoomCreateOrUpdate = 'room:CoU',
 
   // friend
-  FriendStatus ='friend:status',
+  FriendStatus = 'friend:status',
 
   // message
   MessageMsg = 'message:msg',
@@ -24,12 +24,14 @@ export interface SocketFriendStatus {
 }
 
 export interface SocketMessageNew {
-  room: Room,
-  message: Message
+  room: Room;
+  message: Message;
+  uuid: string;
 }
 
 export interface SocketMessageNewSend {
   room: string;
   msg: string;
   type: number;
+  uuid: string;
 }

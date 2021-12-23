@@ -1,20 +1,36 @@
-import { MessageService } from './../../../../_services/message.service';
-import { NotifierService } from 'angular-notifier';
-import { FriendService } from './../../../../_services/friend.service';
-import { Component, OnInit } from '@angular/core';
-import { computeOnlineTime } from 'src/app/_helpers/func';
-import { Room } from 'src/app/_models/room';
+import { SocketService } from 'src/app/_services/socket.service';
+import { MessageService } from 'src/app/_services/message.service';
+import { FriendService } from 'src/app/_services/friend.service';
 import { AuthService } from 'src/app/_services/auth.service';
 import { RoomService } from 'src/app/_services/room.service';
-import { result } from 'lodash';
+import { NotifierService } from 'angular-notifier';
+import { computeOnlineTime } from 'src/app/_helpers/func';
+import { Room } from 'src/app/_models/room';
 import { Message } from 'src/app/_models/message';
+import {
+  SocketMessageNew,
+  SocketRecvName,
+  SocketSendName,
+  SocketMessageNewSend,
+} from 'src/app/_models/socket';
+import { v4 as uuidv4 } from 'uuid';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  AfterViewChecked,
+} from '@angular/core';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-main-message',
   templateUrl: './main-message.component.html',
   styleUrls: ['./main-message.component.scss'],
 })
-export class MainMessageComponent implements OnInit {
+export class MainMessageComponent implements OnInit, AfterViewChecked {
+  @ViewChild('messageBody') private scrollToBottom: ElementRef;
+  @ViewChild('inputMessage') private setInput: ElementRef;
   userConnect = {
     id: 2,
     username: 'Heyday',
@@ -26,27 +42,44 @@ export class MainMessageComponent implements OnInit {
   btnConnect = ['DISMISS', 'CONFIRM'];
 
   isConnect = false;
+  sending = false;
+  scrolled = false;
 
   roomCurrent: Room;
   messageRoom: Message[];
+
+  message: string;
 
   constructor(
     private notifierService: NotifierService,
     private roomService: RoomService,
     private authService: AuthService,
     private friendService: FriendService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private socketService: SocketService
   ) {}
 
   ngOnInit(): void {
+    this.initSocket();
     this.roomService.roomSelected$.subscribe(
       (r) => (this.roomCurrent = r) && this.loadMainMessage(r)
     );
   }
 
+  ngAfterViewChecked() {
+    this.autoScrollBottom();
+  }
+
   loadMainMessage(r) {
     this.getHasFriend(r);
     this.fetchMessageByRoomId(r._id);
+  }
+
+  autoScrollBottom() {
+    try {
+      this.scrollToBottom.nativeElement.scrollTop =
+        this.scrollToBottom.nativeElement.scrollHeight;
+    } catch (err) {}
   }
 
   getRoomName() {
@@ -88,7 +121,7 @@ export class MainMessageComponent implements OnInit {
           );
           return Promise.resolve(null);
         });
-    }
+    } else this.isConnect = false;
   }
 
   addFriend() {
@@ -143,7 +176,54 @@ export class MainMessageComponent implements OnInit {
 
   myMessage(message: Message) {
     const currentId = this.authService.currentUserValue._id;
-    if (message.user._id !== currentId) return false;
+    if (message?.user?._id !== currentId) return false;
     return true;
+  }
+
+  keyPressEvent = _.debounce((event) => {
+    const message = this.message.trim();
+    if (!!message && event.keyCode === 13) this.sendMessage();
+    this.setInput.nativeElement.focus();
+  }, 100);
+
+  initSocket() {
+    this.socketService
+      .fromEvent<SocketMessageNew>(SocketRecvName.MessageMsg)
+      .subscribe((data) => {
+        if (data.room._id !== this.roomCurrent._id) return;
+        const result = this.messageRoom.some((message, index) => {
+          if (message._id === data.uuid) {
+            this.messageRoom[index] = data.message;
+            return true;
+          }
+          return false;
+        });
+        if (!result) {
+          this.messageRoom.push(data.message);
+        }
+        if (data.message.user._id === this.authService.currentUserValue._id)
+          this.sending = false;
+        this.autoScrollBottom();
+      });
+  }
+
+  sendMessage() {
+    if (!!this.message.trim() && !!this.message) {
+      const data: SocketMessageNewSend = {
+        msg: this.message.trim(),
+        type: 1,
+        room: this.roomCurrent._id,
+        uuid: uuidv4(),
+      };
+      const message: Message = <any>{
+        msg: data.msg,
+        _id: data.uuid,
+        type: data.type,
+      };
+      this.messageRoom.push({ ...message, ...{ myMess: true } });
+      this.sending = true;
+      this.message = '';
+      this.socketService.emit(SocketSendName.MessageNew, data);
+    }
   }
 }
