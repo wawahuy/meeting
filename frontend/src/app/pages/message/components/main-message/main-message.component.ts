@@ -44,6 +44,7 @@ export class MainMessageComponent implements OnInit, AfterViewChecked {
   isConnect = false;
   sending = false;
   scrolled = false;
+  isShowEmoji: false;
 
   roomCurrent: Room;
   messageRoom: Message[];
@@ -205,6 +206,10 @@ export class MainMessageComponent implements OnInit, AfterViewChecked {
           this.sending = false;
         this.autoScrollBottom();
       });
+  }
+  insertEmoji(event) {
+    if (!this.message) this.message = '';
+    this.message = this.message + event.emoji.native;
   }
 
   sendMessage() {

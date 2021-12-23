@@ -57,6 +57,13 @@ module.exports = {
             transform: "translateY(-100%)",
           },
         },
+        fadeInbottom: {
+          "0%": {
+            opacity: 0,
+            transform: "translateY(2%)",
+          },
+          "100%": { opacity: 1, transform: "translateY(0)" },
+        },
         tiktok: {
           "0%": {
             transform: "scale(2)",
@@ -113,6 +120,7 @@ module.exports = {
         fadeInTop: "fadeInTop 300ms",
         fadeInTop100: "fadeInTop100 300ms",
         fadeOutTop100: "fadeOutTop100 300ms",
+        fadeInbottom: "fadeInbottom 300ms",
         tiktok: "tiktok 1s",
         tiktokIn: "tiktokIn 1s",
         load: "load 1s",
