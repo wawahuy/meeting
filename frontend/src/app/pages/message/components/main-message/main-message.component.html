@@ -176,7 +176,7 @@
     <div
       *ngFor="let item of messageRoom; index as i"
       class="tw-flex tw-w-full tw-text-gray-200 tw-space-x-3"
-      [ngClass]="myMessage(item) ? ' tw-justify-end' : ''"
+      [ngClass]="myMessage(item) || item.myMess ? ' tw-justify-end' : ''"
     >
       <!-- <div>
         <div
@@ -187,7 +187,7 @@
       <div
         class="tw-w-1/2"
         [ngClass]="
-          myMessage(item)
+          myMessage(item) || item.myMess
             ? 'tw-flex tw-flex-col tw-items-end tw-space-y-1'
             : 'tw-space-y-2 '
         "
@@ -196,7 +196,11 @@
           class="
             tw-m-0 tw-py-2 tw-px-3 tw-inline-block tw-leading-5 tw-rounded-lg
           "
-          [ngClass]="myMessage(item) ? 'tw-bg-green-600' : 'tw-bg-gray-700'"
+          [ngClass]="
+            myMessage(item) || item.myMess
+              ? 'tw-bg-green-600'
+              : 'tw-bg-gray-700'
+          "
         >
           {{ item.msg }}
         </div>
@@ -374,7 +378,7 @@
         rows="1"
         placeholder="Messages"
         [(ngModel)]="message"
-        (keydown)="keyPressEvent($event)"
+        (keypress)="keyPressEvent($event)"
       ></textarea>
       <div
         class="

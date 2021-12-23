@@ -208,21 +208,22 @@ export class MainMessageComponent implements OnInit, AfterViewChecked {
   }
 
   sendMessage() {
-    if (!this.message) return;
-    const data: SocketMessageNewSend = {
-      msg: this.message,
-      type: 1,
-      room: this.roomCurrent._id,
-      uuid: uuidv4(),
-    };
-    const message: Message = <any>{
-      msg: data.msg,
-      _id: data.uuid,
-      type: data.type,
-    };
-    this.messageRoom.push(message);
-    this.sending = true;
-    this.message = '';
-    this.socketService.emit(SocketSendName.MessageNew, data);
+    if (!!this.message.trim() && !!this.message) {
+      const data: SocketMessageNewSend = {
+        msg: this.message.trim(),
+        type: 1,
+        room: this.roomCurrent._id,
+        uuid: uuidv4(),
+      };
+      const message: Message = <any>{
+        msg: data.msg,
+        _id: data.uuid,
+        type: data.type,
+      };
+      this.messageRoom.push({ ...message, ...{ myMess: true } });
+      this.sending = true;
+      this.message = '';
+      this.socketService.emit(SocketSendName.MessageNew, data);
+    }
   }
 }
