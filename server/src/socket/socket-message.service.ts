@@ -1,7 +1,7 @@
 import { forwardRef, Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import * as moment from 'moment';
 import { Socket } from 'socket.io';
-import { SocketMessageNew, SocketMessageNewRecv, SocketMessageReceiverStatus, SocketMessageReceiverStatusRecv, SocketSendName } from 'src/models/socket';
+import { SocketMessageNew, SocketMessageNewRecv, SocketMessageReceiverStatus, SocketMessageReceiverStatusRecv, SocketMessageTyping, SocketMessageTypingRecv, SocketSendName } from 'src/models/socket';
 import { MessageService } from 'src/modules/message/message.service';
 import { RoomService } from 'src/modules/room/room.service';
 import { MessageDocument, MessageReceiverStatus, MessageType } from 'src/schema/message.schema';
@@ -105,6 +105,33 @@ export class SocketMessageService {
       socketIds.forEach(socketId => {
         this.socketGateway.server.to(socketId).emit(
           SocketSendName.MessageReceiverStatus,
+          d
+        )
+      })
+    })
+  }
+
+  async onMessageTyping(client: Socket, data: SocketMessageTypingRecv) {
+    const user = client.data.user;
+    const room: RoomDocument = await this.roomService.getByRoomUserId(data.roomId, user._id);
+    if (!room) {
+      return;
+    }
+
+    const d: SocketMessageTyping = {
+      room,
+      user,
+      status: data.status
+    }
+  
+    room.users.forEach(item => {
+      if (user._id.toString() === item.user._id.toString()) {
+        return;
+      }
+      const socketIds = (<UserDocument>item.user).sockets;
+      socketIds.forEach(socketId => {
+        this.socketGateway.server.to(socketId).emit(
+          SocketSendName.MessageTyping,
           d
         )
       })

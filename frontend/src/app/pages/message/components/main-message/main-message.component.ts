@@ -149,6 +149,7 @@ export class MainMessageComponent implements OnInit, AfterViewChecked {
         return Promise.resolve(null);
       });
   }
+
   getStatusRoom() {
     if (this.roomCurrent.users.length === 2)
       return this.roomService.getStatusRoom(this.roomCurrent);
@@ -158,7 +159,7 @@ export class MainMessageComponent implements OnInit, AfterViewChecked {
     roomId,
     search: string = '',
     page: number = 1,
-    size: number = 10
+    size: number = 20
   ) {
     this.messageService
       .getMessagesByRoomId(roomId, search, page, size)

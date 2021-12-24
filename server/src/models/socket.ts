@@ -12,12 +12,14 @@ export enum SocketSendName {
   // message
   MessageMsg = 'message:msg',
   MessageReceiverStatus = 'message:receiverStatus',
+  MessageTyping = 'message:typing'
 }
 
 export enum SocketRecvName {
   // message
   MessageNew = 'message:new',
   MessageReceiverStatus = 'message:receiverStatus',
+  MessageTyping = 'message:typing'
 }
 
 export interface SocketFriendStatus {
@@ -49,4 +51,15 @@ export interface SocketMessageReceiverStatus {
 export interface SocketMessageReceiverStatusRecv {
   type: MessageReceiverStatus;
   messageId: string;
+}
+
+export interface SocketMessageTyping {
+  status: boolean;
+  room: RoomDocument;
+  user: UserDocument
+}
+
+export interface SocketMessageTypingRecv {
+  status: boolean;
+  roomId: string;
 }
