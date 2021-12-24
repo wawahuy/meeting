@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { FilterQuery, Model, Types } from 'mongoose';
-import { Message, MessageDocument } from 'src/schema/message.schema';
+import { FilterQuery, Model, Types, UpdateQuery, UpdateWithAggregationPipeline } from 'mongoose';
+import { Message, MessageDocument, MessageReceiverStatus } from 'src/schema/message.schema';
 
 @Injectable()
 export class MessageService {
@@ -42,10 +42,45 @@ export class MessageService {
     return await this.messageModel.find(match)
       .select('-password -__v')
       .sort({ createdAt: -1 })
-      .skip((page - 1) * size)
-      .limit(size)
+      .skip(Number((page - 1)) * size)
+      .limit(Number(size))
       .populate('user', '-password -friends')
       .populate('statusReceiver.user', '-password -friends')
       .catch(e => null);
+  }
+
+  async addOrUpdateReceiver(messageId: string, userId: string, type: MessageReceiverStatus) {
+    const m = await this.messageModel.findOne({ 
+      _id: new Types.ObjectId(messageId),
+      'statusReceiver.user': new Types.ObjectId(userId)
+    });
+
+    let match: FilterQuery<MessageDocument>;
+    let upd: UpdateQuery<MessageDocument> | UpdateWithAggregationPipeline;
+    if (!m) {
+      match = {
+        _id: new Types.ObjectId(messageId)
+      };
+      upd = {
+        $push: {
+          statusReceiver: {
+            user: new Types.ObjectId(userId),
+            type
+          }
+        }
+      }
+    } else {
+      match = {
+        _id: new Types.ObjectId(messageId),
+        'statusReceiver.user': new Types.ObjectId(userId)
+      };
+      upd = {
+        $set: {
+          'statusReceiver.$.type': type
+        }
+      }
+    }
+
+    await this.messageModel.updateOne(match, upd);
   }
 }
