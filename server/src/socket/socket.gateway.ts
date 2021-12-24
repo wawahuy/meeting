@@ -33,7 +33,10 @@ export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGate
         throw new WsException('Error ws');
       }
 
+      user.friends = undefined;
+      user.password = undefined;
       client.data.user = user;
+      
       await this.userService.pushSocketId(user._id, client.id);
       await this.socketFriendService.emitStatusAllFriend(user._id, client.id, true);
     } catch (e) {

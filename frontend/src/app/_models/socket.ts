@@ -54,7 +54,6 @@ export interface SocketMessageReceiverStatusSend {
   messageId: string;
 }
 
-
 export interface SocketMessageTyping {
   status: boolean;
   room: Room;
