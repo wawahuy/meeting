@@ -1,7 +1,7 @@
 import { forwardRef, Inject } from '@nestjs/common';
 import { ConnectedSocket, MessageBody, OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer, WsException, WsResponse } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { SocketMessageNewRecv, SocketMessageReceiverStatusRecv, SocketRecvName } from 'src/models/socket';
+import { SocketMessageNewRecv, SocketMessageReceiverStatusRecv, SocketMessageTypingRecv, SocketRecvName } from 'src/models/socket';
 import { AuthService } from 'src/modules/auth/auth.service';
 import { UserService } from 'src/modules/user/user.service';
 import { SocketFriendService } from './socket-friend.service';
@@ -33,7 +33,10 @@ export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGate
         throw new WsException('Error ws');
       }
 
+      user.friends = undefined;
+      user.password = undefined;
       client.data.user = user;
+      
       await this.userService.pushSocketId(user._id, client.id);
       await this.socketFriendService.emitStatusAllFriend(user._id, client.id, true);
     } catch (e) {
@@ -70,5 +73,13 @@ export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     @MessageBody() data: SocketMessageReceiverStatusRecv
   ) {
     this.socketMessageService.onMessageReceiverStatus(client, data);
+  }
+
+  @SubscribeMessage(SocketRecvName.MessageTyping)
+  handleMessageTypingEvent(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() data: SocketMessageTypingRecv
+  ) {
+    this.socketMessageService.onMessageTyping(client, data);
   }
 }

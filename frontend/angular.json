@@ -38,7 +38,8 @@
             ],
             "scripts": [],
             "allowedCommonJsDependencies": [
-              "lodash"
+              "lodash",
+              "uuid"
             ]
           },
           "configurations": {

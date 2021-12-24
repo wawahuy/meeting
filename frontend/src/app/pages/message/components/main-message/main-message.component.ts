@@ -68,12 +68,16 @@ export class MainMessageComponent implements OnInit, AfterViewChecked {
   }
 
   ngAfterViewChecked() {
-    this.autoScrollBottom();
   }
 
-  loadMainMessage(r) {
-    this.getHasFriend(r);
-    this.fetchMessageByRoomId(r._id);
+  async loadMainMessage(r) {
+    await Promise.all([
+      this.getHasFriend(r),
+      this.fetchMessageByRoomId(r._id)
+    ]);
+    setTimeout(() => {
+      this.autoScrollBottom();
+    });
   }
 
   autoScrollBottom() {
@@ -101,7 +105,7 @@ export class MainMessageComponent implements OnInit, AfterViewChecked {
     return null;
   }
 
-  getHasFriend(r) {
+  async getHasFriend(r) {
     const room = r;
 
     if (room.users.length === 2) {
@@ -109,7 +113,7 @@ export class MainMessageComponent implements OnInit, AfterViewChecked {
         (item) => item.user._id !== this.authService.currentUserValue._id
       )[0];
 
-      this.friendService
+      await this.friendService
         .getHasFriend(user.user._id)
         .then((result) => {
           if (!result) this.isConnect = true;
@@ -149,18 +153,19 @@ export class MainMessageComponent implements OnInit, AfterViewChecked {
         return Promise.resolve(null);
       });
   }
+
   getStatusRoom() {
     if (this.roomCurrent.users.length === 2)
       return this.roomService.getStatusRoom(this.roomCurrent);
   }
 
-  fetchMessageByRoomId(
+  async fetchMessageByRoomId(
     roomId,
     search: string = '',
     page: number = 1,
-    size: number = 10
+    size: number = 20
   ) {
-    this.messageService
+    await this.messageService
       .getMessagesByRoomId(roomId, search, page, size)
       .then((result) => {
         const data = result;
@@ -201,11 +206,15 @@ export class MainMessageComponent implements OnInit, AfterViewChecked {
         });
         if (!result) {
           this.messageRoom.push(data.message);
+          setTimeout(() => {
+            this.autoScrollBottom();
+          });
         }
         if (data.message.user._id === this.authService.currentUserValue._id)
           this.sending = false;
       });
   }
+
   insertEmoji(event) {
     if (!this.message) this.message = '';
     this.message = this.message + event.emoji.native;
@@ -228,6 +237,10 @@ export class MainMessageComponent implements OnInit, AfterViewChecked {
       this.sending = true;
       this.message = '';
       this.socketService.emit(SocketSendName.MessageNew, data);
+
+      setTimeout(() => {
+        this.autoScrollBottom();
+      });
     }
   }
 }

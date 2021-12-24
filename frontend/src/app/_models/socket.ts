@@ -1,5 +1,6 @@
-import { Message } from './message';
+import { EMessageReceiverStatus, Message } from './message';
 import { Room } from './room';
+import { User } from './user';
 
 export enum SocketRecvName {
   // room
@@ -10,11 +11,15 @@ export enum SocketRecvName {
 
   // message
   MessageMsg = 'message:msg',
+  MessageReceiverStatus = 'message:receiverStatus',
+  MessageTyping = 'message:typing'
 }
 
 export enum SocketSendName {
   // message
   MessageNew = 'message:new',
+  MessageReceiverStatus = 'message:receiverStatus',
+  MessageTyping = 'message:typing'
 }
 
 export interface SocketFriendStatus {
@@ -34,4 +39,28 @@ export interface SocketMessageNewSend {
   msg: string;
   type: number;
   uuid: string;
+}
+
+
+export interface SocketMessageReceiverStatus {
+  messageId: string;
+  roomId: string;
+  type: EMessageReceiverStatus;
+  user: User;
+}
+
+export interface SocketMessageReceiverStatusSend {
+  type: EMessageReceiverStatus;
+  messageId: string;
+}
+
+export interface SocketMessageTyping {
+  status: boolean;
+  room: Room;
+  user: User
+}
+
+export interface SocketMessageTypingSend {
+  status: boolean;
+  roomId: string;
 }
