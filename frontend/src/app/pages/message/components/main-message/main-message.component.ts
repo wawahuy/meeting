@@ -216,7 +216,7 @@ export class MainMessageComponent implements OnInit, AfterViewChecked {
         SocketRecvName.MessageReceiverStatus
       )
       .subscribe((data) => {
-        console.log(data);
+        // console.log(data);
       });
   }
 
