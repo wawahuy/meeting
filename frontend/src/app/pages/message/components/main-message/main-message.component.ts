@@ -1,3 +1,4 @@
+import { SocketMessageReceiverStatus } from './../../../../_models/socket';
 import { SocketService } from 'src/app/_services/socket.service';
 import { MessageService } from 'src/app/_services/message.service';
 import { FriendService } from 'src/app/_services/friend.service';
@@ -67,14 +68,8 @@ export class MainMessageComponent implements OnInit, AfterViewChecked {
     );
   }
 
-  ngAfterViewChecked() {
-  }
-
   async loadMainMessage(r) {
-    await Promise.all([
-      this.getHasFriend(r),
-      this.fetchMessageByRoomId(r._id)
-    ]);
+    await Promise.all([this.getHasFriend(r), this.fetchMessageByRoomId(r._id)]);
     setTimeout(() => {
       this.autoScrollBottom();
     });
@@ -212,6 +207,16 @@ export class MainMessageComponent implements OnInit, AfterViewChecked {
         }
         if (data.message.user._id === this.authService.currentUserValue._id)
           this.sending = false;
+      });
+  }
+
+  socketReceiverStatus() {
+    this.socketService
+      .fromEvent<SocketMessageReceiverStatus>(
+        SocketRecvName.MessageReceiverStatus
+      )
+      .subscribe((data) => {
+        console.log(data);
       });
   }
 
