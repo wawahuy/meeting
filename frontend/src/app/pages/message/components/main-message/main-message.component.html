@@ -192,24 +192,29 @@
             : 'tw-space-y-2 '
         "
       >
-        <div
-          id="message"
-          class="
-            tw-m-0
-            tw-py-2
-            tw-px-3
-            tw-inline-block
-            tw-leading-5
-            tw-rounded-lg
-            tw-whitespace-pre-wrap
-          "
-          [ngClass]="
-            myMessage(item) || item.myMess
-              ? 'tw-bg-green-600'
-              : 'tw-bg-gray-700'
-          "
-        >
-          {{ item.msg }}
+        <div>
+          <div class="tw-text-gray-500" *ngIf="!myMessage(item) || item.myMess">
+            {{ item.user.username }}
+          </div>
+          <div
+            id="message"
+            class="
+              tw-m-0
+              tw-py-2
+              tw-px-3
+              tw-inline-block
+              tw-leading-5
+              tw-rounded-lg
+              tw-whitespace-pre-wrap
+            "
+            [ngClass]="
+              myMessage(item) || item.myMess
+                ? 'tw-bg-green-600'
+                : 'tw-bg-gray-700'
+            "
+          >
+            {{ item.msg }}
+          </div>
         </div>
         <!-- <div class="">
           <p
