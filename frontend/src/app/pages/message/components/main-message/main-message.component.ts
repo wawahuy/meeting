@@ -15,13 +15,7 @@ import {
   SocketMessageNewSend,
 } from 'src/app/_models/socket';
 import { v4 as uuidv4 } from 'uuid';
-import {
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild,
-  AfterViewChecked,
-} from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as _ from 'lodash';
 
 @Component({
@@ -29,7 +23,7 @@ import * as _ from 'lodash';
   templateUrl: './main-message.component.html',
   styleUrls: ['./main-message.component.scss'],
 })
-export class MainMessageComponent implements OnInit, AfterViewChecked {
+export class MainMessageComponent implements OnInit {
   @ViewChild('messageBody') private scrollToBottom: ElementRef;
   @ViewChild('inputMessage') private setInput: ElementRef;
   userConnect = {
@@ -188,6 +182,7 @@ export class MainMessageComponent implements OnInit, AfterViewChecked {
   }, 100);
 
   initSocket() {
+    this.socketReceiverStatus();
     this.socketService
       .fromEvent<SocketMessageNew>(SocketRecvName.MessageMsg)
       .subscribe((data) => {
@@ -216,7 +211,7 @@ export class MainMessageComponent implements OnInit, AfterViewChecked {
         SocketRecvName.MessageReceiverStatus
       )
       .subscribe((data) => {
-        // console.log(data);
+        console.log(data);
       });
   }
 
