@@ -10,7 +10,7 @@ import { RoomService } from 'src/app/_services/room.service';
 import { NotifierService } from 'angular-notifier';
 import { computeOnlineTime } from 'src/app/_helpers/func';
 import { Room } from 'src/app/_models/room';
-import { Message } from 'src/app/_models/message';
+import { EMessageReceiverStatus, Message } from 'src/app/_models/message';
 import {
   SocketMessageNew,
   SocketRecvName,
@@ -40,7 +40,7 @@ export class MainMessageComponent implements OnInit {
   btnConnect = ['DISMISS', 'CONFIRM'];
 
   isConnect = false;
-  sending = false;
+  sending = '';
   scrolled = false;
   isShowEmoji: false;
 
@@ -66,8 +66,15 @@ export class MainMessageComponent implements OnInit {
     );
   }
 
+  onSubscribe() {
+    this.roomService.roomSelected$.subscribe(
+      (r) => (this.roomCurrent = r) && this.loadMainMessage(r)
+    );
+  }
+
   async loadMainMessage(r) {
     await Promise.all([this.getHasFriend(r), this.fetchMessageByRoomId(r._id)]);
+    this.updateStatusMessage();
     setTimeout(() => {
       this.autoScrollBottom();
     });
@@ -189,10 +196,30 @@ export class MainMessageComponent implements OnInit {
     this.socketService
       .fromEvent<SocketMessageNew>(SocketRecvName.MessageMsg)
       .subscribe((data) => {
+        //sent to server and client received
+        // const statusSendMessage: SocketMessageReceiverStatusSend = {
+        //   type: EMessageReceiverStatus.Received,
+        //   messageId: data.uuid,
+        // };
+
+        // this.socketService.emit(
+        //   SocketSendName.MessageReceiverStatus,
+        //   statusSendMessage
+        // );
+
         if (data.room._id !== this.roomCurrent._id) return;
+
         const result = this.messageRoom.some((message, index) => {
           if (message._id === data.uuid) {
+            // console.log(data);
+
             this.messageRoom[index] = data.message;
+            this.messageRoom[index].statusReceiver = [
+              {
+                type: EMessageReceiverStatus.Received,
+                user: data.message.user,
+              },
+            ];
             return true;
           }
           return false;
@@ -203,28 +230,46 @@ export class MainMessageComponent implements OnInit {
             this.autoScrollBottom();
           });
         }
-        if (data.message.user._id === this.authService.currentUserValue._id)
-          this.sending = false;
+        if (data.message.user._id === this.authService.currentUserValue._id) {
+          if (data.message.statusReceiver[0]?.type === 2) {
+            this.sending = 'watched';
+          } else if (data.message.statusReceiver[0]?.type === 1) {
+            this.sending = 'received';
+          } else this.sending = 'send';
+        }
       });
   }
+  updateStatusMessage() {
+    this.messageRoom.forEach((msg) => {
+      // console.log(msg);
 
-  socketSendReceiverStatus() {
-    this.socketService
-      .fromEvent<SocketMessageReceiverStatusSend>(
-        SocketSendName.MessageReceiverStatus
-      )
-      .subscribe((data) => {
-        console.log(data);
-      });
+      if (
+        msg.user._id !== this.authService.currentUserValue._id &&
+        msg.statusReceiver[0]?.type !== 2
+      ) {
+        const statusSendMessage: SocketMessageReceiverStatusSend = {
+          type: EMessageReceiverStatus.Watched,
+          messageId: msg._id,
+        };
+
+        this.socketService.emit(
+          SocketSendName.MessageReceiverStatus,
+          statusSendMessage
+        );
+      }
+    });
   }
-
   socketReceiverStatus() {
     this.socketService
       .fromEvent<SocketMessageReceiverStatus>(
         SocketRecvName.MessageReceiverStatus
       )
       .subscribe((data) => {
-        console.log(data);
+        if (data.user._id !== this.authService.currentUserValue._id)
+          this.sending = 'received';
+        if (data.roomId !== this.roomCurrent._id) return;
+
+        this.fetchMessageByRoomId(data.roomId);
       });
   }
 
@@ -246,15 +291,10 @@ export class MainMessageComponent implements OnInit {
         _id: data.uuid,
         type: data.type,
       };
-      const statusSend: SocketMessageReceiverStatusSend = {
-        type: 0,
-        messageId: data.uuid,
-      };
       this.messageRoom.push({ ...message, ...{ myMess: true } });
-      this.sending = true;
+      this.sending = 'sending';
       this.message = '';
       this.socketService.emit(SocketSendName.MessageNew, data);
-      this.socketService.emit(SocketSendName.MessageReceiverStatus, statusSend);
 
       setTimeout(() => {
         this.autoScrollBottom();
