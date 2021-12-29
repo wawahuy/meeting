@@ -193,7 +193,12 @@
         "
       >
         <div>
-          <div class="tw-text-gray-500" *ngIf="!myMessage(item) || item.myMess">
+          <div
+            class="tw-text-gray-500"
+            *ngIf="
+              roomCurrent.users.length > 3 && (!myMessage(item) || item.myMess)
+            "
+          >
             {{ item.user?.username }}
           </div>
           <div
