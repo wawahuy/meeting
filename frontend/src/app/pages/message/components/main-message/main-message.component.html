@@ -194,7 +194,7 @@
       >
         <div>
           <div class="tw-text-gray-500" *ngIf="!myMessage(item) || item.myMess">
-            {{ item.user.username }}
+            {{ item.user?.username }}
           </div>
           <div
             id="message"

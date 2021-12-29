@@ -1,4 +1,7 @@
-import { SocketMessageReceiverStatus } from './../../../../_models/socket';
+import {
+  SocketMessageReceiverStatus,
+  SocketMessageReceiverStatusSend,
+} from './../../../../_models/socket';
 import { SocketService } from 'src/app/_services/socket.service';
 import { MessageService } from 'src/app/_services/message.service';
 import { FriendService } from 'src/app/_services/friend.service';
@@ -57,6 +60,7 @@ export class MainMessageComponent implements OnInit {
 
   ngOnInit(): void {
     this.initSocket();
+    this.socketReceiverStatus();
     this.roomService.roomSelected$.subscribe(
       (r) => (this.roomCurrent = r) && this.loadMainMessage(r)
     );
@@ -182,7 +186,6 @@ export class MainMessageComponent implements OnInit {
   }, 100);
 
   initSocket() {
-    this.socketReceiverStatus();
     this.socketService
       .fromEvent<SocketMessageNew>(SocketRecvName.MessageMsg)
       .subscribe((data) => {
@@ -202,6 +205,16 @@ export class MainMessageComponent implements OnInit {
         }
         if (data.message.user._id === this.authService.currentUserValue._id)
           this.sending = false;
+      });
+  }
+
+  socketSendReceiverStatus() {
+    this.socketService
+      .fromEvent<SocketMessageReceiverStatusSend>(
+        SocketSendName.MessageReceiverStatus
+      )
+      .subscribe((data) => {
+        console.log(data);
       });
   }
 
@@ -233,10 +246,15 @@ export class MainMessageComponent implements OnInit {
         _id: data.uuid,
         type: data.type,
       };
+      const statusSend: SocketMessageReceiverStatusSend = {
+        type: 0,
+        messageId: data.uuid,
+      };
       this.messageRoom.push({ ...message, ...{ myMess: true } });
       this.sending = true;
       this.message = '';
       this.socketService.emit(SocketSendName.MessageNew, data);
+      this.socketService.emit(SocketSendName.MessageReceiverStatus, statusSend);
 
       setTimeout(() => {
         this.autoScrollBottom();
