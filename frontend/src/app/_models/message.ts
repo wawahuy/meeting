@@ -2,7 +2,7 @@ import { User } from './user';
 
 export enum EMessageReceiverStatus {
   Received = 1,
-  Watched = 2
+  Watched = 2,
 }
 
 export interface MessageStatusReceiver {
@@ -19,4 +19,5 @@ export interface Message {
   statusReceiver: MessageStatusReceiver[];
   createdAt: Date;
   updatedAt: Date;
+  isShowAvatar: boolean;
 }

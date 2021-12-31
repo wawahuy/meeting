@@ -26,7 +26,7 @@ textarea {
     @apply tw-text-textMain300 hover:tw-bg-gray-700;
 }
 #message-body {
-    scroll-behavior: smooth;
+    // scroll-behavior: smooth;
 }
 .emoji-mart-preview {
     @apply tw-hidden;

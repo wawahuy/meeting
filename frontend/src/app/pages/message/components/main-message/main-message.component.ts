@@ -1,6 +1,9 @@
+import { User } from 'src/app/_models/user';
 import {
   SocketMessageReceiverStatus,
   SocketMessageReceiverStatusSend,
+  SocketMessageTyping,
+  SocketMessageTypingSend,
 } from './../../../../_models/socket';
 import { SocketService } from 'src/app/_services/socket.service';
 import { MessageService } from 'src/app/_services/message.service';
@@ -21,6 +24,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as _ from 'lodash';
 
+interface UserTyping {
+  user: User;
+  timeOut: any;
+}
 @Component({
   selector: 'app-main-message',
   templateUrl: './main-message.component.html',
@@ -46,8 +53,10 @@ export class MainMessageComponent implements OnInit {
 
   roomCurrent: Room;
   messageRoom: Message[];
+  userTyping: UserTyping[] = [];
 
   message: string;
+  timeKeyDown: number;
 
   constructor(
     private notifierService: NotifierService,
@@ -61,15 +70,19 @@ export class MainMessageComponent implements OnInit {
   ngOnInit(): void {
     this.initSocket();
     this.socketReceiverStatus();
-    this.roomService.roomSelected$.subscribe(
-      (r) => (this.roomCurrent = r) && this.loadMainMessage(r)
-    );
+    this.socketTyping();
+    this.roomService.roomSelected$.subscribe((r) => {
+      if (!r) return;
+      this.roomCurrent = r;
+      this.loadMainMessage(r);
+    });
   }
 
   onSubscribe() {
-    this.roomService.roomSelected$.subscribe(
-      (r) => (this.roomCurrent = r) && this.loadMainMessage(r)
-    );
+    // this.roomService.roomSelected$.subscribe(
+    //   (r) => (this.roomCurrent = r) && this.loadMainMessage(r)
+    // );
+    this.updateStatusMessage();
   }
 
   async loadMainMessage(r) {
@@ -170,6 +183,7 @@ export class MainMessageComponent implements OnInit {
       .then((result) => {
         const data = result;
         this.messageRoom = data.reverse();
+        this.convertMessageData();
       })
       .catch((err) => {
         this.notifierService.notify(
@@ -186,12 +200,25 @@ export class MainMessageComponent implements OnInit {
     return true;
   }
 
-  keyPressEvent = _.debounce((event) => {
+  keyDownEvent = _.debounce((event) => {
     const message = this.message.trim();
-    if (!!message && event.keyCode === 13) this.sendMessage();
+    if (!!message && event.keyCode === 13) {
+      event.stopPropagation();
+      event.preventDefault();
+      this.sendMessage();
+    }
     this.setInput.nativeElement.focus();
-  }, 100);
-
+  }, 150);
+  keyPressEvent() {
+    const t = new Date().getTime();
+    if (!this.timeKeyDown || t - this.timeKeyDown > 1200) {
+      const data: SocketMessageTypingSend = {
+        roomId: this.roomCurrent._id,
+      };
+      this.socketService.emit(SocketSendName.MessageTyping, data);
+      this.timeKeyDown = t;
+    }
+  }
   initSocket() {
     this.socketService
       .fromEvent<SocketMessageNew>(SocketRecvName.MessageMsg)
@@ -199,15 +226,24 @@ export class MainMessageComponent implements OnInit {
         //sent to server and client received
 
         this.sending = 'send';
-        const statusSendMessage: SocketMessageReceiverStatusSend = {
-          type: EMessageReceiverStatus.Received,
-          messageId: data.message._id,
-        };
 
-        this.socketService.emit(
-          SocketRecvName.MessageReceiverStatus,
-          statusSendMessage
-        );
+        if (data.message.user._id !== this.authService.currentUserValue._id) {
+          let status: number;
+
+          if (data.room._id === this.roomCurrent._id) {
+            status = EMessageReceiverStatus.Watched;
+          } else status = EMessageReceiverStatus.Received;
+
+          const statusSendMessage: SocketMessageReceiverStatusSend = {
+            type: status,
+            messageId: data.message._id,
+          };
+
+          this.socketService.emit(
+            SocketRecvName.MessageReceiverStatus,
+            statusSendMessage
+          );
+        }
         if (data.room._id !== this.roomCurrent._id) return;
         const result = this.messageRoom.some((message, index) => {
           if (message._id === data.uuid) {
@@ -228,6 +264,7 @@ export class MainMessageComponent implements OnInit {
             this.autoScrollBottom();
           });
         }
+        this.convertMessageData();
       });
   }
 
@@ -258,9 +295,65 @@ export class MainMessageComponent implements OnInit {
         if (data.user._id !== this.authService.currentUserValue._id)
           this.sending = 'received';
         if (data.roomId !== this.roomCurrent._id) return;
+        // this.fetchMessageByRoomId(data.roomId);
+        this.messageRoom.some((msg) => {
+          if (msg._id === data.messageId) {
+            const isExist = msg.statusReceiver.some((item) => {
+              if (item.user._id === data.user._id) {
+                item.type = data.type;
+                return true;
+              }
+              return false;
+            });
 
-        this.fetchMessageByRoomId(data.roomId);
+            if (!isExist)
+              msg.statusReceiver.push({ type: data.type, user: data.user });
+            return true;
+          }
+          return false;
+        });
       });
+  }
+
+  socketTyping() {
+    this.socketService
+      .fromEvent<SocketMessageTyping>(SocketRecvName.MessageTyping)
+      .subscribe((data) => {
+        if (!!data && data.room._id === this.roomCurrent._id) {
+          const timeout = setTimeout(() => {
+            this.removeTyping(data.user);
+          }, 1500);
+          let userFound = this.userTyping?.find(
+            (item) => item.user._id === data.user._id
+          );
+          if (userFound) {
+            clearTimeout(userFound.timeOut);
+            userFound.timeOut = timeout;
+          } else this.userTyping.push({ user: data.user, timeOut: timeout });
+        }
+      });
+  }
+
+  removeTyping(user: User) {
+    this.userTyping = this.userTyping?.filter(
+      (item) => item.user._id !== user._id
+    );
+  }
+
+  getUserTyping() {
+    return this.userTyping.map((item) => item.user.username).join(', ');
+  }
+
+  //
+  convertMessageData() {
+    let userId: string;
+    for (let i = this.messageRoom.length - 1; i > -1; i--) {
+      const item = this.messageRoom[i];
+      if (item.user._id !== userId) {
+        item.isShowAvatar = true;
+        userId = item.user._id;
+      } else item.isShowAvatar = false;
+    }
   }
 
   insertEmoji(event) {
