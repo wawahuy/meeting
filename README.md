@@ -1,7 +1,6 @@
 # MetMes.PW
 
 ## Websocket + API Document
-  - https://docs.google.com/spreadsheets/d/12Au0ux95-y_gViJR73qfSkf2MFNAmx-wu3w2fezQ2BA/edit?usp=sharing
   - https://api.metmes.pw/documentation
 
 ## URL
