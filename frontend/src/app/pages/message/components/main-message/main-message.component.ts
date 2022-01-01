@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { User } from 'src/app/_models/user';
 import {
   SocketMessageReceiverStatus,
@@ -319,6 +320,7 @@ export class MainMessageComponent implements OnInit {
     this.socketService
       .fromEvent<SocketMessageTyping>(SocketRecvName.MessageTyping)
       .subscribe((data) => {
+        this.autoScrollBottom();
         if (!!data && data.room._id === this.roomCurrent._id) {
           const timeout = setTimeout(() => {
             this.removeTyping(data.user);
@@ -343,6 +345,10 @@ export class MainMessageComponent implements OnInit {
   getUserTyping() {
     return this.userTyping.map((item) => item.user.username).join(', ');
   }
+
+  // scrollToTyping() {
+  //   let element = document.getElementById('item');
+  // }
 
   //
   convertMessageData() {
