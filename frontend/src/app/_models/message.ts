@@ -21,4 +21,5 @@ export interface Message {
   updatedAt: Date;
   isShowAvatar: boolean;
   isShowName: boolean;
+  isShowReply: boolean;
 }

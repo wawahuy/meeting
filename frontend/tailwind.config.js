@@ -123,7 +123,7 @@ module.exports = {
         fadeInbottom: "fadeInbottom 300ms",
         tiktok: "tiktok 1s",
         tiktokIn: "tiktokIn 1s",
-        load: "load 1s",
+        load: "load 400ms",
       },
     },
     screens: {
