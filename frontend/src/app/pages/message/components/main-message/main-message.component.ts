@@ -12,7 +12,7 @@ import { FriendService } from 'src/app/_services/friend.service';
 import { AuthService } from 'src/app/_services/auth.service';
 import { RoomService } from 'src/app/_services/room.service';
 import { NotifierService } from 'angular-notifier';
-import { computeOnlineTime } from 'src/app/_helpers/func';
+import { computeOnlineTime, timeFormated } from 'src/app/_helpers/func';
 import { Room } from 'src/app/_models/room';
 import { EMessageReceiverStatus, Message } from 'src/app/_models/message';
 import {
@@ -105,6 +105,7 @@ export class MainMessageComponent implements OnInit {
     return this.roomService.getRoomName(this.roomCurrent).name;
   }
 
+  //Formater
   getRoomOnlineTime() {
     const room = this.roomCurrent;
     const users = room.users.filter(
@@ -117,6 +118,9 @@ export class MainMessageComponent implements OnInit {
       return users.map((u) => u.nickName || u.user.name).join(', ');
     }
     return null;
+  }
+  getTimeMessage(date: Date) {
+    return timeFormated(date);
   }
 
   async getHasFriend(r) {
@@ -346,11 +350,6 @@ export class MainMessageComponent implements OnInit {
     return this.userTyping.map((item) => item.user.username).join(', ');
   }
 
-  // scrollToTyping() {
-  //   let element = document.getElementById('item');
-  // }
-
-  //
   convertMessageData() {
     let userId: string;
     for (let i = this.messageRoom.length - 1; i > -1; i--) {

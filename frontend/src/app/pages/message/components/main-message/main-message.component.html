@@ -185,9 +185,9 @@
         "
         [ngClass]="myMessage(item) || item.myMess ? ' tw-justify-end' : ''"
       >
-        <div>
+        <div class="tw-mt-auto">
           <div
-            class="tw-mt-auto tw-rounded-full tw-w-8 tw-h-8 tw-cursor-pointer"
+            class="tw-rounded-full tw-w-8 tw-h-8 tw-cursor-pointer"
             [ngClass]="{
               'tw-bg-gray-700': item.isShowAvatar && !myMessage(item)
             }"
@@ -225,6 +225,7 @@
                   ? 'tw-bg-green-600'
                   : 'tw-bg-gray-700'
               "
+              [tooltip]="getTimeMessage(item.createdAt)"
             >
               {{ item.msg }}
             </div>

@@ -27,3 +27,9 @@ export function computeOnlineTime(date: Date) {
 
   return `Online ${r} ago`;
 }
+
+export function timeFormated(date: Date) {
+  const t = moment(date);
+
+  return t.format('HH:mm');
+}
