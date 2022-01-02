@@ -121,7 +121,6 @@ export class SocketMessageService {
     const d: SocketMessageTyping = {
       room,
       user,
-      status: data.status
     }
   
     room.users.forEach(item => {
