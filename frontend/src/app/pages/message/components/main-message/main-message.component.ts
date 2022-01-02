@@ -404,4 +404,14 @@ export class MainMessageComponent implements OnInit {
     if (!this.message) this.message = '';
     this.message = this.message + event.emoji.native;
   }
+
+  //Reply
+  messageReply: Message;
+
+  replyEvent(messageRep) {
+    this.messageReply = messageRep;
+  }
+  setUnReply() {
+    this.messageReply = null;
+  }
 }
