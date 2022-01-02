@@ -172,165 +172,242 @@
         </div>
       </div>
     </div>
-    <!-- friends -->
-    <div
-      *ngFor="let item of messageRoom; index as i"
-      class="tw-flex tw-w-full tw-text-gray-200 tw-space-x-3"
-      [ngClass]="myMessage(item) || item.myMess ? ' tw-justify-end' : ''"
-    >
-      <!-- <div>
-        <div
-          class="tw-rounded-full tw-bg-gray-700 tw-w-8 tw-h-8 tw-cursor-pointer"
-          (click)="profile.show()"
-        ></div>
-      </div> -->
+    <ng-container *ngIf="!!messageRoom?.length">
       <div
-        class="tw-w-1/2"
-        [ngClass]="
-          myMessage(item) || item.myMess
-            ? 'tw-flex tw-flex-col tw-items-end tw-space-y-1'
-            : 'tw-space-y-2 '
+        *ngFor="let item of messageRoom; index as i"
+        class="
+          tw-flex
+          tw-w-full
+          tw-text-gray-200
+          tw-space-x-3
+          tw-animate-fadeInbottom
+          tw-duration-300
         "
+        [ngClass]="myMessage(item) || item.myMess ? ' tw-justify-end' : ''"
       >
         <div>
           <div
-            class="tw-text-gray-500"
-            *ngIf="
-              roomCurrent.users.length > 3 && (!myMessage(item) || item.myMess)
-            "
-          >
-            {{ item.user?.username }}
-          </div>
-          <div
-            id="message"
-            class="
-              tw-m-0
-              tw-py-2
-              tw-px-3
-              tw-inline-block
-              tw-leading-5
-              tw-rounded-lg
-              tw-whitespace-pre-wrap
-            "
-            [ngClass]="
-              myMessage(item) || item.myMess
-                ? 'tw-bg-green-600'
-                : 'tw-bg-gray-700'
-            "
-          >
-            {{ item.msg }}
-          </div>
+            class="tw-mt-auto tw-rounded-full tw-w-8 tw-h-8 tw-cursor-pointer"
+            [ngClass]="{
+              'tw-bg-gray-700': item.isShowAvatar && !myMessage(item)
+            }"
+            (click)="profile.show()"
+          ></div>
         </div>
-        <!-- <div class="">
-          <p
-            class="
-              tw-m-0
-              tw-py-2
-              tw-px-3
-              tw-inline-block
-              tw-leading-5
-              tw-rounded-lg
-              tw-bg-gray-700
-            "
-          >
-            Làm project này cho cẩn thận nha em
-          </p>
+        <div
+          class="tw-w-1/2"
+          [ngClass]="
+            myMessage(item) || item.myMess
+              ? 'tw-flex tw-flex-col tw-items-end tw-space-y-1'
+              : 'tw-space-y-2 '
+          "
+        >
+          <div>
+            <div
+              id="message"
+              class="
+                tw-m-0
+                tw-py-2
+                tw-px-3
+                tw-inline-block
+                tw-leading-5
+                tw-rounded-lg
+                tw-whitespace-pre-wrap
+              "
+              [ngClass]="
+                myMessage(item) || item.myMess
+                  ? 'tw-bg-green-600'
+                  : 'tw-bg-gray-700'
+              "
+            >
+              {{ item.msg }}
+            </div>
+            <div id="typing">
+              <div
+                *ngIf="
+                  !!userTyping?.length &&
+                  (!myMessage(item) || item.myMess) &&
+                  i === messageRoom.length - 1
+                "
+                class="
+                  tw-flex
+                  tw-space-x-2
+                  tw-p-2
+                  tw-mt-2
+                  tw-w-max
+                  tw-bg-gray-700
+                  tw-items-center
+                  tw-rounded-lg
+                "
+              >
+                <div *ngIf="roomCurrent.users.length > 3">
+                  {{ getUserTyping() }}
+                </div>
+                <div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    aria-hidden="true"
+                    role="img"
+                    class="iconify iconify--eos-icons tw-m-auto"
+                    width="20"
+                    height="20"
+                    preserveAspectRatio="xMidYMid meet"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle cx="18" cy="12" r="0" fill="currentColor">
+                      <animate
+                        attributeName="r"
+                        values="0;2;0;0"
+                        dur="1.5s"
+                        repeatCount="indefinite"
+                        begin=".67"
+                        keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                        calcMode="spline"
+                      ></animate>
+                    </circle>
+                    <circle cx="12" cy="12" r="0" fill="currentColor">
+                      <animate
+                        attributeName="r"
+                        values="0;2;0;0"
+                        dur="1.5s"
+                        repeatCount="indefinite"
+                        begin=".33"
+                        keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                        calcMode="spline"
+                      ></animate>
+                    </circle>
+                    <circle cx="6" cy="12" r="0" fill="currentColor">
+                      <animate
+                        attributeName="r"
+                        values="0;2;0;0"
+                        dur="1.5s"
+                        repeatCount="indefinite"
+                        begin="0"
+                        keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                        calcMode="spline"
+                      ></animate>
+                    </circle>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="">
+            <p
+              class="
+                tw-m-0
+                tw-py-2
+                tw-px-3
+                tw-inline-block
+                tw-leading-5
+                tw-rounded-lg
+                tw-bg-gray-700
+              "
+            >
+              Làm project này cho cẩn thận nha em
+            </p>
+          </div>
+          <div class="">
+            <p
+              class="
+                tw-m-0
+                tw-py-2
+                tw-px-3
+                tw-inline-block
+                tw-leading-5
+                tw-rounded-lg
+                tw-bg-gray-700
+              "
+            >
+              Xong sớm có thưởng nhé em <3
+            </p>
+          </div> -->
         </div>
-        <div class="">
-          <p
-            class="
-              tw-m-0
-              tw-py-2
-              tw-px-3
-              tw-inline-block
-              tw-leading-5
-              tw-rounded-lg
-              tw-bg-gray-700
-            "
-          >
-            Xong sớm có thưởng nhé em <3
-          </p>
-        </div> -->
+        <ng-container *ngIf="myMessage(item)">
+          <div *ngIf="i < messageRoom.length - 1" class="tw-w-[15px]"></div>
+          <div class="tw-mt-auto tw-mb-1" *ngIf="i === messageRoom.length - 1">
+            <!-- đang gửi -->
+            <app-loading
+              *ngIf="sending === 'sending'"
+              [isLoading]="true"
+              [hasPadding]="false"
+            ></app-loading>
+            <!-- đã gửi -->
+            <svg
+              *ngIf="
+                myMessage(item) &&
+                item.statusReceiver.length === 0 &&
+                sending === 'send'
+              "
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              aria-hidden="true"
+              role="img"
+              class="iconify iconify--teenyicons"
+              width="15"
+              height="15"
+              preserveAspectRatio="xMidYMid meet"
+              viewBox="0 0 15 15"
+            >
+              <g fill="none">
+                <path
+                  d="M4 7.5L7 10l4-5m-3.5 9.5a7 7 0 1 1 0-14a7 7 0 0 1 0 14z"
+                  stroke="currentColor"
+                ></path>
+              </g>
+            </svg>
+            <!-- đã nhận -->
+            <svg
+              *ngIf="myMessage(item) && item.statusReceiver[0]?.type === 1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              aria-hidden="true"
+              role="img"
+              class="iconify iconify--teenyicons"
+              width="15"
+              height="15"
+              preserveAspectRatio="xMidYMid meet"
+              viewBox="0 0 15 15"
+            >
+              <g fill="#fff">
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M0 7.5a7.5 7.5 0 1 1 15 0a7.5 7.5 0 0 1-15 0zm7.072 3.21l4.318-5.398l-.78-.624l-3.682 4.601L4.32 7.116l-.64.768l3.392 2.827z"
+                  fill="currentColor"
+                ></path>
+              </g>
+            </svg>
+            <!-- đã xem -->
+            <svg
+              *ngIf="myMessage(item) && item.statusReceiver[0]?.type === 2"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              aria-hidden="true"
+              role="img"
+              class="iconify iconify--teenyicons"
+              width="15"
+              height="15"
+              preserveAspectRatio="xMidYMid meet"
+              viewBox="0 0 15 15"
+            >
+              <g fill="#13D8C4">
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M0 7.5a7.5 7.5 0 1 1 15 0a7.5 7.5 0 0 1-15 0zm7.072 3.21l4.318-5.398l-.78-.624l-3.682 4.601L4.32 7.116l-.64.768l3.392 2.827z"
+                  fill="#13D8C4"
+                ></path>
+              </g>
+            </svg>
+          </div>
+        </ng-container>
       </div>
-      <ng-container *ngIf="myMessage(item)">
-        <div *ngIf="i < messageRoom.length - 1" class="tw-w-[15px]"></div>
-        <div class="tw-mt-auto tw-mb-1" *ngIf="i === messageRoom.length - 1">
-          <!-- đang gửi -->
-          <app-loading
-            *ngIf="sending === 'sending'"
-            [isLoading]="true"
-            [hasPadding]="false"
-          ></app-loading>
-          <!-- đã gửi -->
-          <svg
-            *ngIf="
-              (myMessage(item) && item.statusReceiver.length === 0) ||
-              sending === 'send'
-            "
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            aria-hidden="true"
-            role="img"
-            class="iconify iconify--teenyicons"
-            width="15"
-            height="15"
-            preserveAspectRatio="xMidYMid meet"
-            viewBox="0 0 15 15"
-          >
-            <g fill="none">
-              <path
-                d="M4 7.5L7 10l4-5m-3.5 9.5a7 7 0 1 1 0-14a7 7 0 0 1 0 14z"
-                stroke="currentColor"
-              ></path>
-            </g>
-          </svg>
-          <!-- đã nhận -->
-          <svg
-            *ngIf="myMessage(item) && item.statusReceiver[0]?.type === 1"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            aria-hidden="true"
-            role="img"
-            class="iconify iconify--teenyicons"
-            width="15"
-            height="15"
-            preserveAspectRatio="xMidYMid meet"
-            viewBox="0 0 15 15"
-          >
-            <g fill="#fff">
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M0 7.5a7.5 7.5 0 1 1 15 0a7.5 7.5 0 0 1-15 0zm7.072 3.21l4.318-5.398l-.78-.624l-3.682 4.601L4.32 7.116l-.64.768l3.392 2.827z"
-                fill="currentColor"
-              ></path>
-            </g>
-          </svg>
-          <!-- đã xem -->
-          <svg
-            *ngIf="myMessage(item) && item.statusReceiver[0]?.type === 2"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            aria-hidden="true"
-            role="img"
-            class="iconify iconify--teenyicons"
-            width="15"
-            height="15"
-            preserveAspectRatio="xMidYMid meet"
-            viewBox="0 0 15 15"
-          >
-            <g fill="#13D8C4">
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M0 7.5a7.5 7.5 0 1 1 15 0a7.5 7.5 0 0 1-15 0zm7.072 3.21l4.318-5.398l-.78-.624l-3.682 4.601L4.32 7.116l-.64.768l3.392 2.827z"
-                fill="#13D8C4"
-              ></path>
-            </g>
-          </svg>
-        </div>
-      </ng-container>
-    </div>
+    </ng-container>
+    <ng-container *ngIf="!messageRoom?.length">
+      <app-loading [isLoading]="true"></app-loading>
+    </ng-container>
   </div>
 
   <!-- bottom main -->
@@ -378,6 +455,7 @@
         placeholder="Messages"
         [(ngModel)]="message"
         (keypress)="keyPressEvent($event)"
+        (keydown)="keyDownEvent($event)"
         (click)="onSubscribe()"
       ></textarea>
       <div
