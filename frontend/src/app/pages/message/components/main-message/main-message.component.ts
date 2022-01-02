@@ -320,7 +320,7 @@ export class MainMessageComponent implements OnInit {
     this.socketService
       .fromEvent<SocketMessageTyping>(SocketRecvName.MessageTyping)
       .subscribe((data) => {
-        this.autoScrollBottom();
+        setTimeout(() => this.autoScrollBottom());
         if (!!data && data.room._id === this.roomCurrent._id) {
           const timeout = setTimeout(() => {
             this.removeTyping(data.user);
