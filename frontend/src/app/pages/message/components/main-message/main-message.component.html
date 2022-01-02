@@ -228,76 +228,6 @@
             >
               {{ item.msg }}
             </div>
-            <div id="typing">
-              <div
-                *ngIf="
-                  !!userTyping?.length &&
-                  (!myMessage(item) || item.myMess) &&
-                  i === messageRoom.length - 1
-                "
-                class="
-                  tw-flex
-                  tw-space-x-2
-                  tw-p-2
-                  tw-mt-2
-                  tw-w-max
-                  tw-bg-gray-700
-                  tw-items-center
-                  tw-rounded-lg
-                "
-              >
-                <div *ngIf="roomCurrent.users.length > 3">
-                  {{ getUserTyping() }}
-                </div>
-                <div>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
-                    aria-hidden="true"
-                    role="img"
-                    class="iconify iconify--eos-icons tw-m-auto"
-                    width="20"
-                    height="20"
-                    preserveAspectRatio="xMidYMid meet"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle cx="18" cy="12" r="0" fill="currentColor">
-                      <animate
-                        attributeName="r"
-                        values="0;2;0;0"
-                        dur="1.5s"
-                        repeatCount="indefinite"
-                        begin=".67"
-                        keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
-                        calcMode="spline"
-                      ></animate>
-                    </circle>
-                    <circle cx="12" cy="12" r="0" fill="currentColor">
-                      <animate
-                        attributeName="r"
-                        values="0;2;0;0"
-                        dur="1.5s"
-                        repeatCount="indefinite"
-                        begin=".33"
-                        keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
-                        calcMode="spline"
-                      ></animate>
-                    </circle>
-                    <circle cx="6" cy="12" r="0" fill="currentColor">
-                      <animate
-                        attributeName="r"
-                        values="0;2;0;0"
-                        dur="1.5s"
-                        repeatCount="indefinite"
-                        begin="0"
-                        keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
-                        calcMode="spline"
-                      ></animate>
-                    </circle>
-                  </svg>
-                </div>
-              </div>
-            </div>
           </div>
           <!-- <div class="">
             <p
@@ -409,6 +339,73 @@
             </svg>
           </div>
         </ng-container>
+      </div>
+      <div id="typing" class="tw-flex tw-space-x-3">
+        <div class="tw-mt-auto tw-w-8"></div>
+        <div
+          *ngIf="!!userTyping?.length"
+          class="
+            tw-flex
+            tw-space-x-2
+            tw-p-2
+            tw-mt-2
+            tw-w-max
+            tw-bg-gray-700
+            tw-items-center
+            tw-rounded-lg
+          "
+        >
+          <div *ngIf="roomCurrent.users.length > 2">
+            {{ getUserTyping() }}
+          </div>
+          <div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              aria-hidden="true"
+              role="img"
+              class="iconify iconify--eos-icons tw-m-auto"
+              width="20"
+              height="20"
+              preserveAspectRatio="xMidYMid meet"
+              viewBox="0 0 24 24"
+            >
+              <circle cx="18" cy="12" r="0" fill="currentColor">
+                <animate
+                  attributeName="r"
+                  values="0;2;0;0"
+                  dur="1.5s"
+                  repeatCount="indefinite"
+                  begin=".67"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  calcMode="spline"
+                ></animate>
+              </circle>
+              <circle cx="12" cy="12" r="0" fill="currentColor">
+                <animate
+                  attributeName="r"
+                  values="0;2;0;0"
+                  dur="1.5s"
+                  repeatCount="indefinite"
+                  begin=".33"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  calcMode="spline"
+                ></animate>
+              </circle>
+              <circle cx="6" cy="12" r="0" fill="currentColor">
+                <animate
+                  attributeName="r"
+                  values="0;2;0;0"
+                  dur="1.5s"
+                  repeatCount="indefinite"
+                  begin="0"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  calcMode="spline"
+                ></animate>
+              </circle>
+            </svg>
+          </div>
+        </div>
       </div>
     </ng-container>
     <ng-container *ngIf="!messageRoom?.length">
