@@ -79,13 +79,7 @@ export class MainMessageComponent implements OnInit {
     });
   }
 
-  onSubscribe() {
-    // this.roomService.roomSelected$.subscribe(
-    //   (r) => (this.roomCurrent = r) && this.loadMainMessage(r)
-    // );
-    this.updateStatusMessage();
-  }
-
+  //first load when subscribe room
   async loadMainMessage(r) {
     await Promise.all([this.getHasFriend(r), this.fetchMessageByRoomId(r._id)]);
     this.updateStatusMessage();
@@ -101,28 +95,7 @@ export class MainMessageComponent implements OnInit {
     } catch (err) {}
   }
 
-  getRoomName() {
-    return this.roomService.getRoomName(this.roomCurrent).name;
-  }
-
-  //Formater
-  getRoomOnlineTime() {
-    const room = this.roomCurrent;
-    const users = room.users.filter(
-      (item) => item.user._id !== this.authService.currentUserValue._id
-    );
-    if (room.users?.length == 2) {
-      const user = users?.[0]?.user;
-      return user.onlineLasted ? computeOnlineTime(user.onlineLasted) : '-';
-    } else {
-      return users.map((u) => u.nickName || u.user.name).join(', ');
-    }
-    return null;
-  }
-  getTimeMessage(date: Date) {
-    return timeFormated(date);
-  }
-
+  //fetch check user select was your friend
   async getHasFriend(r) {
     const room = r;
 
@@ -146,7 +119,7 @@ export class MainMessageComponent implements OnInit {
         });
     } else this.isConnect = false;
   }
-
+  //call API add friend
   addFriend() {
     const room = this.roomCurrent;
     const user = room.users.filter(
@@ -172,11 +145,13 @@ export class MainMessageComponent implements OnInit {
       });
   }
 
+  //get status of room
   getStatusRoom() {
     if (this.roomCurrent.users.length === 2)
       return this.roomService.getStatusRoom(this.roomCurrent);
   }
 
+  //fetch list message of room select
   async fetchMessageByRoomId(
     roomId,
     search: string = '',
@@ -199,6 +174,7 @@ export class MainMessageComponent implements OnInit {
       });
   }
 
+  //check message of current user
   myMessage(message: Message) {
     const currentId = this.authService.currentUserValue._id;
     if (message?.user?._id !== currentId) return false;
@@ -214,16 +190,8 @@ export class MainMessageComponent implements OnInit {
     }
     this.setInput.nativeElement.focus();
   }, 150);
-  keyPressEvent() {
-    const t = new Date().getTime();
-    if (!this.timeKeyDown || t - this.timeKeyDown > 1200) {
-      const data: SocketMessageTypingSend = {
-        roomId: this.roomCurrent._id,
-      };
-      this.socketService.emit(SocketSendName.MessageTyping, data);
-      this.timeKeyDown = t;
-    }
-  }
+
+  //socket on event recieved message
   initSocket() {
     this.socketService
       .fromEvent<SocketMessageNew>(SocketRecvName.MessageMsg)
@@ -272,7 +240,6 @@ export class MainMessageComponent implements OnInit {
         this.convertMessageData();
       });
   }
-
   updateStatusMessage() {
     this.messageRoom.forEach((msg) => {
       if (
@@ -319,61 +286,12 @@ export class MainMessageComponent implements OnInit {
         });
       });
   }
-
-  socketTyping() {
-    this.socketService
-      .fromEvent<SocketMessageTyping>(SocketRecvName.MessageTyping)
-      .subscribe((data) => {
-        setTimeout(() => this.autoScrollBottom());
-        if (!!data && data.room._id === this.roomCurrent._id) {
-          const timeout = setTimeout(() => {
-            this.removeTyping(data.user);
-          }, 1500);
-          let userFound = this.userTyping?.find(
-            (item) => item.user._id === data.user._id
-          );
-          if (userFound) {
-            clearTimeout(userFound.timeOut);
-            userFound.timeOut = timeout;
-          } else this.userTyping.push({ user: data.user, timeOut: timeout });
-        }
-      });
+  //update status message when Subscribe input message
+  onSubscribe() {
+    this.updateStatusMessage();
   }
 
-  removeTyping(user: User) {
-    this.userTyping = this.userTyping?.filter(
-      (item) => item.user._id !== user._id
-    );
-  }
-
-  getUserTyping() {
-    return this.userTyping.map((item) => item.user.username).join(', ');
-  }
-
-  convertMessageData() {
-    let userId: string;
-    for (let i = this.messageRoom.length - 1; i > -1; i--) {
-      const item = this.messageRoom[i];
-      if (item.user._id !== userId) {
-        item.isShowAvatar = true;
-        userId = item.user._id;
-      } else item.isShowAvatar = false;
-    }
-    let id: string;
-    for (let i = 0; i < this.messageRoom.length; i++) {
-      const item = this.messageRoom[i];
-      if (item.user._id !== id) {
-        item.isShowName = true;
-        id = item.user._id;
-      } else item.isShowName = false;
-    }
-  }
-
-  insertEmoji(event) {
-    if (!this.message) this.message = '';
-    this.message = this.message + event.emoji.native;
-  }
-
+  //socket emit send message
   sendMessage() {
     if (!!this.message.trim() && !!this.message) {
       const data: SocketMessageNewSend = {
@@ -396,5 +314,94 @@ export class MainMessageComponent implements OnInit {
         this.autoScrollBottom();
       });
     }
+  }
+
+  //socket emit when typing
+  keyPressEvent() {
+    const t = new Date().getTime();
+    if (!this.timeKeyDown || t - this.timeKeyDown > 1200) {
+      const data: SocketMessageTypingSend = {
+        roomId: this.roomCurrent._id,
+      };
+      this.socketService.emit(SocketSendName.MessageTyping, data);
+      this.timeKeyDown = t;
+    }
+  }
+
+  //socket on event typing
+  socketTyping() {
+    this.socketService
+      .fromEvent<SocketMessageTyping>(SocketRecvName.MessageTyping)
+      .subscribe((data) => {
+        setTimeout(() => this.autoScrollBottom());
+        if (!!data && data.room._id === this.roomCurrent._id) {
+          const timeout = setTimeout(() => {
+            this.removeTyping(data.user);
+          }, 1500);
+          let userFound = this.userTyping?.find(
+            (item) => item.user._id === data.user._id
+          );
+          if (userFound) {
+            clearTimeout(userFound.timeOut);
+            userFound.timeOut = timeout;
+          } else this.userTyping.push({ user: data.user, timeOut: timeout });
+        }
+      });
+  }
+  removeTyping(user: User) {
+    this.userTyping = this.userTyping?.filter(
+      (item) => item.user._id !== user._id
+    );
+  }
+  getUserTyping() {
+    return this.userTyping.map((item) => item.user.username).join(', ');
+  }
+
+  getRoomName() {
+    return this.roomService.getRoomName(this.roomCurrent).name;
+  }
+
+  //Timer formated
+  getRoomOnlineTime() {
+    const room = this.roomCurrent;
+    const users = room.users.filter(
+      (item) => item.user._id !== this.authService.currentUserValue._id
+    );
+    if (room.users?.length == 2) {
+      const user = users?.[0]?.user;
+      return user.onlineLasted ? computeOnlineTime(user.onlineLasted) : '-';
+    } else {
+      return users.map((u) => u.nickName || u.user.name).join(', ');
+    }
+    return null;
+  }
+  getTimeMessage(date: Date) {
+    return timeFormated(date);
+  }
+
+  //convert list message isShowAvatar && isShowUsername
+  convertMessageData() {
+    let userId: string;
+    for (let i = this.messageRoom.length - 1; i > -1; i--) {
+      const item = this.messageRoom[i];
+      if (item.user._id !== userId) {
+        item.isShowAvatar = true;
+        userId = item.user._id;
+      } else item.isShowAvatar = false;
+    }
+    let id: string;
+    for (let i = 0; i < this.messageRoom.length; i++) {
+      const item = this.messageRoom[i];
+      if (item.user._id !== id) {
+        item.isShowName = true;
+        id = item.user._id;
+      } else item.isShowName = false;
+    }
+  }
+
+  //add emoji into message
+  insertEmoji(event) {
+    if (!this.message) this.message = '';
+    this.message = this.message + event.emoji.native;
   }
 }
