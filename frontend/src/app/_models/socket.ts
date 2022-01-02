@@ -55,12 +55,10 @@ export interface SocketMessageReceiverStatusSend {
 }
 
 export interface SocketMessageTyping {
-  status: boolean;
   room: Room;
   user: User
 }
 
 export interface SocketMessageTypingSend {
-  status: boolean;
   roomId: string;
 }
