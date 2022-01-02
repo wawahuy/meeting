@@ -360,6 +360,14 @@ export class MainMessageComponent implements OnInit {
         userId = item.user._id;
       } else item.isShowAvatar = false;
     }
+    let id: string;
+    for (let i = 0; i < this.messageRoom.length; i++) {
+      const item = this.messageRoom[i];
+      if (item.user._id !== id) {
+        item.isShowName = true;
+        id = item.user._id;
+      } else item.isShowName = false;
+    }
   }
 
   insertEmoji(event) {

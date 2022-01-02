@@ -122,7 +122,7 @@
     id="message-body"
     class="
       tw-flex-1
-      tw-h-[calc(100vh-10rem)]
+      tw-h-[calc(100vh-160px)]
       tw-text-3.25
       tw-overflow-y-auto
       tw-p-4
@@ -137,7 +137,7 @@
       [ngClass]="
         isConnect
           ? 'tw-animate-fadeInTop100'
-          : 'tw-animate-fadeOutTop100 tw-translate-y-[-8rem] tw-h-0'
+          : 'tw-animate-fadeOutTop100 tw-translate-y-[-128px] tw-h-0'
       "
     >
       <div class="tw-bg-shark">
@@ -203,6 +203,12 @@
           "
         >
           <div>
+            <div
+              *ngIf="item.isShowName && !myMessage(item)"
+              class="tw-text-gray-500"
+            >
+              {{ item.user.username }}
+            </div>
             <div
               id="message"
               class="
@@ -325,7 +331,7 @@
           </div> -->
         </div>
         <ng-container *ngIf="myMessage(item)">
-          <div *ngIf="i < messageRoom.length - 1" class="tw-w-[15px]"></div>
+          <div *ngIf="i < messageRoom.length - 1" class="tw-w-[.9375rem]"></div>
           <div class="tw-mt-auto tw-mb-1" *ngIf="i === messageRoom.length - 1">
             <!-- đang gửi -->
             <app-loading

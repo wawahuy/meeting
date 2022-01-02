@@ -20,4 +20,5 @@ export interface Message {
   createdAt: Date;
   updatedAt: Date;
   isShowAvatar: boolean;
+  isShowName: boolean;
 }
