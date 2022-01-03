@@ -196,7 +196,7 @@
             [ngClass]="{
               'tw-bg-gray-700': item.isShowAvatar && !myMessage(item)
             }"
-            (click)="profile.show()"
+            (click)="profile.show(item.user)"
           ></div>
         </div>
 
