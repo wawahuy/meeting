@@ -459,7 +459,10 @@
     </ng-container>
 
     <!-- Reply UI -->
-    <div *ngIf="!!messageReply" class="tw-sticky tw-bottom-0">
+    <div
+      *ngIf="!!messageReply && messageReply.room === roomCurrent._id"
+      class="tw-sticky tw-bottom-0"
+    >
       <div
         class="
           tw-flex
