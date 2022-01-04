@@ -410,6 +410,9 @@ export class MainMessageComponent implements OnInit {
 
   replyEvent(messageRep) {
     this.messageReply = messageRep;
+    setTimeout(() => {
+      this.autoScrollBottom();
+    });
   }
   setUnReply() {
     this.messageReply = null;

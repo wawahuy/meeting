@@ -242,7 +242,7 @@
                 {{ item.msg }}
               </div>
               <!-- Reply button -->
-              <div class="tw-relative tw-w-6">
+              <div *ngIf="!myMessage(item)" class="tw-relative tw-w-6">
                 <div
                   *ngIf="!!item.isShowReply && !myMessage(item)"
                   class="tw-flex tw-absolute tw--top-2.5"
