@@ -288,7 +288,7 @@ export class MainMessageComponent implements OnInit {
   }
   //update status message when Subscribe input message
   onSubscribe() {
-    this.updateStatusMessage();
+    // this.updateStatusMessage();
   }
 
   //socket emit send message
@@ -416,5 +416,18 @@ export class MainMessageComponent implements OnInit {
   }
   setUnReply() {
     this.messageReply = null;
+  }
+
+  //Reaction
+  messageReactId: string;
+  iconReact: string;
+
+  reactEvent(messageReact: Message, icon: string) {
+    this.messageReactId = messageReact._id;
+    this.iconReact = icon;
+  }
+  setUnReact() {
+    this.messageReactId = null;
+    this.iconReact = null;
   }
 }
