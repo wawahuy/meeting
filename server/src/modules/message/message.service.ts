@@ -11,11 +11,23 @@ export class MessageService {
   ) {
   }
 
+  async checkRoomAndMessage(roomId: string, messageId: string) {
+    const result = await this.messageModel
+      .findOne({ 
+        _id: new Types.ObjectId(messageId),
+        room: new Types.ObjectId(roomId),
+      })
+    
+    return !!result;
+  }
+
   async get(messageId: string) {
     return await this.messageModel
       .findOne({ _id: new Types.ObjectId(messageId) })
       .populate('user', '-password -friends')
-      .populate('statusReceiver.user', '-password -friends')
+      .populate('statusReceiver.user', 'username name avatar')
+      .populate('messageReply', '-statusReceiver -messageReply')
+      .populate('messageReply.user', 'username name avatar')
   }
 
   async create(data: MessageDocument) {
@@ -44,8 +56,9 @@ export class MessageService {
       .sort({ createdAt: -1 })
       .skip(Number((page - 1)) * size)
       .limit(Number(size))
-      .populate('user', '-password -friends')
-      .populate('statusReceiver.user', '-password -friends')
+      .populate('statusReceiver.user', 'username name avatar')
+      .populate('messageReply', '-statusReceiver -messageReply')
+      .populate('messageReply.user', 'username name avatar')
       .catch(e => null);
   }
 

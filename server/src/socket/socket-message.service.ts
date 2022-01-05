@@ -33,12 +33,20 @@ export class SocketMessageService {
       return;
     }
 
+    if (msg.messageReply) {
+      if (!!this.messageService.checkRoomAndMessage(msg.room, msg.messageReply)) {
+        return;
+      }
+    }
+
     const data: MessageDocument & any = {
       room: room._id,
       user: user._id,
       type: msg.type,
-      msg: msg.msg
+      msg: msg.msg,
+      messageReply: msg.messageReply,
     };
+
     const result = await this.messageService.create(data);
     if (!result) {
       return;

@@ -17,6 +17,7 @@ export interface Message {
   user: User;
   room: string;
   statusReceiver: MessageStatusReceiver[];
+  messageReply: Message;
   createdAt: Date;
   updatedAt: Date;
   isShowAvatar: boolean;
