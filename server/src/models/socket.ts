@@ -13,6 +13,7 @@ export enum SocketSendName {
   MessageMsg = 'message:msg',
   MessageReceiverStatus = 'message:receiverStatus',
   MessageTyping = 'message:typing',
+  MessageReact = 'message:react',
 
   // call
   CallCall = 'call:call',
@@ -24,10 +25,17 @@ export enum SocketRecvName {
   MessageNew = 'message:new',
   MessageReceiverStatus = 'message:receiverStatus',
   MessageTyping = 'message:typing',
+  MessageReact = 'message:react',
 
   // call
   CallCall = 'call:call',
   CallAnswer = 'call:answer',
+}
+
+export enum EActionSocket {
+  Create = 'create',
+  Update = 'update',
+  Delete = 'delete'
 }
 
 export interface SocketFriendStatus {
@@ -69,4 +77,18 @@ export interface SocketMessageTyping {
 
 export interface SocketMessageTypingRecv {
   roomId: string;
+}
+
+export interface SocketMessageReact {
+  messageId: string;
+  roomId: string;
+  user: UserDocument;
+  react: string;
+  action: EActionSocket
+}
+
+export interface SocketMessageReactRecv {
+  messageId: string;
+  react: string;
+  action: EActionSocket
 }
