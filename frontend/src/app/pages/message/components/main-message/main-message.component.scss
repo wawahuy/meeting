@@ -34,3 +34,6 @@ textarea {
 #message {
     word-break: break-word;
 }
+.scaleIconHover :hover {
+    transform: scale(5rem);
+}

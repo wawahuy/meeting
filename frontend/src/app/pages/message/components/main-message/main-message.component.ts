@@ -1,4 +1,3 @@
-import { element } from 'protractor';
 import { User } from 'src/app/_models/user';
 import {
   SocketMessageReceiverStatus,
@@ -23,6 +22,7 @@ import {
 } from 'src/app/_models/socket';
 import { v4 as uuidv4 } from 'uuid';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { reactionIcon } from 'src/assets/enums';
 import * as _ from 'lodash';
 
 interface UserTyping {
@@ -421,6 +421,30 @@ export class MainMessageComponent implements OnInit {
   //Reaction
   messageReactId: string;
   iconReact: string;
+
+  reactionIconList = reactionIcon;
+
+  setMessageReactClick(item) {
+    this.messageRoom.some((msg, index) => {
+      if (msg._id === item._id) {
+        this.messageRoom[index].isShowReact = true;
+      } else this.messageRoom[index].isShowReact = false;
+    });
+  }
+
+  setReactForMessage(msg: Message, text: string) {
+    this.messageRoom.some((item, index) => {
+      if (item._id === msg._id && !!text) {
+        if (!this.messageRoom[index].reacts)
+          this.messageRoom[index].reacts = [];
+        this.messageRoom[index].isShowReact = false;
+        this.messageRoom[index].reacts.push({
+          user: this.authService.currentUserValue,
+          react: text,
+        });
+      }
+    });
+  }
 
   reactEvent(messageReact: Message, icon: string) {
     this.messageReactId = messageReact._id;

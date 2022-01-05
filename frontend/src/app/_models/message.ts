@@ -19,12 +19,14 @@ export interface Message {
   statusReceiver: MessageStatusReceiver[];
   messageReply: Message;
   reacts: {
-    user: User,
-    react: string
-  }[]
+    user: User;
+    react: string;
+  }[];
   createdAt: Date;
   updatedAt: Date;
   isShowAvatar: boolean;
   isShowName: boolean;
   isShowReply: boolean;
+  isShowReact;
+  boolean;
 }
