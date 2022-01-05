@@ -56,6 +56,7 @@ export class MessageService {
       .sort({ createdAt: -1 })
       .skip(Number((page - 1)) * size)
       .limit(Number(size))
+      .populate('user', '-password -friends')
       .populate('statusReceiver.user', 'username name avatar')
       .populate('messageReply', '-statusReceiver -messageReply')
       .populate('messageReply.user', 'username name avatar')
