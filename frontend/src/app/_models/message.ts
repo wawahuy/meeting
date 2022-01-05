@@ -18,6 +18,10 @@ export interface Message {
   room: string;
   statusReceiver: MessageStatusReceiver[];
   messageReply: Message;
+  reacts: {
+    user: User,
+    react: string
+  }[]
   createdAt: Date;
   updatedAt: Date;
   isShowAvatar: boolean;

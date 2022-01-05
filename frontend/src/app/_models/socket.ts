@@ -39,6 +39,7 @@ export interface SocketMessageNewSend {
   msg: string;
   type: number;
   uuid: string;
+  messageReply: string;
 }
 
 export interface SocketMessageReceiverStatus {

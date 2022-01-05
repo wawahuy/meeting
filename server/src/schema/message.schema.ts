@@ -84,6 +84,11 @@ export class Message {
   msg: string;
 
   @Prop({ 
+    type: MSchema.Types.String,
+  })
+  react: string;
+
+  @Prop({ 
     type: MSchema.Types.ObjectId,
     required: true,
     index: true,
