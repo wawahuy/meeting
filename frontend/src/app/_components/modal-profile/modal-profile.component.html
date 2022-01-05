@@ -72,7 +72,7 @@
       <div class="tw-flex tw-flex-col tw-space-y-2">
         <div class="tw-flex tw-justify-center tw-items-center">
           {{ getUser().name }}
-          <span class="tw-ml-1 tw-text-gray-500 tw-text-xs">
+          <span *ngIf="!!user" class="tw-ml-1 tw-text-gray-500 tw-text-xs">
             ({{ getUser().username }})
           </span>
         </div>
