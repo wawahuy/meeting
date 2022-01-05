@@ -90,7 +90,6 @@ export class Message {
 
   @Prop({ 
     type: MSchema.Types.ObjectId,
-    required: true,
     index: true,
     ref: Message.name
   })
