@@ -181,15 +181,15 @@ export class MainMessageComponent implements OnInit {
     return true;
   }
 
-  keyDownEvent = _.debounce((event) => {
-    const message = this.message.trim();
-    if (!!message && event.keyCode === 13) {
-      event.stopPropagation();
-      event.preventDefault();
-      this.sendMessage();
+  keyDownEvent = (event) => {
+    if (event.keyCode === 13) {
+      const message = this.message?.trim();
+      if (!!message) {
+        this.sendMessage();
+      }
+      return false;
     }
-    this.setInput.nativeElement.focus();
-  }, 150);
+  }
 
   //socket on event recieved message
   initSocket() {
