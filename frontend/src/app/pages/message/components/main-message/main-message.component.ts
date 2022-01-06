@@ -189,7 +189,7 @@ export class MainMessageComponent implements OnInit {
       }
       return false;
     }
-  }
+  };
 
   //socket on event recieved message
   initSocket() {
@@ -450,8 +450,19 @@ export class MainMessageComponent implements OnInit {
     this.messageReactId = messageReact._id;
     this.iconReact = icon;
   }
-  setUnReact() {
-    this.messageReactId = null;
-    this.iconReact = null;
+  unSetReact(msg: Message, icon: string) {
+    this.messageRoom.some((item, index) => {
+      if (item._id === msg._id) {
+        if (!!this.messageRoom[index].reacts) {
+          this.messageRoom[index].reacts = this.messageRoom[
+            index
+          ].reacts.filter(
+            (react) =>
+              react.user._id === this.authService.currentUserValue._id &&
+              icon !== react.react
+          );
+        }
+      }
+    });
   }
 }

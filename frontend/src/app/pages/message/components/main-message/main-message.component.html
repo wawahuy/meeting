@@ -216,7 +216,7 @@
                     <ng-container *ngFor="let icon of item?.reacts">
                       <button
                         class="tw-bg-gray-500 tw-w-8 tw-h-6 tw-p-0.125 tw-rounded-full tw-duration-200 hover:tw-bg-gray-300"
-                        (click)="setReactForMessage(item, icon.text)"
+                        (click)="unSetReact(item, icon.react)"
                       >
                         {{ icon.react }}
                       </button>
