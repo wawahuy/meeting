@@ -162,7 +162,8 @@
             myMessage(item) || item.myMess
               ? 'tw-flex tw-flex-col tw-items-end tw-space-y-1'
               : 'tw-space-y-2 ',
-            !!item.reacts && !item.isShowAvatar ? 'tw-pb-4' : ''
+            !!item.reacts && !item.isShowAvatar ? 'tw-pb-4' : '',
+            !!item.reacts && myMessage(item) ? 'tw-mb-2' : ''
           ]"
         >
           <div>
@@ -210,15 +211,35 @@
                 </div>
                 <div
                   *ngIf="!!item.reacts"
-                  class="tw-absolute tw--bottom-8 tw-py-4 tw-px-2 tw-w-full tw-delay-500 tw-animate-fadeInbottom"
+                  [ngClass]="
+                    myMessage(item)
+                      ? 'tw--bottom-2 tw-left-0'
+                      : 'tw--bottom-4 tw-pt-2'
+                  "
+                  class="tw-absolute tw-w-full tw-delay-500 tw-animate-fadeInbottom"
                 >
-                  <div class="tw-w-max tw-ml-auto tw-space-x-2">
+                  <div
+                    [ngClass]="
+                      myMessage(item)
+                        ? 'tw--space-x-2 '
+                        : 'tw-space-x-1 tw-ml-auto'
+                    "
+                    class="tw-flex tw-w-max tw-mr-0"
+                    [tooltip]="getUserReact(item?.reacts)"
+                  >
                     <ng-container *ngFor="let icon of item?.reacts">
                       <button
-                        class="tw-bg-gray-500 tw-w-8 tw-h-6 tw-p-0.125 tw-rounded-full tw-duration-200 hover:tw-bg-gray-300"
-                        (click)="unSetReact(item, icon.react)"
+                        [ngClass]="
+                          myMessage(item)
+                            ? 'tw-w-0 tw-h-auto'
+                            : 'tw-w-8 tw-h-6 tw-bg-gray-500'
+                        "
+                        class="tw-p-0.125 tw-rounded-full tw-duration-200 hover:tw-bg-gray-300"
+                        (click)="
+                          !myMessage(item) ? unSetReact(item, icon.react) : ''
+                        "
                       >
-                        {{ icon.react }}
+                        <span>{{ icon.react }}</span>
                       </button>
                     </ng-container>
                   </div>

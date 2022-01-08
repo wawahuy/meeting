@@ -437,11 +437,25 @@ export class MainMessageComponent implements OnInit {
       if (item._id === msg._id && !!text) {
         if (!this.messageRoom[index].reacts)
           this.messageRoom[index].reacts = [];
+
+        // check user reacted
+        const itMeReact = this.messageRoom[index].reacts.find(
+          (react) => react.user._id === this.authService.currentUserValue._id
+        );
+
+        //reacted
+        if (!!itMeReact) {
+          this.messageRoom[index].reacts.some((react, i) => {
+            this.messageRoom[index].reacts[i].react = text;
+          });
+        } else {
+          //not reaction
+          this.messageRoom[index].reacts.push({
+            user: this.authService.currentUserValue,
+            react: text,
+          });
+        }
         this.messageRoom[index].isShowReact = false;
-        this.messageRoom[index].reacts.push({
-          user: this.authService.currentUserValue,
-          react: text,
-        });
       }
     });
   }
@@ -450,6 +464,19 @@ export class MainMessageComponent implements OnInit {
     this.messageReactId = messageReact._id;
     this.iconReact = icon;
   }
+
+  //usernames reacted
+  getUserReact(react: any) {
+    let temp = '';
+    const users = react.map((item) => {
+      if (item.user.username !== temp) {
+        temp = item.user.username;
+        return item.user.username;
+      }
+    });
+    return users.join(', ');
+  }
+
   unSetReact(msg: Message, icon: string) {
     this.messageRoom.some((item, index) => {
       if (item._id === msg._id) {
