@@ -168,10 +168,42 @@
         >
           <div>
             <div
-              *ngIf="item.isShowName && !myMessage(item)"
-              class="tw-text-gray-500"
+              *ngIf="!isMessageReply && item.isShowName && !myMessage(item)"
+              class="tw-text-gray-500 tw-relative"
             >
-              {{ item.user.username }}
+              <span>{{ item.user.username }}</span>
+            </div>
+            <div
+              *ngIf="!!isMessageReply && !myMessage(item)"
+              class="tw-text-gray-500 tw-relative tw-top-1.5"
+            >
+              <div class="tw-flex tw-space-x-1 tw-items-center">
+                <span
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    aria-hidden="true"
+                    role="img"
+                    class="iconify iconify--ic"
+                    width="15"
+                    height="15"
+                    preserveAspectRatio="xMidYMid meet"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M10 9V7.41c0-.89-1.08-1.34-1.71-.71L3.7 11.29a.996.996 0 0 0 0 1.41l4.59 4.59c.63.63 1.71.19 1.71-.7V14.9c5 0 8.5 1.6 11 5.1c-1-5-4-10-11-11z"
+                      fill="currentColor"
+                    ></path>
+                  </svg>
+                </span>
+                <span>{{ item.user.username }}</span>
+                <span>replied to you</span>
+              </div>
+              <div
+                class="tw-rounded-tr-lg tw-rounded-tl-lg tw-bg-gray-800 tw-opacity-50 tw-w-max tw-p-2"
+              >
+                <span>Reply message</span>
+              </div>
             </div>
             <div
               class="tw-flex tw-space-x-2 tw-items-center"

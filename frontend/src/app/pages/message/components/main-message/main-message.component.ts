@@ -407,6 +407,7 @@ export class MainMessageComponent implements OnInit {
 
   //Reply
   messageReply: Message;
+  isMessageReply: boolean = false;
 
   replyEvent(messageRep) {
     this.messageReply = messageRep;
