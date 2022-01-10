@@ -1,46 +1,22 @@
+<app-create-room #addMenbers></app-create-room>
 <div
   *ngIf="isShow"
   class="tw-absolute tw-flex tw-inset-0 tw-h-[100vh] tw-items-center tw-animate"
 >
   <div
-    class="
-      tw-absolute tw-z-10 tw-h-[100vh] tw-w-full tw-bg-gray-900 tw-bg-opacity-70
-    "
+    class="tw-absolute tw-z-10 tw-h-[100vh] tw-w-full tw-bg-gray-900 tw-bg-opacity-70"
   ></div>
   <div
-    class="
-      tw-relative
-      tw-z-20
-      tw-w-1/5
-      tw-flex-col
-      tw-bg-shark
-      tw-text-center
-      tw-text-textMain300
-      tw-m-auto
-      tw-rounded-lg
-      tw-animate-bounceIn
-    "
+    class="tw-relative tw-z-20 tw-w-1/5 tw-flex-col tw-bg-shark tw-text-center tw-text-textMain300 tw-m-auto tw-rounded-lg tw-animate-bounceIn"
   >
     <div class="tw-flex tw-p-4 tw-border-b tw-border-gray-300 tw-relative">
       <div
         class="tw-flex-1 tw-items-center tw-m-auto tw-text-lg tw-font-medium"
       >
-        Profile
+        {{ getUser().username ? "Profile" : "Information" }}
       </div>
       <div
-        class="
-          tw-rounded-full
-          tw-p-2
-          tw-cursor-pointer
-          tw-absolute
-          tw-top-0
-          tw-right-0
-          tw-mr-2
-          tw-mt-2
-          tw-transition
-          tw-duration-200
-          hover:tw-bg-gray-600
-        "
+        class="tw-rounded-full tw-p-2 tw-cursor-pointer tw-absolute tw-top-0 tw-right-0 tw-mr-2 tw-mt-2 tw-transition tw-duration-200 hover:tw-bg-gray-600"
         (click)="isShow = false"
       >
         <span>
@@ -77,18 +53,37 @@
           </span>
         </div>
 
+        <div
+          *ngIf="roomCurrent.users.length > 2 && !getUser().username"
+          class="tw-flex tw-justify-center tw-items-center tw-space-x-2"
+        >
+          <button
+            class="tw-rounded-full tw-bg-puertoRico-500 tw-w-10 tw-h-10 hover:tw-bg-puertoRico-900"
+            (click)="addMenbers.show(roomCurrent); isShow = false"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              aria-hidden="true"
+              role="img"
+              class="iconify iconify--ic m-auto"
+              width="20"
+              height="20"
+              preserveAspectRatio="xMidYMid meet"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1z"
+                fill="currentColor"
+              ></path>
+            </svg>
+          </button>
+          <span>Add members</span>
+        </div>
+
         <div class="tw-relative tw-pb-2">
           <input
-            class="
-              tw-text-gray-300
-              tw-rounded-full
-              tw-pl-4
-              tw-pr-10
-              tw-py-2
-              tw-flex-1
-              tw-w-full
-              tw-bg-gray-800
-            "
+            class="tw-text-gray-300 tw-rounded-full tw-pl-4 tw-pr-10 tw-py-2 tw-flex-1 tw-w-full tw-bg-gray-800"
             placeholder="Nickname"
           />
         </div>

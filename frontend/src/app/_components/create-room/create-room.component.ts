@@ -32,6 +32,7 @@ export class CreateRoomComponent implements OnInit {
     size: 0,
     data: [],
   };
+  currentRoom: Room;
   form: FormGroup;
 
   constructor(
@@ -42,7 +43,8 @@ export class CreateRoomComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  public show() {
+  public show(r: Room) {
+    if (!!r) this.currentRoom = r;
     this.isShow = true;
     this.selectedUsers = [];
     this.searchString = '';
@@ -118,11 +120,15 @@ export class CreateRoomComponent implements OnInit {
         );
         return Promise.resolve(null);
       });
+    const users = result?.items.filter(
+      (elem) =>
+        !this.currentRoom.users.find((user) => elem._id === user.user._id)
+    );
     const u: DataList<User> = {
       total: result?.total,
       page,
       size,
-      data: result?.items,
+      data: users,
     };
     return u;
   }
