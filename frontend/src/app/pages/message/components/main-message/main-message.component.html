@@ -419,7 +419,7 @@
         <div class="tw-mt-auto tw-w-8"></div>
         <div
           *ngIf="!!userTyping?.length"
-          class="tw-flex tw-space-x-2 tw-p-2 tw-mt-2 tw-w-max tw-bg-gray-700 tw-items-center tw-rounded-lg"
+          class="tw-flex tw-space-x-2 tw-p-2 tw-mt-2 tw-mb-2 tw-w-max tw-bg-gray-700 tw-items-center tw-rounded-lg"
         >
           <div *ngIf="roomCurrent.users.length > 2">
             {{ getUserTyping() }}
@@ -479,54 +479,60 @@
     <ng-container *ngIf="!messageRoom?.length">
       <app-loading [isLoading]="true"></app-loading>
     </ng-container>
-
-    <!-- Reply UI -->
     <div
       *ngIf="!!messageReply && messageReply.room === roomCurrent._id"
-      class="tw-sticky tw-bottom-0"
-    >
+      class="emptyClass"
+    ></div>
+  </div>
+  <!-- bottom main -->
+  <div class="tw-sticky tw-bottom-0">
+    <!-- Reply UI -->
+    <div class="tw-mt-auto">
       <div
-        class="tw-flex tw-w-full tw-bg-black tw-bg-opacity-50 tw-rounded-tr-lg tw-rounded-tl-lg"
+        *ngIf="!!messageReply && messageReply.room === roomCurrent._id"
+        class="tw-sticky tw-bottom-0"
       >
         <div
-          class="tw-flex tw-items-center tw-justify-between tw-flex-1 tw-px-4 tw-py-2"
+          class="tw-flex tw-w-full tw-bg-black tw-bg-opacity-50 tw-rounded-tr-lg tw-rounded-tl-lg"
         >
-          <div class="">
-            <div class="tw-text-white">
-              Replying to
-              <span class="tw-font-bold">{{ messageReply.user.username }}</span>
+          <div
+            class="tw-flex tw-items-center tw-justify-between tw-flex-1 tw-px-4 tw-py-2"
+          >
+            <div class="">
+              <div class="tw-text-white">
+                Replying to
+                <span class="tw-font-bold">{{
+                  messageReply.user.username
+                }}</span>
+              </div>
+              <div class="tw-text-gray-300 tw-text-xs">
+                {{ messageReply.msg }}
+              </div>
             </div>
-            <div class="tw-text-gray-300 tw-text-xs">
-              {{ messageReply.msg }}
+            <div>
+              <button (click)="setUnReply()">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  aria-hidden="true"
+                  role="img"
+                  class="iconify iconify--mdi tw-m-auto"
+                  width="15"
+                  height="15"
+                  preserveAspectRatio="xMidYMid meet"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41z"
+                    fill="#eeeeee"
+                  ></path>
+                </svg>
+              </button>
             </div>
-          </div>
-          <div>
-            <button (click)="setUnReply()">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-                aria-hidden="true"
-                role="img"
-                class="iconify iconify--mdi tw-m-auto"
-                width="15"
-                height="15"
-                preserveAspectRatio="xMidYMid meet"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41z"
-                  fill="#eeeeee"
-                ></path>
-              </svg>
-            </button>
           </div>
         </div>
       </div>
     </div>
-  </div>
-
-  <!-- bottom main -->
-  <div class="tw-sticky tw-bottom-0">
     <div class="tw-flex tw-items-center tw-justify-between tw-p-4 tw-space-x-4">
       <div class="tw-flex tw-items-center">
         <button
