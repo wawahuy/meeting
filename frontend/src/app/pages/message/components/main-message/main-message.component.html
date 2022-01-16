@@ -476,7 +476,7 @@
     </ng-container>
 
     <!-- is Loading when fetch data-->
-    <ng-container *ngIf="!messageRoom?.length">
+    <ng-container *ngIf="isLoading">
       <app-loading [isLoading]="true"></app-loading>
     </ng-container>
     <div

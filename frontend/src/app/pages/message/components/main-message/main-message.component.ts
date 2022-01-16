@@ -51,6 +51,7 @@ export class MainMessageComponent implements OnInit {
   sending = '';
   scrolled = false;
   isShowEmoji: false;
+  isLoading = false;
 
   roomCurrent: Room;
   messageRoom: Message[];
@@ -158,6 +159,7 @@ export class MainMessageComponent implements OnInit {
     page: number = 1,
     size: number = 20
   ) {
+    this.isLoading = true;
     await this.messageService
       .getMessagesByRoomId(roomId, search, page, size)
       .then((result) => {
@@ -171,7 +173,10 @@ export class MainMessageComponent implements OnInit {
           err?.error?.message || 'Unknown Error'
         );
         return Promise.resolve(null);
-      });
+      })
+      .finally(() => {
+        this.isLoading = false;
+      })
   }
 
   //check message of current user
